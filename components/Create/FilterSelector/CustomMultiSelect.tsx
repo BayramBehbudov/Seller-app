@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 const CustomMultiSelect = ({
@@ -44,7 +45,7 @@ const CustomMultiSelect = ({
     if (multiSelect) {
       const updatedValues = selectedValues.includes(item)
         ? selectedValues.filter((i) => i !== item)
-        : [...selectedValues, item]
+        : [...selectedValues, item];
 
       setSelectedValues(updatedValues);
       handleChange(updatedValues);
@@ -79,51 +80,59 @@ const CustomMultiSelect = ({
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}
         >
-          <View
-            className={
-              "flex-1 justify-center items-center w-full h-full bg-black/50"
-            }
+          <TouchableWithoutFeedback
+            onPress={(e) => {
+              console.log("closed");
+              console.log(e.target);
+              setModalVisible(false);
+            }}
           >
             <View
-              className={"bg-white p-6 rounded-lg w-80 max-h-[50vh] relative"}
+              className={
+                "flex-1 justify-center items-center w-full h-full bg-black/50"
+              }
             >
-              <Text className={"text-xl font-bold mb-4"}>{modalTitle}</Text>
-
-              <ScrollView>
-                {data?.value?.map((item) => {
-                  return (
-                    <TouchableOpacity
-                      key={item}
-                      className={`p-3 rounded-md flex-row items-start`}
-                      onPress={() => handleSelection(item)}
-                    >
-                      <View className="w-6 items-start justify-center">
-                        {selectedValues.includes(item) && (
-                          <Image
-                            source={icons.done}
-                            resizeMode="contain"
-                            className="w-5 h-5"
-                          />
-                        )}
-                      </View>
-                      <Text className={"text-lg ml-3"}>{item}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-
-              <TouchableOpacity
-                className="absolute items-center justify-center top-2 right-2 w-6 h-6"
-                onPress={() => setModalVisible(false)}
+              <View
+                className={"bg-white p-6 rounded-lg w-80 max-h-[50vh] relative"}
               >
-                <Image
-                  source={icons.close}
-                  resizeMode="contain"
-                  className="w-5 h-5"
-                />
-              </TouchableOpacity>
+                <Text className={"text-xl font-bold mb-4"}>{modalTitle}</Text>
+
+                <ScrollView>
+                  {data?.value?.map((item) => {
+                    return (
+                      <TouchableOpacity
+                        key={item}
+                        className={`p-3 rounded-md flex-row items-start`}
+                        onPress={() => handleSelection(item)}
+                      >
+                        <View className="w-6 items-start justify-center">
+                          {selectedValues.includes(item) && (
+                            <Image
+                              source={icons.done}
+                              resizeMode="contain"
+                              className="w-5 h-5"
+                            />
+                          )}
+                        </View>
+                        <Text className={"text-lg ml-3"}>{item}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </ScrollView>
+
+                <TouchableOpacity
+                  className="absolute items-center justify-center top-2 right-2 w-6 h-6"
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Image
+                    source={icons.close}
+                    resizeMode="contain"
+                    className="w-5 h-5"
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Modal>
       </View>
       {error && (

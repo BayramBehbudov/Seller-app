@@ -110,20 +110,34 @@ const SelectCategory: React.FC<{
       <Text className="text-base text-gray-100  font-pmedium text-start w-full">
         Kateqoriya
       </Text>
-      <TouchableOpacity
-        className="border-2 border-black-200 w-full h-12 flex-row  bg-black-100   rounded-2xl focus:border-secondary items-center p-3 "
-        onPress={() => !disabled && setModalVisible(true)}
-      >
-        <Text className={`text-base text-gray-100  font-pmedium`}>
-          {value.child
-            ? selectedCategory.main.title +
-              " - " +
-              selectedCategory.sub.title +
-              " - " +
-              selectedCategory.child.title
-            : "Seç"}
-        </Text>
-      </TouchableOpacity>
+      {disabled ? (
+        <View className="border-2 border-black-200 w-full h-12 flex-row  bg-black-100   rounded-2xl focus:border-secondary items-center p-3 ">
+          <Text className={`text-base text-gray-100  font-pmedium`}>
+            {value.child
+              ? selectedCategory.main.title +
+                " - " +
+                selectedCategory.sub.title +
+                " - " +
+                selectedCategory.child.title
+              : "Seç"}
+          </Text>
+        </View>
+      ) : (
+        <TouchableOpacity
+          className="border-2 border-black-200 w-full h-12 flex-row  bg-black-100   rounded-2xl focus:border-secondary items-center p-3 "
+          onPress={() => setModalVisible(true)}
+        >
+          <Text className={`text-base text-gray-100  font-pmedium`}>
+            {value.child
+              ? selectedCategory.main.title +
+                " - " +
+                selectedCategory.sub.title +
+                " - " +
+                selectedCategory.child.title
+              : "Seç"}
+          </Text>
+        </TouchableOpacity>
+      )}
 
       {error && (
         <Text className="text-red-500 w-full overflow-hidden text-sm">

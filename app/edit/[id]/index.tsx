@@ -42,6 +42,7 @@ const EditProduct = () => {
   );
 
   const [images, setImages] = useState<ISelectedImages>();
+  console.log('images', images);
   const {
     control,
     handleSubmit,
@@ -96,7 +97,7 @@ const EditProduct = () => {
     <SafeAreaView className="bg-primary w-full h-full">
       <ScrollView className="w-full px-3">
         {isLoading && (
-          <CustomLoader animating={isLoading} size={30} color="white" />
+          <CustomLoader animating={true} size={"large"} color="white" />
         )}
         <Text className="text-white text-2xl font-bold text-center mb-5">
           Məlumatlara Düzəliş et
@@ -183,6 +184,7 @@ const EditProduct = () => {
           <CustomButton
             title="Məhsulu yenilə"
             handlePress={handleSubmit(submit)}
+            disabled={isLoading}
             containerStyles="mt-5"
           />
         </View>

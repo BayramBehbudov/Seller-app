@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Modal, StatusBar } from "react-native";
 import { View } from "react-native";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
@@ -11,9 +12,12 @@ const CustomLoader = ({
   color?: string;
   size?: "small" | "large" | number;
 }) => (
-  <View className="w-full flex-col flex-1 min-h-dvh justify-center backdrop-blur items-center">
-    <ActivityIndicator animating={animating} color={color} size={size} />
-  </View>
+  <Modal animationType="slide" transparent={true} visible={true}>
+    <View className="items-center justify-center w-full h-full bg-transparent/60">
+      <ActivityIndicator animating={animating} color={color} size={size} />
+    </View>
+    <StatusBar barStyle="dark-content" backgroundColor={"#000"} />
+  </Modal>
 );
 
 export default CustomLoader;
