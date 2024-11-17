@@ -112,3 +112,45 @@ export const AddProductSchema = z.object({
       .trim(),
   }),
 });
+
+export const StoreSchema = z.object({
+  name: z
+    .string({
+      required_error: "Mağazanızın adını daxil edin",
+    })
+    .trim()
+    .min(2, {
+      message: "Mağazanızın adını daxil edin",
+    }),
+
+  address: z
+    .string({
+      required_error: "Mağazanızın ünvanını daxil edin",
+    })
+    .trim()
+    .min(2, {
+      message: "Mağazanızın ünvanını daxil edin",
+    }),
+
+  phone: z
+    .string({
+      required_error: "Mağazanızın mobil nömrəsini daxil edin",
+    })
+    .trim()
+    .regex(/^\+994\d{9}$/, {
+      message: "Nömrəni düzgün daxil edin. məs. +994501234567",
+    }),
+  description: z
+    .string({
+      required_error: "Mağaza haqqında açıqlama daxil edin",
+    })
+    .min(5, {
+      message: "Mağaza haqqında açıqlama daxil edin",
+    })
+    .trim(),
+  point: z
+    .string({
+      required_error: "Təyinat nöqtəsi seçin",
+    })
+    .length(24),
+});

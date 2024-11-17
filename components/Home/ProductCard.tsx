@@ -16,7 +16,7 @@ const ProductCard = ({
   return (
     <TouchableOpacity
       className="w-full h-48 rounded-lg bg-white p-2 flex-row justify-between"
-      onPress={() => router.push(`/edit/${product._id}`)}
+      onPress={() => router.push(`/product/${product._id}`)}
     >
       <View className="w-[48%] h-full">
         <Image

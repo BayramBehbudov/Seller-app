@@ -32,7 +32,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggedIn(false);
         setUser({} as IUserDB);
       }
-
     } catch (error) {
       console.log(error);
     } finally {

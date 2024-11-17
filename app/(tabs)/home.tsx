@@ -8,6 +8,7 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { IProductDB } from "@/types/interfaces";
 import axios from "axios";
 import CustomButton from "@/components/CustomButton";
+import { router } from "expo-router";
 
 const HomePage = () => {
   const { user, setUser, refetchUser } = useGlobalContext();
@@ -53,6 +54,7 @@ const HomePage = () => {
     const products = user.stores?.flatMap((store) => store.products);
 
     const filteredProd = products?.filter((product: IProductDB) => {
+      if (!product) return;
       const matchesSearch = filters.search
         ? product.name.toLowerCase().includes(filters.search)
         : true;
@@ -68,7 +70,7 @@ const HomePage = () => {
       return matchesSearch && matchesIsActive && matchesId;
     });
 
-    setFilteredProducts(filteredProd);
+    filteredProd && setFilteredProducts(filteredProd);
   }, [filters]);
 
   return (
@@ -109,7 +111,7 @@ const HomePage = () => {
           <CustomButton
             containerStyles="mt-10 w-[80%] "
             title="Mağaza əlavə et"
-            handlePress={() => {}}
+            handlePress={() => router.push(`/store/add`)}
           />
         </View>
       )}

@@ -1,11 +1,13 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { IStoreDB } from "@/types/interfaces";
 import { getSlicedID } from "@/helpers/functions";
+import { router } from "expo-router";
 
-const StoreCard = ({ store }: { store: IStoreDB,  }) => {
+const StoreCard = ({ store }: { store: IStoreDB }) => {
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => router.push(`/store/${store._id}`)}
       style={{ backgroundColor: "#FAFAFA" }}
       className="w-full h-[200px] gap-1 rounded-2xl p-3 flex-col"
     >
@@ -32,9 +34,9 @@ const StoreCard = ({ store }: { store: IStoreDB,  }) => {
         <Text className="text-base line-clamp-1" style={{ width: 100 }}>
           Məhsul sayı:
         </Text>
-        <Text className="text-base line-clamp-1">{store.products.length}</Text>
+        <Text className="text-base line-clamp-1">{store.products?.length}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

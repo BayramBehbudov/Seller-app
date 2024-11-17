@@ -19,6 +19,7 @@ const CustomSelect = ({
   placeholder,
   handleChange,
   error,
+  defaultValue,
 }: {
   title?: string;
   data?: { id: string; title: string }[] | null;
@@ -32,11 +33,13 @@ const CustomSelect = ({
     | Merge<FieldError, FieldErrorsImpl<any>>
     | undefined;
   multiSelect?: boolean;
+  defaultValue?: { id: string; title: string };
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [selectedValues, setSelectedValues] = useState({ id: "", title: "" });
-
+  const [selectedValues, setSelectedValues] = useState(
+    defaultValue || { id: "", title: "" }
+  );
   useEffect(() => {
     handleChange(selectedValues.id);
   }, [selectedValues]);
@@ -88,6 +91,15 @@ const CustomSelect = ({
                         handleChange(item.id);
                       }}
                     >
+                      <View className="w-6">
+                        {selectedValues.id === item.id && (
+                          <Image
+                            source={icons.done}
+                            className="w-6 h-6"
+                            resizeMode="contain"
+                          />
+                        )}
+                      </View>
                       <Text className={"text-lg ml-3"}>{item.title}</Text>
                     </TouchableOpacity>
                   )}

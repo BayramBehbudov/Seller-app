@@ -40,7 +40,8 @@ export default function RootLayout() {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)/register" options={{ headerShown: false }} />
-        <Stack.Screen name="edit/[id]/index" options={{ headerShown: false }} />
+        <Stack.Screen name="product/[id]/index" options={{ headerShown: false }} />
+        <Stack.Screen name="store/[id]/index" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar backgroundColor="#161622" style="light" />

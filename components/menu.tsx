@@ -15,7 +15,7 @@ import EditProfile from "./Profile/EditProfile";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import { manageActiveSession } from "@/services/userActions";
-import Stores from "./Profile/Stores";
+import Stores from "./Profile/Store/Stores";
 import { IUserDB } from "@/types/interfaces";
 
 const MenuBar = ({

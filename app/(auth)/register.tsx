@@ -142,39 +142,6 @@ const Register = () => {
               />
             )}
           />
-          {/* <Controller
-            control={control}
-            name="point"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <CustomSelect
-                title="Təyinat nöqtəsi"
-                handleChange={onChange}
-                placeholder="Seç"
-                modalTitle="Təyinat nöqtəsini seçin"
-                data={points?.map((item: Models.Document) => {
-                  return {
-                    id: item._id,
-                    title: item.name,
-                  };
-                })}
-                error={errors?.point?.message || undefined}
-              />
-            )}
-          /> */}
-
-          {/* <Controller
-            control={control}
-            name="description"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <FormField
-                title="description"
-                text="Açıqlama"
-                handleChange={onChange}
-                value={value}
-                error={errors?.description?.message || undefined}
-              />
-            )}
-          /> */}
 
           <CustomButton
             title="Qeydiyyat"

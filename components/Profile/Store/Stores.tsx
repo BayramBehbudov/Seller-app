@@ -3,6 +3,7 @@ import React from "react";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { icons } from "@/constants";
 import StoreCard from "./StoreCard";
+import { router } from "expo-router";
 
 const Stores = () => {
   const { user } = useGlobalContext();
@@ -20,6 +21,7 @@ const Stores = () => {
           <TouchableOpacity
             style={{ backgroundColor: "#FAFAFA" }}
             className="w-full items-center justify-center  h-[200px]  rounded-2xl p-3 flex-col "
+            onPress={() => router.push("/store/add")}
           >
             <Image
               source={icons.add}

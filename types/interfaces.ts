@@ -88,14 +88,13 @@ export interface IStore {
   address: string;
   phone: string;
   description: string;
-  email: string;
-  isAvailable: boolean;
 }
 
 export interface IStoreDB extends IStore {
+  isAvailable: boolean;
   owner: IUser;
-  point: IPointDB;
   products: IProductDB[];
+  point: IPointDB;
   _id: string;
   createdAt: string;
   updatedAt: string;
