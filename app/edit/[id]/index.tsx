@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SelectCategory from "@/components/SelectCategory";
@@ -22,6 +22,7 @@ import EditImageController from "@/components/ProductEdit.tsx/EditImageControlle
 import CustomLoader from "@/components/CustomLoader";
 import { productUpdate } from "@/services/productActions";
 import { subImagesUploader } from "@/services/imageUploader";
+import axios from "axios";
 
 const EditProduct = () => {
   const { id } = useGlobalSearchParams();
@@ -29,21 +30,21 @@ const EditProduct = () => {
   const { user, isLoading, setIsLoading, refetchUser } = useGlobalContext();
 
   const currentProduct = user.stores
-    .flatMap((store) => store.products)
+    ?.flatMap((store) => store.products)
     .find((product: IProductDB) => product._id === id);
 
   const [selectedCategory, setSelectedCategory] =
     useState<ISelectedCategoryStructure>();
 
-  const [attributes, setAttributes] = useState<ISelectedAttributes[]>(
-    currentProduct?.attributes || []
+  const [attributes, setAttributes] = useState<ISelectedAttributes>(
+    currentProduct?.attributes as ISelectedAttributes
   );
 
-  const [features, setFeatures] = useState<ISelectedFeatures[]>(
-    currentProduct?.features || []
+  const [features, setFeatures] = useState<ISelectedFeatures>(
+    currentProduct?.features as ISelectedFeatures
   );
 
-  const [images, setImages] = useState<ISelectedImages>();
+  const [images, setImages] = useState<ISelectedImages>({} as ISelectedImages);
 
   const {
     control,
@@ -64,37 +65,45 @@ const EditProduct = () => {
   });
 
   const submit = async (data: any) => {
+    if (!currentProduct || !id) return;
     setIsLoading(true);
     let newData = {};
-    if (images && images.subImages.length > 0 && currentProduct) {
-      const newImages = await subImagesUploader(images.subImages);
-      const updatedImages = {
-        main: currentProduct.images.main,
-        subImages: [...currentProduct.images.subImages, ...newImages],
-      };
-      newData = { ...newData, images: JSON.stringify(updatedImages) };
-    }
-    if (JSON.stringify(currentProduct?.features) !== JSON.stringify(features)) {
-      newData = { ...newData, features: JSON.stringify(features) };
+
+    if (JSON.stringify(currentProduct.features) !== JSON.stringify(features)) {
+      newData = { ...newData, features: features };
     }
 
     if (
-      JSON.stringify(currentProduct?.attributes) !== JSON.stringify(attributes)
+      JSON.stringify(currentProduct.attributes) !== JSON.stringify(attributes)
     ) {
-      newData = { ...newData, filters: JSON.stringify(attributes) };
+      newData = { ...newData, attributes: attributes };
     }
 
     Object.entries(data).forEach(([key, value]) => {
-      JSON.stringify(currentProduct[key]) !== JSON.stringify(value) &&
-        (newData = { ...newData, [key]: value });
+      JSON.stringify(currentProduct[key as keyof IProduct]) !==
+        JSON.stringify(value) && (newData = { ...newData, [key]: value });
     });
 
-    await productUpdate(currentProduct._id, newData);
+    if (images.main.image || images.subImages.length > 0) {
+      newData = { ...newData, images };
+    }
 
-    // ana səhifədə state yaranmır amma user dəyişir. dəyişiklik görünmür
-    await refetchUser();
+    try {
+      const updated = await axios.patch(
+        `${process.env.API_URL}/api/products/${id}`,
+        newData
+      );
 
-    setIsLoading(false);
+      if (updated.status === 200) {
+      } else {
+      }
+    } catch (error) {
+      Alert.alert("Xəta", "Məhsul məlumatları dəyişdirilərkən xəta baş verdi");
+    } finally {
+      setIsLoading(false);
+      // ana səhifədə state yaranmır amma user dəyişir. dəyişiklik görünmür
+      await refetchUser();
+    }
   };
 
   return (
@@ -171,15 +180,17 @@ const EditProduct = () => {
             )}
           />
 
-          <EditImageController
-            setImage={setImages}
-            currentProduct={currentProduct}
-          />
+          {currentProduct && (
+            <EditImageController
+              setImage={setImages}
+              currentProduct={currentProduct}
+            />
+          )}
           {selectedCategory && (
             <FilterSelector
               selectedCategory={selectedCategory}
-              filters={filters}
-              setFilters={setFilters}
+              attributes={attributes}
+              setAttributes={setAttributes}
               features={features}
               setFeatures={setFeatures}
             />

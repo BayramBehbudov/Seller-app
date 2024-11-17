@@ -122,7 +122,7 @@ export interface IPointDB extends IPoint {
 export interface IProduct {
   name: string;
   description: string;
-  price: number;
+  price: string;
   category: {
     main: string;
     sub: string;
@@ -146,18 +146,6 @@ export interface IProductDB extends IProduct {
   createdAt: string;
   updatedAt: string;
   __v: number;
-}
-
-export interface IProductImages {
-  main: {
-    url: string;
-    imageId: string;
-  };
-  subImages: {
-    url: string;
-    imageTag: string | null;
-    imageId: string;
-  }[];
 }
 
 export interface ISelectedCategoryStructure {
@@ -195,13 +183,23 @@ export interface ISelectedImages {
   }[];
 }
 
+export interface IProductImages {
+  main: {
+    url: string;
+    imageId: string | null;
+  };
+  subImages: {
+    url: string;
+    imageTag: string | null;
+    imageId: string;
+  }[];
+}
+
 export interface ISelectedAttributes {
-  title: string;
-  value: string[];
+  [key: string]: string[];
 }
 export interface ISelectedFeatures {
-  title: string;
-  value: string;
+  [key: string]: string;
 }
 // export interface IOrderProduct extends IProductDB {
 //   count: number;
@@ -216,10 +214,10 @@ export interface ISelectedFeatures {
 //   status: string;
 // }
 
-// export interface IFilterSelectorProps {
-//   filters: ISelectedAttributes[];
-//   features: ISelectedFeatures[];
-//   setFeatures: (value: ISelectedFeatures[]) => void;
-//   setFilters: (value: ISelectedAttributes[]) => void;
-//   selectedCategory: ISelectedCategoryStructure;
-// }
+export interface IFilterSelectorProps {
+  attributes: ISelectedAttributes;
+  features: ISelectedFeatures;
+  setFeatures: (value: ISelectedFeatures) => void;
+  setAttributes: (value: ISelectedAttributes) => void;
+  selectedCategory: ISelectedCategoryStructure;
+}

@@ -19,15 +19,24 @@ import { images } from "@/constants";
 import { handleImageUploader, uploadFile } from "@/services/imageUploader";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { productCreate } from "@/services/productActions";
+import { z } from "zod";
+import CustomSelect from "@/components/CustomSelect";
+import axios from "axios";
 
 const create = () => {
   const [selectedCategory, setSelectedCategory] = useState<
     ISelectedCategoryStructure | undefined
   >(undefined);
-  const [images, setImages] = useState<ISelectedImages>({} as ISelectedImages);
 
-  const [filters, setFilters] = useState<ISelectedAttributes[]>([]);
-  const [features, setFeatures] = useState<ISelectedFeatures[]>([]);
+  const [images, setImages] = useState<ISelectedImages>({} as ISelectedImages);
+  const [attributes, setAttributes] = useState<ISelectedAttributes>(
+    {} as ISelectedAttributes
+  );
+  const [features, setFeatures] = useState<ISelectedFeatures>(
+    {} as ISelectedFeatures
+  );
+
+  const { user, isLoading, setIsLoading } = useGlobalContext();
 
   const {
     control,
@@ -40,36 +49,50 @@ const create = () => {
       name: "",
       price: "",
       description: "",
-      category: {} as ISelectedCategoryStructure,
+      store: "",
+      category: {
+        main: "",
+        sub: "",
+        child: "",
+      },
     },
   });
 
-  const { user, isLoading, setIsLoading } = useGlobalContext();
+  const submit = async (data: z.infer<typeof AddProductSchema>) => {
+    setIsLoading(true);
 
-  const submit = async (data: any) => {
-    // setIsLoading(true);
-    // const uploadedImages = await handleImageUploader(images);
-    // if (uploadedImages.status !== 200 || !user._id)
-    //   return Alert.alert("Səhv", uploadedImages.message);
-    // const newProduct = await productCreate({
-    //   seller: user._id,
-    //   ...data,
-    //   category: JSON.stringify(data.category),
-    //   images: JSON.stringify(uploadedImages.data),
-    //   // filters: JSON.stringify(filters),
-    //   // features: JSON.stringify(features),
-    // });
-    // if (newProduct?.status === 200) {
-    //   reset();
-    //   setSelectedCategory(undefined);
-    //   // setImages({} as ISelectedImages);
-    //   // setFilters([]);
-    //   // setFeatures([]);
-    //   Alert.alert(newProduct.message);
-    // } else {
-    //   Alert.alert("Səhv", newProduct?.message);
-    // }
-    // setIsLoading(false);
+    if (!images.main.image)
+      return Alert.alert("Səhv", "Məhsul üçün əsas şəkil seçilməlidir");
+
+    if (!user?.stores.length)
+      return Alert.alert("Səhv", "Öncə mağaza yaratmalısınız");
+
+    if (!data.store) return Alert.alert("Səhv", "Mağaza seçilməlidir");
+
+    try {
+      const res = await axios.post(
+        `${process.env.BASE_URL}/api/products/create`,
+        {
+          ...data,
+          images,
+          attributes,
+          features,
+        }
+      );
+      if (res.status === 200) {
+        reset();
+        setSelectedCategory(undefined);
+        setImages({} as ISelectedImages);
+        setAttributes({} as ISelectedAttributes);
+        setFeatures({} as ISelectedFeatures);
+      } else {
+        Alert.alert("Səhv", res.data.message);
+      }
+    } catch (error: any) {
+      Alert.alert("Səhv", error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -143,12 +166,33 @@ const create = () => {
                   />
                 )}
               />
+
+              <Controller
+                control={control}
+                name="store"
+                render={({ field: { onChange } }) => (
+                  <CustomSelect
+                    title="Mağaza"
+                    handleChange={onChange}
+                    placeholder="Seç"
+                    modalTitle="Mağaza seçin"
+                    data={
+                      user.stores?.map((store) => ({
+                        title: store.name,
+                        id: store._id,
+                      })) || []
+                    }
+                    error={errors?.store?.message || undefined}
+                  />
+                )}
+              />
+
               <ImageController setImage={setImages} />
 
               <FilterSelector
                 selectedCategory={selectedCategory}
-                setFilters={setFilters}
-                filters={filters}
+                setAttributes={setAttributes}
+                attributes={attributes}
                 features={features}
                 setFeatures={setFeatures}
               />

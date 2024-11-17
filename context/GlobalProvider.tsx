@@ -1,8 +1,6 @@
-import { getCurrentUser } from "@/services/userActions";
 import { IUserDB } from "@/types/interfaces";
 import { createContext, useContext, useEffect, useState } from "react";
-import { Alert } from "react-native";
-import { Models } from "react-native-appwrite";
+
 import axios from "axios";
 
 const GlobalContext = createContext({
@@ -26,7 +24,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:3333/api/auth/authentication`
+        `${process.env.BASE_URL}/api/auth/authentication`
       );
       console.log("auth", res);
       if (res.status === 200 && res.data.role === "seller") {

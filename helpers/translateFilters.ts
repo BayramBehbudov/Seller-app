@@ -1,4 +1,4 @@
-export const translateFilters = (filter: string) => {
+export const translateAttributes = (filter: string) => {
   switch (filter) {
     case "size":
       return "Ölçü";

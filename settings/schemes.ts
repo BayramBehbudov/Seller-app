@@ -74,6 +74,14 @@ export const AddProductSchema = z.object({
       message: "Məhsulun adını daxil edin",
     })
     .trim(),
+  store: z
+    .string({
+      required_error: "Mağazanızı seçin",
+    })
+    .min(5, {
+      message: "Mağaza seçilməlidir",
+    })
+    .trim(),
   description: z
     .string({
       required_error: "Məhsul haqqında açıqlama daxil edin",

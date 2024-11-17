@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { IOrderProduct } from "@/types/interfaces";
-import { translateFilters } from "@/helpers/translateFilters";
+import { translateAttributes } from "@/helpers/translateFilters";
 import { getSlicedID } from "@/helpers/functions";
 
 const OrderProductCard = ({ product }: { product: IOrderProduct }) => {
@@ -21,7 +21,7 @@ const OrderProductCard = ({ product }: { product: IOrderProduct }) => {
       <View>
         {Object.entries(product.selectedAtributes).map(([key, value]) => (
           <View className="flex-row" key={key}>
-            <Text className=" flex-1">{translateFilters(key)}</Text>
+            <Text className=" flex-1">{translateAttributes(key)}</Text>
             <Text className=" flex-1">{value}</Text>
           </View>
         ))}

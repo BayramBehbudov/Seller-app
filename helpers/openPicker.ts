@@ -1,7 +1,5 @@
 import { ISelectedImages } from "@/types/interfaces";
-import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from "expo-image-picker";
-import { DocumentPickerAsset } from "expo-document-picker";
 
 export const openPicker = async (
   setValue: (prev: any) => void,

@@ -11,11 +11,11 @@ import CustomMultiSelect from "./CustomMultiSelect";
 const FilterSelector = ({
   selectedCategory,
   features,
-  filters,
-  setFilters,
+  attributes,
+  setAttributes,
   setFeatures,
 }: IFilterSelectorProps) => {
-  const renderFilterItem = ({
+  const renderAttributeItem = ({
     selectedCategoryFilters: { title, value },
   }: {
     selectedCategoryFilters: ICategorieFilters;
@@ -25,15 +25,13 @@ const FilterSelector = ({
         title={title === "size" ? "Ölçü" : title}
         data={{ title, value }}
         modalTitle={"Seçin"}
-        defaultSelectValues={
-          filters.filter((item) => item.title === title)[0]?.value || []
-        }
+        defaultSelectValues={attributes[title] || []}
         handleChange={(value: string[]) => {
-          if (value.length) {
-            const updatedFilters = filters.filter(
-              (item) => item.title !== title
-            );
-            setFilters([...updatedFilters, { title, value }]);
+          if (value.length > 0) {
+            setAttributes({
+              ...attributes,
+              [title]: value,
+            });
           }
         }}
         multiSelect={true}
@@ -45,28 +43,22 @@ const FilterSelector = ({
     );
   };
 
-  const renderFeatureItem = ({
+  const renderFeaturesItem = ({
     selectedCategoryFeautures: { title, value },
   }: {
     selectedCategoryFeautures: IFeatures;
   }) => {
-    const defaultFeature = features.find((item) => item.title === title);
     return (
       <CustomMultiSelect
         title={translateFeatures(title)}
         data={{ title, value }}
-        defaultSelectValues={defaultFeature ? [defaultFeature.value] : []}
+        defaultSelectValues={features ? [features[title]] : []}
         modalTitle={translateFeatures(title) + " seçin"}
         handleChange={(value: string[]) => {
-          const changed = features.some((i) => i.title === title);
-          if (changed) {
-            const updatedFeatures = features.map((i) =>
-              i.title !== title ? i : { title, value: value[0] }
-            );
-            setFeatures(updatedFeatures);
-          } else {
-            setFeatures([...features, { title, value: value[0] }]);
-          }
+          setFeatures({
+            ...features,
+            [title]: value[0],
+          });
         }}
         containerStyles="mb-4 mt-4"
         placeholder="Seçilməyib"
@@ -76,7 +68,7 @@ const FilterSelector = ({
 
   const getFlatList = (
     list: { title: string; value: string[] }[],
-    type: "filter" | "feature"
+    type: "attributes" | "feature"
   ) => {
     return (
       <View>
@@ -84,8 +76,8 @@ const FilterSelector = ({
           return (
             <View key={listItem.title}>
               {type === "feature"
-                ? renderFeatureItem({ selectedCategoryFeautures: listItem })
-                : renderFilterItem({ selectedCategoryFilters: listItem })}
+                ? renderFeaturesItem({ selectedCategoryFeautures: listItem })
+                : renderAttributeItem({ selectedCategoryFilters: listItem })}
             </View>
           );
         })}
@@ -99,7 +91,7 @@ const FilterSelector = ({
         <Text className="text-white text-2xl w-full ">Filterlər</Text>
         {Object.values(selectedCategory).map((item) => {
           return (
-            <View key={item.id}>{getFlatList(item.filters, "filter")}</View>
+            <View key={item.id}>{getFlatList(item.filters, "attributes")}</View>
           );
         })}
       </View>

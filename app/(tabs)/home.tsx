@@ -2,7 +2,7 @@ import { Text, FlatList, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProductCard from "@/components/Home/ProductCard";
-import HomeFilters from "@/components/Home/HomeISelectedAttributes";
+import HomeFilters from "@/components/Home/HomeFilters";
 import EmptyComponent from "@/components/EmptyComponent";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { IProductDB } from "@/types/interfaces";
