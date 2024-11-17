@@ -13,9 +13,10 @@ import {
 import Dashboard from "./Profile/Dashboard";
 import EditProfile from "./Profile/EditProfile";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { Models } from "react-native-appwrite";
 import { router } from "expo-router";
 import { manageActiveSession } from "@/services/userActions";
+import Stores from "./Profile/Stores";
+import { IUserDB } from "@/types/interfaces";
 
 const MenuBar = ({
   setElement,
@@ -55,6 +56,10 @@ const MenuBar = ({
     {
       title: "Hesab Məlumatları",
       component: <EditProfile />,
+    },
+    {
+      title: "Mağazalar",
+      component: <Stores />,
     },
   ];
 
@@ -110,7 +115,7 @@ const MenuBar = ({
                   onPress: async () => {
                     const res = await manageActiveSession();
                     if (res.status === 200) {
-                      setUser({} as Models.Document),
+                      setUser({} as IUserDB),
                         setIsLoggedIn(false),
                         router.push("/");
                     }

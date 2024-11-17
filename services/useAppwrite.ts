@@ -1,24 +1,23 @@
-import { IResponse, IResponseData } from "@/types/interfaces";
-import { useEffect, useState } from "react";
-import { Models } from "react-native-appwrite";
+// import { IResponse } from "@/types/interfaces";
+// import { useEffect, useState } from "react";
 
-const useAppwrite = (
-  fn: (query?: string | string[]) => Promise<IResponse | undefined>
-) => {
-  const [data, setData] = useState<IResponseData>(undefined);
+// const useAppwrite = (
+//   fn: (query?: string | string[]) => Promise<IResponse | undefined>
+// ) => {
+//   const [data, setData] = useState<IResponse | undefined>(undefined);
 
-  const fetchData = async () => {
-    const posts = await fn();
-    setData(posts?.data);
-  };
+//   const fetchData = async () => {
+//     const posts = await fn();
+//     setData(posts?.data);
+//   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+//   useEffect(() => {
+//     fetchData();
+//   }, []);
 
-  const refetch = () => fetchData();
+//   const refetch = () => fetchData();
 
-  return { data, refetch };
-};
+//   return { data, refetch };
+// };
 
-export default useAppwrite;
+// export default useAppwrite;

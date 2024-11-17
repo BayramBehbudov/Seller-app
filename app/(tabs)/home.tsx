@@ -7,6 +7,7 @@ import EmptyComponent from "@/components/EmptyComponent";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { IProductDB } from "@/types/interfaces";
 import axios from "axios";
+import CustomButton from "@/components/CustomButton";
 
 const HomePage = () => {
   const { user, setUser, refetchUser } = useGlobalContext();
@@ -20,7 +21,7 @@ const HomePage = () => {
 
   const handleDelete = async (prodId: string) => {
     const deletedProd = await axios.delete(
-      `${process.env.BASE_URL}/api/products/${prodId}`
+      `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/${prodId}`
     );
 
     if (deletedProd.status === 200) {
@@ -32,7 +33,7 @@ const HomePage = () => {
 
   const handleUpdate = async (prodId: string, isActive: boolean) => {
     const newProduct = await axios.patch(
-      `${process.env.BASE_URL}/api/products/${prodId}`,
+      `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/${prodId}`,
       {
         isActive,
       }
@@ -72,32 +73,46 @@ const HomePage = () => {
 
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col ">
-      <FlatList
-        data={filteredProducts}
-        ListHeaderComponent={
-          <View className="w-full gap-5 h-fit flex-col ">
-            <Text className="text-white text-2xl font-bold text-center">
-              Bütün məhsullarınız burada
-            </Text>
-            <HomeFilters setFilters={setFilters} />
-          </View>
-        }
-        renderItem={({ item }) => (
-          <ProductCard
-            product={item}
-            handleDelete={handleDelete}
-            handleUpdate={handleUpdate}
-          />
-        )}
-        contentContainerClassName="gap-2"
-        keyExtractor={(item) => item._id.toString()}
-        ListEmptyComponent={
+      {user.stores?.length > 0 ? (
+        <FlatList
+          data={filteredProducts}
+          ListHeaderComponent={
+            <View className="w-full gap-5 h-fit flex-col">
+              <Text className="text-white text-2xl font-bold text-center">
+                Bütün məhsullarınız burada
+              </Text>
+              <HomeFilters setFilters={setFilters} />
+            </View>
+          }
+          renderItem={({ item }) => (
+            <ProductCard
+              product={item}
+              handleDelete={handleDelete}
+              handleUpdate={handleUpdate}
+            />
+          )}
+          contentContainerClassName="gap-2"
+          keyExtractor={(item) => item._id.toString()}
+          ListEmptyComponent={
+            <EmptyComponent
+              title="Seçimlərə uyğun məhsul tapılmadı"
+              subtitle="Filterlərdə dəyişiklik edib yenidən yoxlayın"
+            />
+          }
+        />
+      ) : (
+        <View className="w-full h-full flex-col justify-center items-center ">
           <EmptyComponent
-            title="Seçimlərə uyğun məhsul tapılmadı"
-            subtitle="Filterlərdə dəyişiklik edib yenidən yoxlayın"
+            title="Sizin aktiv mağazanız yoxdur"
+            subtitle="Davam etmək üçün öncə hesabınıza mağaza əlavə edin"
           />
-        }
-      />
+          <CustomButton
+            containerStyles="mt-10 w-[80%] "
+            title="Mağaza əlavə et"
+            handlePress={() => {}}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

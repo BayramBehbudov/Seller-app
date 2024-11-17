@@ -71,7 +71,7 @@ const create = () => {
 
     try {
       const res = await axios.post(
-        `${process.env.BASE_URL}/api/products/create`,
+        `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/create`,
         {
           ...data,
           images,

@@ -27,10 +27,10 @@ const Register = () => {
     setIsLoading(true);
     try {
       const newUser: IResponse = await axios.post(
-        `${process.env.BASE_URL}/api/auth/register`,
+        `${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/register`,
         data
       );
-
+      console.log("newUser", newUser);
       if (newUser.status === 200 && newUser.data) {
         setUser(newUser.data);
         setIsLoggedIn(true);
@@ -105,7 +105,7 @@ const Register = () => {
                 text="Soyad"
                 handleChange={onChange}
                 value={value}
-                error={errors?.name?.message || undefined}
+                error={errors?.surname?.message || undefined}
               />
             )}
           />

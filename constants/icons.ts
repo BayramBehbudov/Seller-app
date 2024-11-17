@@ -10,9 +10,11 @@ import order from "../assets/icons/order.png";
 import profile from "../assets/icons/profile.png";
 import search from "../assets/icons/search.png";
 import menu from "../assets/icons/menu.png";
+import add from "../assets/icons/add.png";
 
 export default {
   close,
+  add,
   eyeHide,
   eye,
   home,

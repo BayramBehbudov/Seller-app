@@ -1,6 +1,5 @@
 import { IUserDB } from "@/types/interfaces";
 import { createContext, useContext, useEffect, useState } from "react";
-
 import axios from "axios";
 
 const GlobalContext = createContext({
@@ -23,17 +22,17 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const refetchUser = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(
-        `${process.env.BASE_URL}/api/auth/authentication`
+      const { data: response } = await axios.get(
+        `${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/authentication`
       );
-      console.log("auth", res);
-      if (res.status === 200 && res.data.role === "seller") {
+      if (response.status === 200 && response.data.role === "seller") {
         setIsLoggedIn(true);
-        setUser(res.data as IUserDB);
+        setUser(response.data as IUserDB);
       } else {
         setIsLoggedIn(false);
         setUser({} as IUserDB);
       }
+
     } catch (error) {
       console.log(error);
     } finally {
