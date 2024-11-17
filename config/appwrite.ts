@@ -60,7 +60,7 @@ export const storage = new Storage(client);
 //       ID.unique(),
 //       assest
 //     );
-//     const fileUrl = await getFilePreview(uploadedFile.$id, type);
+//     const fileUrl = await getFilePreview(uploadedFile._id, type);
 //     return fileUrl;
 //   } catch (error: any) {
 //     Alert.alert("Error uploading file", error.message);

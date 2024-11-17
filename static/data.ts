@@ -10,7 +10,7 @@ export const products: IProduct[] = [
     $databaseId: "63e8b5c5c4e4e4e4e4e4e4e4",
     $permissions: [],
     $updatedAt: "2023-09-30T20:50:00.000Z",
-    $id: "as5s89e9f96f8r9asdaed89d8",
+    _id: "as5s89e9f96f8r9asdaed89d8",
     name: "Product 1",
     price: "100",
     description: "This is product 1",
@@ -40,7 +40,7 @@ export const products: IProduct[] = [
     $permissions: [],
     $updatedAt: "2023-09-30T20:50:00.000Z",
 
-    $id: "as5s89e9f96f8r9asdae89rd7",
+    _id: "as5s89e9f96f8r9asdae89rd7",
     name: "Product 2",
     price: "200",
     description: "This is product 2",
@@ -70,7 +70,7 @@ export const products: IProduct[] = [
     $permissions: [],
     $updatedAt: "2023-09-30T20:50:00.000Z",
 
-    $id: "as5s89e9f96f8r9asda6e8d9vh",
+    _id: "as5s89e9f96f8r9asda6e8d9vh",
     name: "Product 3",
     price: "300",
     description: "This is product 3",
@@ -100,7 +100,7 @@ export const products: IProduct[] = [
     $permissions: [],
     $updatedAt: "2023-09-30T20:50:00.000Z",
 
-    $id: "as5s89e9f96f8r9asda9e6d8f9",
+    _id: "as5s89e9f96f8r9asda9e6d8f9",
     name: "Product 4",
     price: "400",
     description: "This is product 4",
@@ -127,7 +127,7 @@ export const products: IProduct[] = [
 
 export const defaultOrders: IOrder[] = [
   {
-    $id: "asd4asd45asdsad4",
+    _id: "asd4asd45asdsad4",
     products: [
       {
         ...products[0],
@@ -165,7 +165,7 @@ export const defaultOrders: IOrder[] = [
     status: "pending",
   },
   {
-    $id: "asd4asd45asdasda4",
+    _id: "asd4asd45asdasda4",
     products: [
       {
         ...products[3],
@@ -183,7 +183,7 @@ export const defaultOrders: IOrder[] = [
     status: "pending",
   },
   {
-    $id: "asd4asd45aasda5e",
+    _id: "asd4asd45aasda5e",
     products: [
       {
         ...products[3],

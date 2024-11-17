@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 const CustomSelect = ({
@@ -61,46 +62,50 @@ const CustomSelect = ({
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}
         >
-          <View
-            className={
-              "flex-1 justify-center items-center w-full h-full bg-black/50"
-            }
-          >
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
             <View
-              className={"bg-white p-6 rounded-lg w-80 max-h-[50vh] relative"}
+              className={
+                "flex-1 justify-center items-center w-full h-full bg-black/50"
+              }
             >
-              <FlatList
-                ListHeaderComponent={
-                  <Text className={"text-xl font-bold mb-4"}>{modalTitle}</Text>
-                }
-                data={data}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    className={`p-3 rounded-md flex-row items-start`}
-                    onPress={() => {
-                      setSelectedValues(item);
-                      setModalVisible(false);
-                      handleChange(item.id);
-                    }}
-                  >
-                    <Text className={"text-lg ml-3"}>{item.title}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-
-              <TouchableOpacity
-                className="absolute items-center justify-center top-2 right-2 w-6 h-6"
-                onPress={() => setModalVisible(false)}
+              <View
+                className={"bg-white p-6 rounded-lg w-80 max-h-[50vh] relative"}
               >
-                <Image
-                  source={icons.close}
-                  resizeMode="contain"
-                  className="w-5 h-5"
+                <FlatList
+                  ListHeaderComponent={
+                    <Text className={"text-xl font-bold mb-4"}>
+                      {modalTitle}
+                    </Text>
+                  }
+                  data={data}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      className={`p-3 rounded-md flex-row items-start`}
+                      onPress={() => {
+                        setSelectedValues(item);
+                        setModalVisible(false);
+                        handleChange(item.id);
+                      }}
+                    >
+                      <Text className={"text-lg ml-3"}>{item.title}</Text>
+                    </TouchableOpacity>
+                  )}
                 />
-              </TouchableOpacity>
+
+                <TouchableOpacity
+                  className="absolute items-center justify-center top-2 right-2 w-6 h-6"
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Image
+                    source={icons.close}
+                    resizeMode="contain"
+                    className="w-5 h-5"
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Modal>
       </View>
       {error && (

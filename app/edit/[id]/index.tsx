@@ -11,8 +11,9 @@ import {
   IProduct,
   ISelectedFeatures,
   ISelectedCategoryStructure,
-  ISelectedFilters,
   ISelectedImages,
+  IProductDB,
+  ISelectedAttributes,
 } from "@/types/interfaces";
 import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
 import { useGlobalSearchParams } from "expo-router";
@@ -27,22 +28,23 @@ const EditProduct = () => {
 
   const { user, isLoading, setIsLoading, refetchUser } = useGlobalContext();
 
-  const currentProduct = user.products.find(
-    (product: IProduct) => product.$id === id
-  );
+  const currentProduct = user.stores
+    .flatMap((store) => store.products)
+    .find((product: IProductDB) => product._id === id);
 
   const [selectedCategory, setSelectedCategory] =
     useState<ISelectedCategoryStructure>();
-  const [filters, setFilters] = useState<ISelectedFilters[]>(
-    currentProduct.filters
+
+  const [attributes, setAttributes] = useState<ISelectedAttributes[]>(
+    currentProduct?.attributes || []
   );
 
   const [features, setFeatures] = useState<ISelectedFeatures[]>(
-    currentProduct.features
+    currentProduct?.features || []
   );
 
   const [images, setImages] = useState<ISelectedImages>();
-  console.log('images', images);
+
   const {
     control,
     handleSubmit,
@@ -64,7 +66,7 @@ const EditProduct = () => {
   const submit = async (data: any) => {
     setIsLoading(true);
     let newData = {};
-    if (images && images.subImages.length > 0) {
+    if (images && images.subImages.length > 0 && currentProduct) {
       const newImages = await subImagesUploader(images.subImages);
       const updatedImages = {
         main: currentProduct.images.main,
@@ -72,12 +74,14 @@ const EditProduct = () => {
       };
       newData = { ...newData, images: JSON.stringify(updatedImages) };
     }
-    if (JSON.stringify(currentProduct.features) !== JSON.stringify(features)) {
+    if (JSON.stringify(currentProduct?.features) !== JSON.stringify(features)) {
       newData = { ...newData, features: JSON.stringify(features) };
     }
 
-    if (JSON.stringify(currentProduct.filters) !== JSON.stringify(filters)) {
-      newData = { ...newData, filters: JSON.stringify(filters) };
+    if (
+      JSON.stringify(currentProduct?.attributes) !== JSON.stringify(attributes)
+    ) {
+      newData = { ...newData, filters: JSON.stringify(attributes) };
     }
 
     Object.entries(data).forEach(([key, value]) => {
@@ -85,7 +89,7 @@ const EditProduct = () => {
         (newData = { ...newData, [key]: value });
     });
 
-    await productUpdate(currentProduct.$id, newData);
+    await productUpdate(currentProduct._id, newData);
 
     // ana səhifədə state yaranmır amma user dəyişir. dəyişiklik görünmür
     await refetchUser();

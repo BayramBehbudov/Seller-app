@@ -23,7 +23,7 @@ const EditProfile = () => {
       address: user?.address,
       phone: user?.phone,
       description: user?.description,
-      point: user?.point?.$id,
+      point: user?.point?._id,
     },
   });
 

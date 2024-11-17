@@ -1,6 +1,6 @@
 import { ID } from "react-native-appwrite";
 import { projectId, storage, storageId } from "../config/appwrite";
-import { IPickerAssests, ISelectedImages } from "@/types/interfaces";
+import { DocumentPickerAsset, ISelectedImages } from "@/types/interfaces";
 
 export const handleImageUploader = async (images: ISelectedImages) => {
   const mainImages = await uploadFile(images.main);
@@ -26,11 +26,11 @@ export const handleImageUploader = async (images: ISelectedImages) => {
 
 
 export const subImagesUploader = async (
-  images: { image: IPickerAssests; imageTag: string | null }[]
+  images: { image: DocumentPickerAsset; imageTag: string | null }[]
 ) => {
   const subImages = await Promise.all(
     images.map(
-      async (imageItem: { image: IPickerAssests; imageTag: string | null }) => {
+      async (imageItem: { image: DocumentPickerAsset; imageTag: string | null }) => {
         const id = await uploadFile(imageItem.image);
         return {
           imageId: id?.data,
@@ -43,7 +43,7 @@ export const subImagesUploader = async (
   return subImages;
 };
 
-export const uploadFile = async (file: IPickerAssests) => {
+export const uploadFile = async (file: DocumentPickerAsset) => {
   if (!file) return;
   try {
     const uploadedFile = await storage.createFile(storageId, ID.unique(), {
@@ -53,7 +53,7 @@ export const uploadFile = async (file: IPickerAssests) => {
 
     return {
       status: 200,
-      data: uploadedFile.$id,
+      data: uploadedFile._id,
       error: null,
       message: "Şəkil əlavə olundu",
     };
@@ -80,9 +80,9 @@ export function extractFileId(url: string) {
   return match ? match[1] : null;
 }
 
-export const imageDelete = async ($id: string) => {
+export const imageDelete = async (_id: string) => {
   try {
-    await storage.deleteFile(storageId, $id);
+    await storage.deleteFile(storageId, _id);
     return { status: 200 };
   } catch (error) {
     return { status: 500 };
@@ -108,7 +108,7 @@ export const imageDelete = async ($id: string) => {
 
 // const uploadedFile = {
 //   $createdAt: "2024-11-14T10:54:18.949+00:00",
-//   $id: "6735d6d9003524abb92e",
+//   _id: "6735d6d9003524abb92e",
 //   $permissions: [
 //     'read("user:6735c2af0032404e8c5c")',
 //     'update("user:6735c2af0032404e8c5c")',

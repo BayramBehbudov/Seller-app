@@ -10,8 +10,8 @@ import { ISeller } from "@/types/interfaces";
 export const manageActiveSession = async () => {
   try {
     const currentSession = await accountAppwrite.getSession("current");
-    if (currentSession?.$id)
-      await accountAppwrite.deleteSession(currentSession.$id);
+    if (currentSession?._id)
+      await accountAppwrite.deleteSession(currentSession._id);
     return { status: 200 };
   } catch (error) {
     return { status: 500 };
@@ -65,7 +65,7 @@ export const createUser = async (data: ISeller) => {
     const newUser = await DBAppwrite.createDocument(
       databaseId,
       sellerCollectionId,
-      newAccount.$id,
+      newAccount._id,
       data
     );
 
@@ -139,7 +139,7 @@ export const getCurrentUser = async () => {
     const currentUser = await DBAppwrite.getDocument(
       databaseId,
       sellerCollectionId,
-      currentAccount.$id
+      currentAccount._id
     );
 
     return {

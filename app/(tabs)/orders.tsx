@@ -9,7 +9,7 @@ import EmptyComponent from "@/components/EmptyComponent";
 
 export interface IOrderFilters {
   status: null | string;
-  $id: string | null;
+  _id: string | null;
 }
 const orders = () => {
   const [orders, setOrders] = useState(defaultOrders);
@@ -17,12 +17,12 @@ const orders = () => {
 
   const [filters, setFilters] = useState<IOrderFilters>({
     status: null,
-    $id: null,
+    _id: null,
   });
 
   useEffect(() => {
     const updatedProd = orders.filter((order) => {
-      const matchesID = filters.$id !== null ? order.$id === filters.$id : true;
+      const matchesID = filters._id !== null ? order._id === filters._id : true;
       const matchesStatus =
         filters.status !== null ? order.status === filters.status : true;
 

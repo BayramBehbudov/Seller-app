@@ -4,18 +4,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
 import FormField from "@/components/FormField";
 import CustomSelect from "@/components/CustomSelect";
-import useAppwrite from "@/services/useAppwrite";
-import { getPoints } from "@/services/pointAction";
-import { Models } from "react-native-appwrite";
 import CustomButton from "@/components/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "@/settings/schemes";
-import { createUser } from "@/services/userActions";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import axios from "axios";
+import { IResponse, IUser } from "@/types/interfaces";
 
 const Register = () => {
-  const { data: points } = useAppwrite(getPoints);
   const { setUser, setIsLoggedIn, isLoading, setIsLoading } =
     useGlobalContext();
   const {
@@ -28,15 +25,24 @@ const Register = () => {
 
   const submit = async (data: any) => {
     setIsLoading(true);
-    const newAccount = await createUser(data);
-    if (newAccount.status === 200) {
-      setUser(newAccount.data as Models.Document);
-      setIsLoggedIn(true);
-      router.push("/home");
-    } else {
-      Alert.alert("Qeydiyyat", newAccount.message);
+    try {
+      const newUser: IResponse = await axios.post(
+        `${process.env.BASE_URL}/api/auth/register`,
+        data
+      );
+
+      if (newUser.status === 200 && newUser.data) {
+        setUser(newUser.data);
+        setIsLoggedIn(true);
+        router.push("/home");
+      } else {
+        Alert.alert("Qeydiyyat", newUser.message as string);
+      }
+    } catch (error: any) {
+      Alert.alert("Qeydiyyat", error.message);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
@@ -50,7 +56,7 @@ const Register = () => {
           <Controller
             control={control}
             name="email"
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <FormField
                 title="email"
                 text="Email"
@@ -65,7 +71,7 @@ const Register = () => {
           <Controller
             control={control}
             name="password"
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <FormField
                 title="password"
                 text="Şifrə"
@@ -79,26 +85,27 @@ const Register = () => {
           <Controller
             control={control}
             name="name"
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <FormField
                 title="name"
-                text="Mağazanın adı"
+                text="Ad"
                 handleChange={onChange}
                 value={value}
                 error={errors?.name?.message || undefined}
               />
             )}
           />
+
           <Controller
             control={control}
-            name="address"
-            render={({ field: { onChange, onBlur, value } }) => (
+            name="surname"
+            render={({ field: { onChange, value } }) => (
               <FormField
-                title="address"
-                text="Ünvan"
+                title="surname"
+                text="Soyad"
                 handleChange={onChange}
                 value={value}
-                error={errors?.address?.message || undefined}
+                error={errors?.name?.message || undefined}
               />
             )}
           />
@@ -106,7 +113,7 @@ const Register = () => {
           <Controller
             control={control}
             name="phone"
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <FormField
                 title="phone"
                 text="Telefon"
@@ -118,8 +125,24 @@ const Register = () => {
               />
             )}
           />
-
           <Controller
+            control={control}
+            name="gender"
+            render={({ field: { onChange } }) => (
+              <CustomSelect
+                title="Cins"
+                handleChange={onChange}
+                placeholder="Seç"
+                modalTitle="Cinsinizi seçin"
+                data={[
+                  { id: "male", title: "Kişi" },
+                  { id: "female", title: "Qadın" },
+                ]}
+                error={errors?.gender ? "Cinsinizi seçin" : undefined}
+              />
+            )}
+          />
+          {/* <Controller
             control={control}
             name="point"
             render={({ field: { onChange, onBlur, value } }) => (
@@ -130,16 +153,16 @@ const Register = () => {
                 modalTitle="Təyinat nöqtəsini seçin"
                 data={points?.map((item: Models.Document) => {
                   return {
-                    id: item.$id,
+                    id: item._id,
                     title: item.name,
                   };
                 })}
                 error={errors?.point?.message || undefined}
               />
             )}
-          />
+          /> */}
 
-          <Controller
+          {/* <Controller
             control={control}
             name="description"
             render={({ field: { onChange, onBlur, value } }) => (
@@ -151,7 +174,7 @@ const Register = () => {
                 error={errors?.description?.message || undefined}
               />
             )}
-          />
+          /> */}
 
           <CustomButton
             title="Qeydiyyat"

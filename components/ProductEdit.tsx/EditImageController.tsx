@@ -23,7 +23,6 @@ const EditImageController = ({
   const [newImages, setNewImages] = useState<ISelectedImages>(
     {} as ISelectedImages
   );
-
   const handleDeleteImage = async (imageId: string | number) => {
     setIsLoading(true);
     const deleted = await imageDelete(imageId as string);
@@ -36,7 +35,7 @@ const EditImageController = ({
         ),
       };
 
-      const updated = await productUpdate(currentProduct.$id, {
+      const updated = await productUpdate(currentProduct._id, {
         images: JSON.stringify(newImages),
       });
 
@@ -57,10 +56,7 @@ const EditImageController = ({
         mimeType: "image",
       },
       subImages: currentProduct.images.subImages.map(
-        (
-          item: { imageId: string; imageTag: string | null },
-          index: number
-        ) => ({
+        (item: { imageId: string; imageTag: string | null }) => ({
           image: {
             uri: getImageUrl(item.imageId, 200, 200),
             name: "",
@@ -76,7 +72,7 @@ const EditImageController = ({
   }, [currentProduct]);
 
   useEffect(() => {
-    if (newImages.subImages) {
+    if (newImages?.main || newImages?.subImages?.length > 0) {
       setImage(newImages);
     }
   }, [newImages]);
@@ -86,7 +82,7 @@ const EditImageController = ({
       <Text className={`text-base text-gray-100 font-pmedium`}>Əsas şəkil</Text>
       <MainImagesSelector
         images={currentImages}
-        setImages={() => {}}
+        setImages={setNewImages}
         disabled={true}
       />
       <SelectivImagesSelector

@@ -12,7 +12,7 @@ const OrderProductCard = ({ product }: { product: IOrderProduct }) => {
       </Text>
       <View className="flex-row">
         <Text className="flex-1">Məhsul ID</Text>
-        <Text className="flex-1 uppercase">{getSlicedID(product.$id)}</Text>
+        <Text className="flex-1 uppercase">{getSlicedID(product._id)}</Text>
       </View>
       <View className="flex-row">
         <Text className=" flex-1">Say</Text>

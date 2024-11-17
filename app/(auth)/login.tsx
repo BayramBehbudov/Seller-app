@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, Alert } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
 import FormField from "@/components/FormField";
@@ -8,9 +8,9 @@ import CustomButton from "@/components/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/settings/schemes";
-import { loginUser } from "@/services/userActions";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { Models } from "react-native-appwrite";
+import { IResponse, IUserDB } from "@/types/interfaces";
+import axios from "axios";
 
 const Login = () => {
   const {
@@ -26,18 +26,25 @@ const Login = () => {
 
   const submit = async (data: any) => {
     setIsLoading(true);
-    const { email, password } = data;
-
-    const user = await loginUser(email, password);
-
-    if (user.status === 200) {
-      setUser(user.data as Models.Document);
-      setIsLoggedIn(true);
-      router.push("/home");
-    } else {
-      Alert.alert("Giriş", user.message);
+    try {
+      const auth: IResponse = await axios.post(
+        `${process.env.BASE_URL}/api/auth/login`,
+        data
+      );
+      if (auth.status === 200 && auth.data) {
+        setUser(auth.data);
+        setIsLoggedIn(true);
+        router.push("/home");
+      } else {
+        setUser({} as IUserDB);
+        setIsLoggedIn(false);
+        Alert.alert("Giriş", auth.message as string);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
   return (
     <SafeAreaView className="bg-primary h-full w-full ">

@@ -9,9 +9,9 @@ import { AddProductSchema } from "@/settings/schemes";
 import CustomButton from "@/components/CustomButton";
 import ImageController from "@/components/Create/AddImages/ImageController";
 import {
-  ISelectedFeatures,
   ISelectedCategoryStructure,
-  ISelectedFilters,
+  ISelectedFeatures,
+  ISelectedAttributes,
   ISelectedImages,
 } from "@/types/interfaces";
 import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
@@ -24,9 +24,9 @@ const create = () => {
   const [selectedCategory, setSelectedCategory] = useState<
     ISelectedCategoryStructure | undefined
   >(undefined);
-
   const [images, setImages] = useState<ISelectedImages>({} as ISelectedImages);
-  const [filters, setFilters] = useState<ISelectedFilters[]>([]);
+
+  const [filters, setFilters] = useState<ISelectedAttributes[]>([]);
   const [features, setFeatures] = useState<ISelectedFeatures[]>([]);
 
   const {
@@ -47,32 +47,29 @@ const create = () => {
   const { user, isLoading, setIsLoading } = useGlobalContext();
 
   const submit = async (data: any) => {
-    setIsLoading(true);
-    const uploadedImages = await handleImageUploader(images);
-
-    if (uploadedImages.status !== 200 || !user.$id)
-      return Alert.alert("Səhv", uploadedImages.message);
-
-    const newProduct = await productCreate({
-      seller: user.$id,
-      ...data,
-      category: JSON.stringify(data.category),
-      images: JSON.stringify(uploadedImages.data),
-      filters: JSON.stringify(filters),
-      features: JSON.stringify(features),
-    });
-
-    if (newProduct?.status === 200) {
-      reset();
-      setSelectedCategory(undefined);
-      setImages({} as ISelectedImages);
-      setFilters([]);
-      setFeatures([]);
-      Alert.alert(newProduct.message);
-    } else {
-      Alert.alert("Səhv", newProduct?.message);
-    }
-    setIsLoading(false);
+    // setIsLoading(true);
+    // const uploadedImages = await handleImageUploader(images);
+    // if (uploadedImages.status !== 200 || !user._id)
+    //   return Alert.alert("Səhv", uploadedImages.message);
+    // const newProduct = await productCreate({
+    //   seller: user._id,
+    //   ...data,
+    //   category: JSON.stringify(data.category),
+    //   images: JSON.stringify(uploadedImages.data),
+    //   // filters: JSON.stringify(filters),
+    //   // features: JSON.stringify(features),
+    // });
+    // if (newProduct?.status === 200) {
+    //   reset();
+    //   setSelectedCategory(undefined);
+    //   // setImages({} as ISelectedImages);
+    //   // setFilters([]);
+    //   // setFeatures([]);
+    //   Alert.alert(newProduct.message);
+    // } else {
+    //   Alert.alert("Səhv", newProduct?.message);
+    // }
+    // setIsLoading(false);
   };
 
   return (
@@ -147,6 +144,7 @@ const create = () => {
                 )}
               />
               <ImageController setImage={setImages} />
+
               <FilterSelector
                 selectedCategory={selectedCategory}
                 setFilters={setFilters}

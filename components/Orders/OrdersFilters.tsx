@@ -43,8 +43,8 @@ const OrdersFilters = ({
         modalTitle="ID seçin"
         data={[
           ...orders.map((order) => ({
-            id: order.$id,
-            title: getSlicedID(order.$id).toUpperCase(),
+            id: order._id,
+            title: getSlicedID(order._id).toUpperCase(),
           })),
           { id: "null", title: "Hamısı" },
         ]}
@@ -53,7 +53,7 @@ const OrdersFilters = ({
         handleChange={(e) =>
           setFilters((prev: any) => ({
             ...prev,
-            $id: e && e !== "null" ? e : null,
+            _id: e && e !== "null" ? e : null,
           }))
         }
       />

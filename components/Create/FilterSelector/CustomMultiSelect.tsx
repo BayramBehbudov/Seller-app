@@ -80,13 +80,7 @@ const CustomMultiSelect = ({
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}
         >
-          <TouchableWithoutFeedback
-            onPress={(e) => {
-              console.log("closed");
-              console.log(e.target);
-              setModalVisible(false);
-            }}
-          >
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
             <View
               className={
                 "flex-1 justify-center items-center w-full h-full bg-black/50"

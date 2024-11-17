@@ -23,7 +23,7 @@ const OrdersTable = ({
   const footer = ["", "", ""];
 
   const body = orders.map((order) => ({
-    $id: order.$id,
+    _id: order._id,
     createdAt: hoursSince(order.createdAt.toString()) + " saat əvvəl",
     status: getOrderStatus(order.status),
   }));
@@ -45,7 +45,7 @@ const OrdersTable = ({
         {body.map((order, index) => {
           return (
             <TouchableOpacity
-              key={order.$id}
+              key={order._id}
               onPress={() => {
                 setModalVisible(true);
                 setSelectedOrder(orders[index]);
@@ -57,10 +57,10 @@ const OrdersTable = ({
                   <Text
                     key={key}
                     className={`py-3 flex-1 ${
-                      key === "$id" && "uppercase"
+                      key === "_id" && "uppercase"
                     } text-center text-base text-gray-500 `}
                   >
-                    {key === "$id" ? getSlicedID(value) : value}
+                    {key === "_id" ? getSlicedID(value) : value}
                   </Text>
                 );
               })}
@@ -88,7 +88,7 @@ const OrdersTable = ({
             setOrders={(value: IOrder) => {
               setOrders((prev) =>
                 prev.map((item: IOrder) =>
-                  item.$id === value.$id ? value : item
+                  item._id === value._id ? value : item
                 )
               );
             }}

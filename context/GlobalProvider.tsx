@@ -1,14 +1,15 @@
 import { getCurrentUser } from "@/services/userActions";
-import { IProductDb } from "@/types/interfaces";
+import { IUserDB } from "@/types/interfaces";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { Models } from "react-native-appwrite";
+import axios from "axios";
 
 const GlobalContext = createContext({
-  user: {} as Models.Document,
+  user: {} as IUserDB,
   isLoading: false,
   isLoggedIn: false,
-  setUser: (user: Models.Document) => {},
+  setUser: (user: IUserDB) => {},
   setIsLoggedIn: (isLoggedIn: boolean) => {},
   setIsLoading: (isLoading: boolean) => {},
   refetchUser: async () => {},
@@ -18,35 +19,28 @@ export const useGlobalContext = () => useContext(GlobalContext);
 
 export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<Models.Document>({} as Models.Document);
+  const [user, setUser] = useState<IUserDB>({} as IUserDB);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  
+
   const refetchUser = async () => {
     setIsLoading(true);
-    getCurrentUser()
-      .then((res) => {
-        if (res.status === 200) {
-          setIsLoggedIn(true);
-          const user = {
-            ...res.data,
-            products: res?.data?.products.map((product: IProductDb) => {
-              return {
-                ...product,
-                features: JSON.parse(product.features),
-                category: JSON.parse(product.category),
-                images: JSON.parse(product.images),
-                filters: JSON.parse(product.filters),
-              };
-            }),
-          };
-          setUser(user as Models.Document);
-        } else {
-          setIsLoggedIn(false);
-          setUser({} as Models.Document);
-        }
-      })
-      .catch((error) => Alert.alert("Səhv", error.message))
-      .finally(() => setIsLoading(false));
+    try {
+      const res = await axios.get(
+        `http://localhost:3333/api/auth/authentication`
+      );
+      console.log("auth", res);
+      if (res.status === 200 && res.data.role === "seller") {
+        setIsLoggedIn(true);
+        setUser(res.data as IUserDB);
+      } else {
+        setIsLoggedIn(false);
+        setUser({} as IUserDB);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {

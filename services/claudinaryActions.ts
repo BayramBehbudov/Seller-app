@@ -1,4 +1,4 @@
-// import { IPickerAssests } from "@/types/interfaces";
+// import { DocumentPickerAsset } from "@/types/interfaces";
 // import { v2 as cloudinary } from "cloudinary";
 
 // cloudinary.config({
@@ -15,14 +15,14 @@
 // });
 
 // export const uploadImagesToCloudinary = async (images: {
-//   main: IPickerAssests;
-//   subImages: { image: IPickerAssests; imageTag: string | null }[];
+//   main: DocumentPickerAsset;
+//   subImages: { image: DocumentPickerAsset; imageTag: string | null }[];
 // }) => {
 //   const uploadSubImages =
 //     images.subImages &&
 //     (await Promise.all(
 //       images.subImages.map(
-//         (imageItem: { image: IPickerAssests; imageTag: string | null }) =>
+//         (imageItem: { image: DocumentPickerAsset; imageTag: string | null }) =>
 //           cloudinary.uploader.upload(imageItem.image.uri, {
 //             folder: "products",
 //             tags: imageItem.imageTag,

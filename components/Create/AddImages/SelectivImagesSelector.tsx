@@ -4,6 +4,7 @@ import { openPicker } from "@/helpers/openPicker";
 import { icons } from "@/constants";
 import { colors } from "@/static/filters/colors";
 import CustomMultiSelect from "../FilterSelector/CustomMultiSelect";
+import { ISelectedImages } from "@/types/interfaces";
 
 const SelectivImagesSelector = ({
   images,
@@ -11,13 +12,7 @@ const SelectivImagesSelector = ({
   deleteImage,
   disabled = false,
 }: {
-  images: {
-    main: { uri: string };
-    subImages: {
-      image: { uri: string };
-      imageTag: string | null;
-    }[];
-  };
+  images: ISelectedImages;
   setImages?: any;
   deleteImage: (imageId: string | number) => void;
   disabled?: boolean;
@@ -46,86 +41,95 @@ const SelectivImagesSelector = ({
 
       {images.subImages && (
         <View className="w-full flex-col gap-2">
-          {images.subImages.map((image: any, index: number) => {
-            return (
-              image.image.uri && (
-                <View
-                  className="w-full items-center relative h-[200px] border border-gray-200 p-2 rounded-2xl flex-row"
-                  key={image.image.name + index}
-                >
-                  <Image
-                    source={{ uri: image.image.uri }}
-                    className="w-[48%] h-full"
-                    resizeMode="contain"
-                  />
-                  {disabled ? (
-                    <View className={`w-[48%] ml-3 `}>
-                      <Text className="text-base text-gray-100 font-pmedium mb-2">
-                        {image.imageTag || "Seçilməyib"}
-                      </Text>
-                    </View>
-                  ) : (
-                    <CustomMultiSelect
-                      title=""
-                      defaultSelectValues={
-                        image.imageTag ? [image.imageTag] : []
-                      }
-                      placeholder="Rəng seçin"
-                      data={{ title: "Rəng", value: colors }}
-                      modalTitle="Rəng seçin"
-                      handleChange={(value) => {
-                        setImages({
-                          ...images,
-                          subImages: images.subImages.map(
-                            (item: any, i: number) => {
-                              if (i === index) {
-                                return {
-                                  ...item,
-                                  imageTag: value[0],
-                                };
-                              }
-                              return item;
-                            }
-                          ),
-                        });
-                      }}
-                      containerStyles="w-[48%] ml-3"
-                    />
-                  )}
-
-                  <TouchableOpacity
-                    className="w-8 h-8 top-3 absolute right-3 rounded-full bg-white border-black-200 border-2"
-                    onPress={() =>
-                      Alert.alert(
-                        "Bu şəkili silmək istədiyinizdən əminsiniz?",
-                        "Bu əməliyyatı geri qaytarmaq mümkün olmayacaq",
-                        [
-                          {
-                            text: "Xeyr",
-                            style: "cancel",
-                          },
-                          {
-                            text: "Bəli",
-                            onPress: () => {
-                              disabled
-                                ? deleteImage(image.image.imageId)
-                                : deleteImage(index);
-                            },
-                          },
-                        ]
-                      )
-                    }
+          {images.subImages.map(
+            (
+              image: {
+                image: string;
+                imageTag: string | null;
+                imageId: string | null;
+              },
+              index: number
+            ) => {
+              return (
+                image.image && (
+                  <View
+                    className="w-full items-center relative h-[200px] border border-gray-200 p-2 rounded-2xl flex-row"
+                    key={image.image + index}
                   >
                     <Image
-                      source={icons.closeRounded}
-                      className="w-full h-full"
+                      source={{ uri: image.image }}
+                      className="w-[48%] h-full"
                       resizeMode="contain"
                     />
-                  </TouchableOpacity>
-                </View>
-              )
-            );
-          })}
+                    {disabled ? (
+                      <View className={`w-[48%] ml-3 `}>
+                        <Text className="text-base text-gray-100 font-pmedium mb-2">
+                          {image.imageTag || "Seçilməyib"}
+                        </Text>
+                      </View>
+                    ) : (
+                      <CustomMultiSelect
+                        title=""
+                        defaultSelectValues={
+                          image.imageTag ? [image.imageTag] : []
+                        }
+                        placeholder="Rəng seçin"
+                        data={{ title: "Rəng", value: colors }}
+                        modalTitle="Rəng seçin"
+                        handleChange={(value) => {
+                          setImages({
+                            ...images,
+                            subImages: images.subImages.map(
+                              (item: any, i: number) => {
+                                if (i === index) {
+                                  return {
+                                    ...item,
+                                    imageTag: value[0],
+                                  };
+                                }
+                                return item;
+                              }
+                            ),
+                          });
+                        }}
+                        containerStyles="w-[48%] ml-3"
+                      />
+                    )}
+
+                    <TouchableOpacity
+                      className="w-8 h-8 top-3 absolute right-3 rounded-full bg-white border-black-200 border-2"
+                      onPress={() =>
+                        Alert.alert(
+                          "Bu şəkili silmək istədiyinizdən əminsiniz?",
+                          "Bu əməliyyatı geri qaytarmaq mümkün olmayacaq",
+                          [
+                            {
+                              text: "Xeyr",
+                              style: "cancel",
+                            },
+                            {
+                              text: "Bəli",
+                              onPress: () => {
+                                disabled
+                                  ? deleteImage(image.imageId as string)
+                                  : deleteImage(index);
+                              },
+                            },
+                          ]
+                        )
+                      }
+                    >
+                      <Image
+                        source={icons.closeRounded}
+                        className="w-full h-full"
+                        resizeMode="contain"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )
+              );
+            }
+          )}
         </View>
       )}
     </>

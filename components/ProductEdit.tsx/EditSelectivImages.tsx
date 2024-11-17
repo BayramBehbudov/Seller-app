@@ -4,13 +4,13 @@ import { openPicker } from "@/helpers/openPicker";
 import { icons } from "@/constants";
 import { colors } from "@/static/filters/colors";
 import CustomMultiSelect from "../Create/FilterSelector/CustomMultiSelect";
-import { IPickerAssests } from "@/types/interfaces";
+import { DocumentPickerAsset } from "expo-document-picker";
 
 const EditSelectivImages = ({
   images,
   setImages,
 }: {
-  images: { image: IPickerAssests; imageTag: null | string }[];
+  images: { image: DocumentPickerAsset; imageTag: null | string }[];
   setImages: any;
 }) => {
   
@@ -38,7 +38,7 @@ const EditSelectivImages = ({
         <View className="w-full flex-col gap-2">
           {images.map(
             (
-              image: { image: IPickerAssests; imageTag: null | string },
+              image: { image: DocumentPickerAsset; imageTag: null | string },
               index: number
             ) => {
               const { uri, name} = image.image;

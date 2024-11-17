@@ -2,27 +2,11 @@ import { z } from "zod";
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export const RegisterSchema = z.object({
-  name: z
-    .string({
-      required_error: "Mağaza adını daxil edin",
-    })
-    .trim()
-    .min(2, {
-      message: "Mağaza adını daxil edin",
-    }),
   email: z
     .string({
       required_error: "E-poçt daxil edin",
     })
     .email("Düzgün e-poçt ünvanı daxil edin. məs. numune@numune.com"),
-  description: z
-    .string({
-      required_error: "Mağaza haqqında məlumat daxil edin",
-    })
-    .trim()
-    .min(10, {
-      message: "Mağaza haqqında məlumat daxil edin",
-    }),
   password: z
     .string({
       required_error: "Şifrəni daxil edin",
@@ -32,6 +16,24 @@ export const RegisterSchema = z.object({
     .regex(/[A-Z]/, { message: "Şifrədə ən az bir böyük hərf olmalıdır" })
     .regex(/[a-z]/, { message: "Şifrədə ən az bir kiçik hərf olmalıdır" })
     .regex(/[0-9]/, { message: "Şifrədə ən az bir rəqəm olmalıdır" }),
+  name: z
+    .string({
+      required_error: "Adınızı daxil edin",
+    })
+    .trim()
+    .min(2, {
+      message: "Adınızı daxil edin",
+    }),
+
+  surname: z
+    .string({
+      required_error: "Soyadınızı daxil edin",
+    })
+    .trim()
+    .min(2, {
+      message: "Soyadınızı daxil edin",
+    }),
+
   phone: z
     .string({
       required_error: "Nömrəni daxil edin",
@@ -40,22 +42,9 @@ export const RegisterSchema = z.object({
     .regex(/^\+994\d{9}$/, {
       message: "Nömrəni düzgün daxil edin. məs. +994501234567",
     }),
-  address: z
-    .string({
-      required_error: "Ünvanı daxil edin",
-    })
-    .trim()
-    .min(5, {
-      message: "Ünvanı daxil edin",
-    }),
-  point: z
-    .string({
-      required_error: "Təyinat nöqtəsi seçməlisiniz",
-    })
-    .min(1, {
-      message: "Təyinat nöqtəsi seçməlisiniz",
-    })
-    .trim(),
+  gender: z.enum(["male", "female"], {
+    required_error: "Cinsinizi daxil edin",
+  }),
 });
 
 export const LoginSchema = z.object({
@@ -113,5 +102,5 @@ export const AddProductSchema = z.object({
         required_error: "Kateqoriyanı daxil edin",
       })
       .trim(),
-  })
+  }),
 });

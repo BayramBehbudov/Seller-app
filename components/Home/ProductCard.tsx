@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import React from "react";
-import { IProduct } from "@/types/interfaces";
+import { IProduct, IProductDB } from "@/types/interfaces";
 import { router } from "expo-router";
 import { getImageUrl } from "@/services/imageUploader";
 
@@ -9,18 +9,18 @@ const ProductCard = ({
   handleDelete,
   handleUpdate,
 }: {
-  product: IProduct;
+  product: IProductDB;
   handleDelete: (id: string) => void;
   handleUpdate: (id: string, isActive: boolean) => void;
 }) => {
   return (
     <TouchableOpacity
       className="w-full h-48 rounded-lg bg-white p-2 flex-row justify-between"
-      onPress={() => router.push(`/edit/${product.$id}`)}
+      onPress={() => router.push(`/edit/${product._id}`)}
     >
       <View className="w-[48%] h-full">
         <Image
-          source={{ uri: getImageUrl(product.images.main) }}
+          source={{ uri: product.images.main.url }}
           className="w-full h-full object-cover  rounded"
           resizeMode="cover"
         />
@@ -32,6 +32,9 @@ const ProductCard = ({
           </Text>
           <Text className="text-gray-600 text-base h-[58px] line-clamp-3 w-full">
             {product.description}
+          </Text>
+          <Text className="text-gray-600 text-base h-5 line-clamp-1 w-full">
+            {product.store.name}
           </Text>
           <Text className="text-gray-600 font-psemibold  h-5">
             {product.price} AZN
@@ -58,7 +61,7 @@ const ProductCard = ({
                   },
                   {
                     text: "Bəli",
-                    onPress: () => handleUpdate(product.$id, !product.isActive),
+                    onPress: () => handleUpdate(product._id, !product.isActive),
                   },
                 ]
               )
@@ -84,7 +87,7 @@ const ProductCard = ({
                   },
                   {
                     text: "Bəli",
-                    onPress: () => handleDelete(product.$id),
+                    onPress: () => handleDelete(product._id),
                   },
                 ]
               )

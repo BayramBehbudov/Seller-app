@@ -31,12 +31,12 @@ export const productCreate = async (data: IProductDb) => {
   }
 };
 
-export const productUpdate = async ($id: string, data: Partial<IProductDb>) => {
+export const productUpdate = async (_id: string, data: Partial<IProductDb>) => {
   try {
     const updatedProduct = await DBAppwrite.updateDocument(
       databaseId,
       productsCollectionId,
-      $id,
+      _id,
       data
     );
 
@@ -56,9 +56,9 @@ export const productUpdate = async ($id: string, data: Partial<IProductDb>) => {
   }
 };
 
-export const productDelete = async ($id: string) => {
+export const productDelete = async (_id: string) => {
   try {
-   const deletedProduct = await DBAppwrite.deleteDocument(databaseId, productsCollectionId, $id);
+   const deletedProduct = await DBAppwrite.deleteDocument(databaseId, productsCollectionId, _id);
     console.log(deletedProduct); 
    return { status: 200 };
   } catch (error) {

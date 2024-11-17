@@ -2,18 +2,15 @@ import { Text, FlatList, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProductCard from "@/components/Home/ProductCard";
-import HomeFilters from "@/components/Home/HomeFilters";
-import { IProduct } from "@/types/interfaces";
+import HomeFilters from "@/components/Home/HomeISelectedAttributes";
 import EmptyComponent from "@/components/EmptyComponent";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { productDelete, productUpdate } from "@/services/productActions";
-import CustomLoader from "@/components/CustomLoader";
+import { IProductDB } from "@/types/interfaces";
+import axios from "axios";
 
 const HomePage = () => {
-  const { user, setUser } = useGlobalContext();
-  const [filteredProducts, setFilteredProducts] = useState<IProduct[]>(
-    user.products
-  );
+  const { user, setUser, refetchUser } = useGlobalContext();
+  const [filteredProducts, setFilteredProducts] = useState<IProductDB[]>([]);
 
   const [filters, setFilters] = useState({
     isActive: null,
@@ -22,36 +19,39 @@ const HomePage = () => {
   });
 
   const handleDelete = async (prodId: string) => {
-    const deletedProd = await productDelete(prodId);
+    const deletedProd = await axios.delete(
+      `${process.env.BASE_URL}/api/products/${prodId}`
+    );
+
     if (deletedProd.status === 200) {
-      const updated = user.products?.filter(
-        (item: IProduct) => item.$id !== prodId
-      );
-      setFilteredProducts(
-        filteredProducts.filter((item) => item.$id !== prodId)
-      );
-      setUser({ ...user, products: updated });
+      refetchUser();
+      // əgər refetch state yaratmırsa aşağıdakı funksiyanı aç
+      // setFilteredProducts(filteredProducts.filter((prod) => prod._id !== prodId));
     }
   };
 
   const handleUpdate = async (prodId: string, isActive: boolean) => {
-    const newProduct = await productUpdate(prodId, { isActive });
-
+    const newProduct = await axios.patch(
+      `${process.env.BASE_URL}/api/products/${prodId}`,
+      {
+        isActive,
+      }
+    );
     if (newProduct.status === 200) {
-      const updated = user.products?.map((item: IProduct) =>
-        item.$id !== prodId ? item : { ...item, isActive }
-      );
-      setFilteredProducts(
-        filteredProducts?.map((item) =>
-          item.$id !== prodId ? item : { ...item, isActive }
-        )
-      );
-      setUser({ ...user, products: updated });
+      refetchUser();
+      // əgər refetch state yaratmırsa aşağıdakı funksiyanı aç
+      // setFilteredProducts(
+      //   filteredProducts.map((prod) =>
+      //     prod._id === prodId ? { ...prod, isActive } : prod
+      //   )
+      // );
     }
   };
 
   useEffect(() => {
-    const updatedProd = user.products?.filter((product: IProduct) => {
+    const products = user.stores?.flatMap((store) => store.products);
+
+    const filteredProd = products?.filter((product: IProductDB) => {
       const matchesSearch = filters.search
         ? product.name.toLowerCase().includes(filters.search)
         : true;
@@ -62,12 +62,12 @@ const HomePage = () => {
           : true;
       const matchesId =
         filters.id !== null
-          ? product.$id.slice(-6).toLowerCase() === filters.id
+          ? product._id.slice(-6).toLowerCase() === filters.id
           : true;
       return matchesSearch && matchesIsActive && matchesId;
     });
 
-    setFilteredProducts(updatedProd);
+    setFilteredProducts(filteredProd);
   }, [filters]);
 
   return (
@@ -90,7 +90,7 @@ const HomePage = () => {
           />
         )}
         contentContainerClassName="gap-2"
-        keyExtractor={(item) => item.$id.toString()}
+        keyExtractor={(item) => item._id.toString()}
         ListEmptyComponent={
           <EmptyComponent
             title="Seçimlərə uyğun məhsul tapılmadı"

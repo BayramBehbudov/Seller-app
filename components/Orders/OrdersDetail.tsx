@@ -34,7 +34,7 @@ const OrdersDetail = ({
         <View className="w-full flex-col p-3 gap-1 border-b border rounded-lg border-gray-200 ">
           <View className="flex-row">
             <Text className="flex-1 ">Sifariş ID</Text>
-            <Text className="flex-1 uppercase">{getSlicedID(order.$id)}</Text>
+            <Text className="flex-1 uppercase">{getSlicedID(order._id)}</Text>
           </View>
 
           <View className="flex-row">
@@ -76,7 +76,7 @@ const OrdersDetail = ({
         <View className="flex-col gap-2">
           {order?.products?.map((product, index) => {
             return (
-              <OrderProductCard key={product.$id + index} product={product} />
+              <OrderProductCard key={product._id + index} product={product} />
             );
           })}
         </View>

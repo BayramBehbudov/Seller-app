@@ -1,17 +1,14 @@
-import { Models } from "react-native-appwrite";
-
-export interface ISeller {
-  name: string;
-  email: string;
-  address: string;
-  phone: string;
-  password: string;
-  description: string;
-  point: string;
-}
+import { DocumentPickerAsset } from "expo-document-picker";
+import { ImagePickerResult } from "expo-image-picker";
 
 export interface ICategories {
   [key: string]: ICategoriesValue;
+}
+export interface IReviews {
+  name: string;
+  text: string;
+  rating: number;
+  date: string;
 }
 
 export interface ICategoriesValue {
@@ -49,40 +46,117 @@ export interface ICategorieFilters {
   value: string[];
 }
 
-export interface IProduct extends Models.Document {
+export interface IResponse {
+  status: number;
+  data: IUserDB | null;
+  error: Error | null | unknown;
+  message: string | null;
+}
+export interface IUser {
+  email: string;
+  password: string;
+  name: string;
+  surname: string;
+  phone: string;
+  gender: "male" | "female";
+}
+export interface IUserDB extends IUser {
+  address: IUserAddress[];
+  cards: IBankCard[];
+  stores: IStoreDB[];
+  role: "user" | "seller";
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+export interface IUserAddress {
+  address: string;
+  city: string;
+  apartment: string;
+  home: string;
+}
+
+export interface IBankCard {
+  cardNumber: string;
+  cardHolder: string;
+  expirationDate: string;
+  cvv: string;
+}
+export interface IStore {
+  name: string;
+  address: string;
+  phone: string;
+  description: string;
+  email: string;
+  isAvailable: boolean;
+}
+
+export interface IStoreDB extends IStore {
+  owner: IUser;
+  point: IPointDB;
+  products: IProductDB[];
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface IPoint {
+  name: string;
+  phone: string;
+  address: string;
+  location: {
+    lat: number;
+    log: number;
+  };
+}
+
+export interface IPointDB extends IPoint {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface IProduct {
   name: string;
   description: string;
-  price: string;
+  price: number;
   category: {
     main: string;
     sub: string;
     child: string;
   };
-  isActive: boolean;
-  images: IProductImages;
-  filters: {
+
+  attributes: {
     [key: string]: string[];
   };
   features: {
     [key: string]: string;
   };
+  images: IProductImages;
+}
+export interface IProductDB extends IProduct {
+  store: IStoreDB;
+  reviews: IReviews[];
+  viewed: number;
+  isActive: boolean;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
-export interface IProductDb {
-  category: string;
-  filters: string;
-  features: string;
-  images: string;
-  isActive: boolean;
-  name: string;
-  description: string;
-  price: string;
-}
 export interface IProductImages {
-  main: string;
-  subImages: {
+  main: {
+    url: string;
     imageId: string;
+  };
+  subImages: {
+    url: string;
     imageTag: string | null;
+    imageId: string;
   }[];
 }
 
@@ -109,20 +183,19 @@ export interface ISelectedCategoryStructure {
   };
 }
 
-export interface IPickerAssests {
-  uri: string;
-  name: string;
-  size: number;
-  mimeType: string;
-  imageId: string;
-}
-
 export interface ISelectedImages {
-  main: IPickerAssests;
-  subImages: { image: IPickerAssests; imageTag: string | null }[];
+  main: {
+    image: string;
+    imageId: string | null;
+  };
+  subImages: {
+    image: string;
+    imageId: string | null;
+    imageTag: string | null;
+  }[];
 }
 
-export interface ISelectedFilters {
+export interface ISelectedAttributes {
   title: string;
   value: string[];
 }
@@ -130,31 +203,23 @@ export interface ISelectedFeatures {
   title: string;
   value: string;
 }
-export interface IOrderProduct extends IProduct {
-  count: number;
-  selectedAtributes: { [key: string]: string };
-}
+// export interface IOrderProduct extends IProductDB {
+//   count: number;
+//   selectedAtributes: { [key: string]: string };
+// }
 
-export interface IOrder {
-  $id: string;
-  products: IOrderProduct[];
-  sellerNote: string;
-  createdAt: string;
-  status: string;
-}
-export type IResponseData = Models.Document | Models.Document[] | undefined;
+// export interface IOrder {
+//   _id: string;
+//   products: IOrderProduct[];
+//   sellerNote: string;
+//   createdAt: string;
+//   status: string;
+// }
 
-export interface IResponse {
-  status: number;
-  data: IResponseData;
-  error: Error | null | unknown;
-  message: string | null;
-}
-
-export interface IFilterSelectorProps {
-  filters: ISelectedFilters[];
-  features: ISelectedFeatures[];
-  setFeatures: (value: ISelectedFeatures[]) => void;
-  setFilters: (value: ISelectedFilters[]) => void;
-  selectedCategory: ISelectedCategoryStructure;
-}
+// export interface IFilterSelectorProps {
+//   filters: ISelectedAttributes[];
+//   features: ISelectedFeatures[];
+//   setFeatures: (value: ISelectedFeatures[]) => void;
+//   setFilters: (value: ISelectedAttributes[]) => void;
+//   selectedCategory: ISelectedCategoryStructure;
+// }
