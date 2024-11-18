@@ -20,7 +20,7 @@ const ProductCard = ({
     >
       <View className="w-[48%] h-full">
         <Image
-          source={{ uri: product.images.main.url }}
+          source={{ uri: product.images.main.imageUrl }}
           className="w-full h-full object-cover  rounded"
           resizeMode="cover"
         />

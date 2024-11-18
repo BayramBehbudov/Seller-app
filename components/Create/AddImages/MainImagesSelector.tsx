@@ -2,13 +2,13 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { openPicker } from "@/helpers/openPicker";
 import { icons } from "@/constants";
-import { ISelectedImages } from "@/types/interfaces";
+import { IProductImages } from "@/types/interfaces";
 
 const MainImagesSelector = ({
   images,
   setImages,
 }: {
-  images: ISelectedImages;
+  images: IProductImages;
   setImages: any;
 }) => {
   return (
@@ -29,9 +29,9 @@ const MainImagesSelector = ({
         </View>
       </TouchableOpacity>
       <View className="w-[48%] h-full flex flex-col gap-2">
-        {images?.main?.image ? (
+        {images?.main?.imageUrl ? (
           <Image
-            source={{ uri: images.main.image }}
+            source={{ uri: images.main.imageUrl }}
             className="w-full  h-full rounded-2xl"
             resizeMode="contain"
           />

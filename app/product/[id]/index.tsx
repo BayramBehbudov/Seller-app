@@ -11,7 +11,7 @@ import {
   IProduct,
   ISelectedFeatures,
   ISelectedCategoryStructure,
-  ISelectedImages,
+  IProductImages,
   IProductDB,
   ISelectedAttributes,
 } from "@/types/interfaces";
@@ -44,7 +44,7 @@ const EditProduct = () => {
     currentProduct?.features as ISelectedFeatures
   );
 
-  const [images, setImages] = useState<ISelectedImages>({} as ISelectedImages);
+  const [images, setImages] = useState<IProductImages>({} as IProductImages);
 
   const {
     control,
@@ -84,7 +84,7 @@ const EditProduct = () => {
         JSON.stringify(value) && (newData = { ...newData, [key]: value });
     });
 
-    if (images.main.image || images.subImages.length > 0) {
+    if (images.main.imageUrl || images.subImages.length > 0) {
       newData = { ...newData, images };
     }
 

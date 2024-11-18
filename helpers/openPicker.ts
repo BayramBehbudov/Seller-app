@@ -1,4 +1,4 @@
-import { ISelectedImages } from "@/types/interfaces";
+import { IProductImages } from "@/types/interfaces";
 import * as ImagePicker from "expo-image-picker";
 
 export const openPicker = async (
@@ -13,20 +13,20 @@ export const openPicker = async (
 
   if (!result.canceled) {
     if (title === "main") {
-      setValue((prev: ISelectedImages) => ({
+      setValue((prev: IProductImages) => ({
         subImages: prev.subImages,
         main: {
-          image: `data:image/jpeg;base64,${result.assets[0].base64}`,
-          imageId: "",
+          imageUrl: `data:image/jpeg;base64,${result.assets[0].base64}`,
+          imageId: null,
         },
       }));
     }
     if (title === "sub") {
-      setValue((prev: ISelectedImages) => ({
+      setValue((prev: IProductImages) => ({
         main: prev.main,
         subImages: result.assets.map((image: ImagePicker.ImagePickerAsset) => ({
-          image: `data:image/jpeg;base64,${image.base64}`,
-          imageId: "",
+          imageUrl: `data:image/jpeg;base64,${image.base64}`,
+          imageId: null,
           imageTag: null,
         })),
       }));

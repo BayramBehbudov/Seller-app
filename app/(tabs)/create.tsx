@@ -12,7 +12,7 @@ import {
   ISelectedCategoryStructure,
   ISelectedFeatures,
   ISelectedAttributes,
-  ISelectedImages,
+  IProductImages,
 } from "@/types/interfaces";
 import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
 import { images } from "@/constants";
@@ -28,7 +28,7 @@ const create = () => {
     ISelectedCategoryStructure | undefined
   >(undefined);
 
-  const [images, setImages] = useState<ISelectedImages>({} as ISelectedImages);
+  const [images, setImages] = useState<IProductImages>({} as IProductImages);
   const [attributes, setAttributes] = useState<ISelectedAttributes>(
     {} as ISelectedAttributes
   );
@@ -61,7 +61,7 @@ const create = () => {
   const submit = async (data: z.infer<typeof AddProductSchema>) => {
     setIsLoading(true);
 
-    if (!images.main.image)
+    if (!images.main.imageUrl)
       return Alert.alert("Səhv", "Məhsul üçün əsas şəkil seçilməlidir");
 
     if (!user?.stores.length)
@@ -82,7 +82,7 @@ const create = () => {
       if (res.status === 200) {
         reset();
         setSelectedCategory(undefined);
-        setImages({} as ISelectedImages);
+        setImages({} as IProductImages);
         setAttributes({} as ISelectedAttributes);
         setFeatures({} as ISelectedFeatures);
       } else {

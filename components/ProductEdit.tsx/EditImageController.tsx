@@ -1,32 +1,25 @@
 import { Text } from "react-native";
 import React, { SetStateAction, useEffect, useState } from "react";
-import {
-  IProduct,
-  IProductDB,
-  IProductImages,
-  ISelectedImages,
-} from "@/types/interfaces";
-import { getImageUrl, imageDelete } from "@/services/imageUploader";
+import { IProductDB, IProductImages } from "@/types/interfaces";
 import MainImagesSelector from "../Create/AddImages/MainImagesSelector";
 import SelectivImagesSelector from "../Create/AddImages/SelectivImagesSelector";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { productUpdate } from "@/services/productActions";
 
 const EditImageController = ({
   setImage,
   currentProduct,
 }: {
-  setImage: React.Dispatch<SetStateAction<ISelectedImages>>;
+  setImage: React.Dispatch<SetStateAction<IProductImages>>;
   currentProduct: IProductDB;
 }) => {
   const { refetchUser, setIsLoading } = useGlobalContext();
 
-  const [currentImages, setCurrentImages] = useState<ISelectedImages>(
-    {} as ISelectedImages
+  const [currentImages, setCurrentImages] = useState<IProductImages>(
+    currentProduct.images
   );
 
-  const [newImages, setNewImages] = useState<ISelectedImages>(
-    {} as ISelectedImages
+  const [newImages, setNewImages] = useState<IProductImages>(
+    {} as IProductImages
   );
   const handleDeleteImage = async (imageId: string | number) => {
     setIsLoading(true);
@@ -53,28 +46,7 @@ const EditImageController = ({
   };
 
   useEffect(() => {
-    const currentImages = {
-      main: {
-        image: currentProduct?.images.main.url,
-        imageId: currentProduct?.images.main.imageId,
-      },
-      subImages: currentProduct?.images.subImages.map(
-        (item: {
-          url: string;
-          imageId: string | null;
-          imageTag: string | null;
-        }) => ({
-          image: item.url,
-          imageId: item.imageId,
-          imageTag: item.imageTag,
-        })
-      ),
-    };
-    setCurrentImages(currentImages);
-  }, [currentProduct]);
-
-  useEffect(() => {
-    if (newImages.main.image) {
+    if (newImages.main.imageUrl) {
       setImage((prev) => ({
         ...prev,
         main: newImages.main,

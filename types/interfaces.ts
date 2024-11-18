@@ -170,27 +170,16 @@ export interface ISelectedCategoryStructure {
   };
 }
 
-export interface ISelectedImages {
-  main: {
-    image: string;
-    imageId: string | null;
-  };
-  subImages: {
-    image: string;
-    imageId: string | null;
-    imageTag: string | null;
-  }[];
-}
 
 export interface IProductImages {
   main: {
-    url: string;
+    imageUrl: string;
     imageId: string | null;
   };
   subImages: {
-    url: string;
+    imageUrl: string;
     imageTag: string | null;
-    imageId: string;
+    imageId: string | null;
   }[];
 }
 

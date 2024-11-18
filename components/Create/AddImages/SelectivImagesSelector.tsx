@@ -4,7 +4,7 @@ import { openPicker } from "@/helpers/openPicker";
 import { icons } from "@/constants";
 import { colors } from "@/static/filters/colors";
 import CustomMultiSelect from "../FilterSelector/CustomMultiSelect";
-import { ISelectedImages } from "@/types/interfaces";
+import { IProductImages } from "@/types/interfaces";
 
 const SelectivImagesSelector = ({
   images,
@@ -12,7 +12,7 @@ const SelectivImagesSelector = ({
   deleteImage,
   disabled = false,
 }: {
-  images: ISelectedImages;
+  images: IProductImages;
   setImages?: any;
   deleteImage: (imageId: string | number) => void;
   disabled?: boolean;
@@ -44,20 +44,20 @@ const SelectivImagesSelector = ({
           {images.subImages.map(
             (
               image: {
-                image: string;
+                imageUrl: string;
                 imageTag: string | null;
                 imageId: string | null;
               },
               index: number
             ) => {
               return (
-                image.image && (
+                image.imageUrl && (
                   <View
                     className="w-full items-center relative h-[200px] border border-gray-200 p-2 rounded-2xl flex-row"
-                    key={image.image + index}
+                    key={image.imageUrl + index}
                   >
                     <Image
-                      source={{ uri: image.image }}
+                      source={{ uri: image.imageUrl }}
                       className="w-[48%] h-full"
                       resizeMode="contain"
                     />

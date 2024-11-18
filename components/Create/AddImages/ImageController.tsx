@@ -2,14 +2,14 @@ import { Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import MainImagesSelector from "./MainImagesSelector";
 import SelectivImagesSelector from "./SelectivImagesSelector";
-import {  ISelectedImages } from "@/types/interfaces";
+import {  IProductImages } from "@/types/interfaces";
 
 const ImageController = ({
   setImage,
 }: {
-  setImage: (value: ISelectedImages) => void;
+  setImage: (value: IProductImages) => void;
 }) => {
-  const [images, setImages] = useState<ISelectedImages>({} as ISelectedImages);
+  const [images, setImages] = useState<IProductImages>({} as IProductImages);
 
   const handleDeleteImage = (index: number | string) => {
     setImages({
@@ -22,12 +22,12 @@ const ImageController = ({
   //   if (defaultImages && type === "edit") {
   //     setImages({
   //       main: {
-  //         image: defaultImages.main.url,
+  //         image: defaultImages.main.imageUrl,
   //         imageId: defaultImages.main.imageId,
   //       },
   //       subImages: defaultImages?.subImages?.map(
   //         (item: any, index: number) => ({
-  //           image: item.url,
+  //           image: item.imageUrl,
   //           imageId: item.imageId,
   //           imageTag: item.imageTag,
   //         })

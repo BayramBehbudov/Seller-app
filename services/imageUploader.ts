@@ -1,8 +1,8 @@
 import { ID } from "react-native-appwrite";
 import { projectId, storage, storageId } from "../config/appwrite";
-import { DocumentPickerAsset, ISelectedImages } from "@/types/interfaces";
+import { DocumentPickerAsset, IProductImages } from "@/types/interfaces";
 
-export const handleImageUploader = async (images: ISelectedImages) => {
+export const handleImageUploader = async (images: IProductImages) => {
   const mainImages = await uploadFile(images.main);
 
   const subImages = images.subImages

@@ -28,7 +28,7 @@ const Login = () => {
     setIsLoading(true);
     try {
       const auth: IResponse = await axios.post(
-        `${process.env.EXPO_PUBLIC_BASE_URLL}/api/auth/login`,
+        `${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/login`,
         data
       );
       if (auth.status === 200 && auth.data) {
