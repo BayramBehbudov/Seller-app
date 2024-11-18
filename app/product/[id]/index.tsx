@@ -20,9 +20,9 @@ import { useGlobalSearchParams } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import EditImageController from "@/components/ProductEdit.tsx/EditImageController";
 import CustomLoader from "@/components/CustomLoader";
-import { productUpdate } from "@/services/productActions";
-import { subImagesUploader } from "@/services/imageUploader";
 import axios from "axios";
+import CustomSelect from "@/components/CustomSelect";
+import { editedImages } from "@/services/claudinaryActions";
 
 const EditProduct = () => {
   const { id } = useGlobalSearchParams();
@@ -32,6 +32,8 @@ const EditProduct = () => {
   const currentProduct = user.stores
     ?.flatMap((store) => store.products)
     .find((product: IProductDB) => product._id === id);
+
+  if (!currentProduct) return <></>;
 
   const [selectedCategory, setSelectedCategory] =
     useState<ISelectedCategoryStructure>();
@@ -53,19 +55,20 @@ const EditProduct = () => {
   } = useForm({
     resolver: zodResolver(AddProductSchema),
     defaultValues: {
-      name: currentProduct?.name,
+      name: currentProduct.name,
       category: {
-        main: currentProduct?.category.main,
-        sub: currentProduct?.category.sub,
-        child: currentProduct?.category.child,
+        main: currentProduct.category.main,
+        sub: currentProduct.category.sub,
+        child: currentProduct.category.child,
       },
-      price: currentProduct?.price,
-      description: currentProduct?.description,
+      price: currentProduct.price.toString(),
+      description: currentProduct.description,
+      store: currentProduct.store._id,
     },
   });
 
   const submit = async (data: any) => {
-    if (!currentProduct || !id) return;
+    if (!id) return;
     setIsLoading(true);
     let newData = {};
 
@@ -80,30 +83,59 @@ const EditProduct = () => {
     }
 
     Object.entries(data).forEach(([key, value]) => {
-      JSON.stringify(currentProduct[key as keyof IProduct]) !==
-        JSON.stringify(value) && (newData = { ...newData, [key]: value });
+      if (key === "store") {
+        currentProduct.store._id !== value &&
+          (newData = { ...newData, store: value });
+      } else if (key === "price") {
+        currentProduct.price.toString() !== value &&
+          (newData = { ...newData, price: value });
+      } else {
+        if (
+          JSON.stringify(currentProduct[key as keyof IProduct]) !==
+          JSON.stringify(value)
+        ) {
+          newData = { ...newData, [key]: value };
+        }
+      }
     });
 
-    if (images.main.imageUrl || images.subImages.length > 0) {
-      newData = { ...newData, images };
-    }
-
-    try {
-      const updated = await axios.patch(
-        `${process.env.API_URL}/api/products/${id}`,
-        newData
-      );
-
-      if (updated.status === 200) {
-      } else {
+    if (images?.main?.imageUrl || images?.subImages?.length > 0) {
+      const uploadedImages: Partial<IProductImages | undefined> =
+        await editedImages(images);
+      if (uploadedImages) {
+        newData = {
+          ...newData,
+          images: {
+            main: uploadedImages?.main
+              ? uploadedImages.main
+              : currentProduct.images.main,
+            subImages: uploadedImages.subImages
+              ? [
+                  ...uploadedImages.subImages,
+                  ...currentProduct.images.subImages,
+                ]
+              : currentProduct.images.subImages,
+          },
+        };
       }
-    } catch (error) {
-      Alert.alert("Xəta", "Məhsul məlumatları dəyişdirilərkən xəta baş verdi");
-    } finally {
-      setIsLoading(false);
-      // ana səhifədə state yaranmır amma user dəyişir. dəyişiklik görünmür
-      await refetchUser();
     }
+
+    if (Object.keys(newData).length > 0) {
+      try {
+        const updated = await axios.patch(
+          `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/${id}`,
+          newData
+        );
+        await refetchUser();
+        Alert.alert(updated.data.message);
+      } catch (error) {
+        Alert.alert(
+          "Xəta",
+          "Məhsul məlumatları dəyişdirilərkən xəta baş verdi"
+        );
+      }
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -179,7 +211,29 @@ const EditProduct = () => {
               />
             )}
           />
-
+          <Controller
+            control={control}
+            name="store"
+            render={({ field: { onChange, value } }) => (
+              <CustomSelect
+                title="Mağaza"
+                handleChange={onChange}
+                placeholder="Seç"
+                modalTitle="Mağaza seçin"
+                data={
+                  user.stores?.map((store) => ({
+                    title: store.name,
+                    id: store._id,
+                  })) || []
+                }
+                defaultValue={{
+                  id: currentProduct.store._id,
+                  title: currentProduct.store.name,
+                }}
+                error={errors?.store?.message || undefined}
+              />
+            )}
+          />
           {currentProduct && (
             <EditImageController
               setImage={setImages}

@@ -1,51 +1,99 @@
-// import { DocumentPickerAsset } from "@/types/interfaces";
-// import { v2 as cloudinary } from "cloudinary";
+import { IProductImages } from "@/types/interfaces";
+import axios from "axios";
 
-// cloudinary.config({
-//   cloud_name: process.env.EXPO_PUBLIC_CLOUDINARY_ID,
-//   api_key: process.env.EXPO_PUBLIC_CLOUDINARY_API,
-//   api_secret: process.env.EXPO_PUBLIC_CLOUDINARY_SECRET,
-// });
+interface IImage {
+  imageUrl: string;
+  imageId: string | null;
+  imageTag: string | null;
+}
+export const uploadImagesToCloudinary = async (images: IProductImages) => {
+  const subImages = images.subImages
+    ? await Promise.all(
+        images.subImages.map(
+          async (imageItem: IImage) => await imageUploaderCloudinary(imageItem)
+        )
+      )
+    : [];
 
+  const resultsMainImage = await imageUploaderCloudinary({
+    ...images.main,
+    imageTag: null,
+  });
 
-// const cld = new Cloudinary({
-//   cloud: {
-//       cloudName: 'demo'
-//   }
-// });
+  if (resultsMainImage) {
+    return {
+      main: {
+        imageUrl: resultsMainImage.imageUrl,
+        imageId: resultsMainImage.imageId,
+      },
+      subImages,
+    };
+  }
+};
 
-// export const uploadImagesToCloudinary = async (images: {
-//   main: DocumentPickerAsset;
-//   subImages: { image: DocumentPickerAsset; imageTag: string | null }[];
-// }) => {
-//   const uploadSubImages =
-//     images.subImages &&
-//     (await Promise.all(
-//       images.subImages.map(
-//         (imageItem: { image: DocumentPickerAsset; imageTag: string | null }) =>
-//           cloudinary.uploader.upload(imageItem.image.uri, {
-//             folder: "products",
-//             tags: imageItem.imageTag,
-//           })
-//       )
-//     ));
+export const imageUploaderCloudinary = async (image: IImage) => {
+  if (!image.imageUrl) return;
+  try {
+    const response = await axios.post(
+      `https://api.cloudinary.com/v1_1/${process.env.EXPO_PUBLIC_CLOUDINARY_ID}/image/upload`,
+      {
+        file: image.imageUrl,
+        upload_preset: "productImagesPreset",
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return {
+      imageUrl: response.status === 200 ? response.data.secure_url : "",
+      imageId: response.status === 200 ? response.data.public_id : null,
+      imageTag: image.imageTag,
+    };
+  } catch (error: any) {
+    console.error(
+      "Error uploading image",
+      error.response ? error.response.data : error.message
+    );
+  }
+};
 
-//   const uploadMainImage = await cloudinary.uploader.upload(images.main.uri, {
-//     folder: "products",
-//     tags: "main",
-//   });
+export const editedImages = async (images: IProductImages) => {
+  if (!images) return;
 
-//   console.log({ uploadMainImage, uploadSubImages });
-//   return {
-//     main: {
-//       url: uploadMainImage.secure_url,
-//       imageTag: null,
-//     },
-//     subImages: uploadSubImages?.map((result) => {
-//       return {
-//         url: result.secure_url,
-//         imageTag: result.tags[0],
-//       };
-//     }),
-//   };
-// };
+  let uploadedImages = {};
+
+  if (images.main?.imageUrl) {
+    const resultsMainImage = await imageUploaderCloudinary({
+      ...images.main,
+      imageTag: null,
+    });
+
+    if (resultsMainImage) {
+      uploadedImages = {
+        ...uploadedImages,
+        main: {
+          imageUrl: resultsMainImage.imageUrl,
+          imageId: resultsMainImage.imageId,
+        },
+      };
+    }
+  }
+
+  if (images.subImages?.length > 0) {
+    const subImages = await Promise.all(
+      images.subImages.map(
+        async (imageItem) => await imageUploaderCloudinary(imageItem)
+      )
+    );
+    if (subImages) {
+      uploadedImages = {
+        ...uploadedImages,
+        subImages,
+      };
+    }
+  }
+
+  return uploadedImages;
+};

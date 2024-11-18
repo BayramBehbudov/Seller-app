@@ -27,7 +27,6 @@ const FormField = ({
     | undefined;
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-
   return (
     <View className={`space-y-2 ${otherStyles} gap-2`}>
       <Text className={`text-base text-gray-100  font-pmedium`}>{text}</Text>
@@ -37,7 +36,6 @@ const FormField = ({
           title === "description" ? 120 : "h-12"
         }`}
       >
-
         <TextInput
           className={`flex-1 text-white font-psemibold text-base focus:outline-none ${
             title === "description" ? "h-[120px] align-top py-2" : ""
@@ -51,6 +49,7 @@ const FormField = ({
           numberOfLines={title === "description" ? 4 : 1}
           value={value}
         />
+
         {title === "password" && (
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             <Image

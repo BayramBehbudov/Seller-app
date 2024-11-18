@@ -1,8 +1,7 @@
 import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import React from "react";
-import { IProduct, IProductDB } from "@/types/interfaces";
+import { IProductDB } from "@/types/interfaces";
 import { router } from "expo-router";
-import { getImageUrl } from "@/services/imageUploader";
 
 const ProductCard = ({
   product,
@@ -15,28 +14,29 @@ const ProductCard = ({
 }) => {
   return (
     <TouchableOpacity
-      className="w-full h-48 rounded-lg bg-white p-2 flex-row justify-between"
+      className="w-full  rounded-lg bg-white p-2 flex-row justify-between"
       onPress={() => router.push(`/product/${product._id}`)}
+      style={{ height: 180 }}
     >
-      <View className="w-[48%] h-full">
+      <View className="w-[48%] h-full ">
         <Image
           source={{ uri: product.images.main.imageUrl }}
           className="w-full h-full object-cover  rounded"
           resizeMode="cover"
         />
       </View>
-      <View className="w-[48%] h-full gap-1 flex-col justify-between">
+      <View className="w-[48%]  h-full gap-1 flex-col justify-between">
         <View className="">
-          <Text className="text-base h-11 font-semibold line-clamp-2 w-full">
+          <Text className="text-base  h-11 font-semibold line-clamp-2 w-full">
             {product.name}
           </Text>
           <Text className="text-gray-600 text-base h-[58px] line-clamp-3 w-full">
             {product.description}
           </Text>
-          <Text className="text-gray-600 text-base h-5 line-clamp-1 w-full">
+          <Text className="text-gray-600 text-base font-psemibold h-5 line-clamp-1 w-full">
             {product.store.name}
           </Text>
-          <Text className="text-gray-600 font-psemibold  h-5">
+          <Text className="text-gray-600 text-base font-psemibold  h-5">
             {product.price} AZN
           </Text>
         </View>

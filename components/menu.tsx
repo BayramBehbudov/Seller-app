@@ -14,7 +14,6 @@ import Dashboard from "./Profile/Dashboard";
 import EditProfile from "./Profile/EditProfile";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
-import { manageActiveSession } from "@/services/userActions";
 import Stores from "./Profile/Store/Stores";
 import { IUserDB } from "@/types/interfaces";
 
@@ -113,12 +112,9 @@ const MenuBar = ({
                 {
                   text: "Bəli",
                   onPress: async () => {
-                    const res = await manageActiveSession();
-                    if (res.status === 200) {
-                      setUser({} as IUserDB),
-                        setIsLoggedIn(false),
-                        router.push("/");
-                    }
+                    setUser({} as IUserDB),
+                      setIsLoggedIn(false),
+                      router.push("/");
                   },
                   style: "default",
                 },

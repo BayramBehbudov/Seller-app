@@ -71,7 +71,7 @@ const HomePage = () => {
     });
 
     filteredProd && setFilteredProducts(filteredProd);
-  }, [filters]);
+  }, [filters, user]);
 
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col ">

@@ -15,13 +15,12 @@ import {
   IProductImages,
 } from "@/types/interfaces";
 import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
-import { images } from "@/constants";
-import { handleImageUploader, uploadFile } from "@/services/imageUploader";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { productCreate } from "@/services/productActions";
 import { z } from "zod";
 import CustomSelect from "@/components/CustomSelect";
 import axios from "axios";
+import { uploadImagesToCloudinary } from "@/services/claudinaryActions";
+import CustomLoader from "@/components/CustomLoader";
 
 const create = () => {
   const [selectedCategory, setSelectedCategory] = useState<
@@ -36,7 +35,7 @@ const create = () => {
     {} as ISelectedFeatures
   );
 
-  const { user, isLoading, setIsLoading } = useGlobalContext();
+  const { user, isLoading, setIsLoading, refetchUser } = useGlobalContext();
 
   const {
     control,
@@ -60,7 +59,6 @@ const create = () => {
 
   const submit = async (data: z.infer<typeof AddProductSchema>) => {
     setIsLoading(true);
-
     if (!images.main.imageUrl)
       return Alert.alert("Səhv", "Məhsul üçün əsas şəkil seçilməlidir");
 
@@ -69,17 +67,22 @@ const create = () => {
 
     if (!data.store) return Alert.alert("Səhv", "Mağaza seçilməlidir");
 
+    const uploadedImages = await uploadImagesToCloudinary(images);
+    if (!uploadedImages) return;
+
     try {
       const res = await axios.post(
         `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/create`,
         {
           ...data,
-          images,
+          images: uploadedImages,
           attributes,
           features,
         }
       );
+      console.log(res.data);
       if (res.status === 200) {
+        refetchUser();
         reset();
         setSelectedCategory(undefined);
         setImages({} as IProductImages);
@@ -97,6 +100,7 @@ const create = () => {
 
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col">
+      <CustomLoader animating={isLoading} />
       <ScrollView className="w-full">
         <Text className="text-white text-2xl font-bold text-center mb-5">
           Məhsul Məlumatları

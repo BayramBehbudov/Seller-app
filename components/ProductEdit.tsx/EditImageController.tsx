@@ -46,25 +46,16 @@ const EditImageController = ({
   };
 
   useEffect(() => {
-    if (newImages.main.imageUrl) {
-      setImage((prev) => ({
-        ...prev,
-        main: newImages.main,
-      }));
-    }
-
-    if (newImages?.subImages?.length > 0) {
-      setImage((prev) => ({
-        ...prev,
-        subImages: newImages.subImages,
-      }));
-    }
+    setImage(newImages);
   }, [newImages]);
 
   return (
     <>
       <Text className={`text-base text-gray-100 font-pmedium`}>Əsas şəkil</Text>
-      <MainImagesSelector images={currentImages} setImages={setNewImages} />
+      <MainImagesSelector
+        images={newImages.main ? newImages : currentImages}
+        setImages={setNewImages}
+      />
       <SelectivImagesSelector
         images={currentImages}
         deleteImage={handleDeleteImage}

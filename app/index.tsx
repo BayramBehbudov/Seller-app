@@ -39,7 +39,7 @@ const HomePage = () => {
           </Text>
           <CustomButton
             title="Bizə qatıl"
-            handlePress={() => router.push("/home")}
+            handlePress={() => router.push("/login")}
             containerStyles="w-full mt-10"
             disabled={isLoading}
           />

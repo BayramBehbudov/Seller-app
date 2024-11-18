@@ -74,7 +74,10 @@ const SelectivImagesSelector = ({
                           image.imageTag ? [image.imageTag] : []
                         }
                         placeholder="Rəng seçin"
-                        data={{ title: "Rəng", value: colors }}
+                        data={{
+                          title: "Rəng",
+                          value: colors,
+                        }}
                         modalTitle="Rəng seçin"
                         handleChange={(value) => {
                           setImages({
