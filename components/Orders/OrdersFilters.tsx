@@ -3,14 +3,13 @@ import React, { Dispatch, SetStateAction } from "react";
 import CustomSelect from "../CustomSelect";
 import { IOrderFilters } from "@/app/(tabs)/orders";
 import { getOrderStatus, getSlicedID } from "@/helpers/functions";
-import { IOrder } from "@/types/interfaces";
 
 const OrdersFilters = ({
   setFilters,
   orders,
 }: {
   setFilters: Dispatch<SetStateAction<IOrderFilters>>;
-  orders: IOrder[];
+  orders: any[];
 }) => {
   return (
     <View className="w-full flex-row gap-2 flex-wrap p-2 rounded-lg justify-center items-center">
@@ -44,7 +43,7 @@ const OrdersFilters = ({
         data={[
           ...orders.map((order) => ({
             id: order._id,
-            title: getSlicedID(order._id).toUpperCase(),
+            title: getSlicedID(order._id),
           })),
           { id: "null", title: "Hamısı" },
         ]}

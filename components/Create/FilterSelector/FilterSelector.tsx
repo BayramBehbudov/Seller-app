@@ -20,12 +20,13 @@ const FilterSelector = ({
   }: {
     selectedCategoryFilters: ICategorieFilters;
   }) => {
+    console.log(title, value);
     return title !== "color" ? (
       <CustomMultiSelect
         title={title === "size" ? "Ölçü" : title}
         data={{ title, value }}
         modalTitle={"Seçin"}
-        defaultSelectValues={attributes[title] || []}
+        defaultSelectValues={attributes ? attributes[title] : []}
         handleChange={(value: string[]) => {
           if (value.length > 0) {
             setAttributes({

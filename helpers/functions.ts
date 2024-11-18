@@ -1,5 +1,5 @@
 export const getSlicedID = (id: string) => {
-  return id.slice(id.length - 6);
+  return id.slice(id.length - 6).toUpperCase();
 };
 
 export const getOrderStatus = (status: string) => {

@@ -1,6 +1,7 @@
 import { IUserDB } from "@/types/interfaces";
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import CustomLoader from "@/components/CustomLoader";
 
 const GlobalContext = createContext({
   user: {} as IUserDB,
@@ -55,6 +56,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         refetchUser,
       }}
     >
+      <CustomLoader animating={isLoading} />
       {children}
     </GlobalContext.Provider>
   );

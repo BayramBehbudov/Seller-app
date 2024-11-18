@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "@/settings/schemes";
 import FormField from "../FormField";
 import CustomButton from "../CustomButton";
+import CustomSelect from "../CustomSelect";
 
 const EditProfile = () => {
   const { user, setUser } = useGlobalContext();
@@ -20,10 +21,9 @@ const EditProfile = () => {
       email: user?.email,
       password: user?.password,
       name: user?.name,
-      address: user?.address,
+      surname: user?.surname,
       phone: user?.phone,
-      description: user?.description,
-      point: user?.point?._id,
+      gender: user?.gender,
     },
   });
 
@@ -36,18 +36,14 @@ const EditProfile = () => {
       {
         text: "Bəli",
         onPress: () => {
-          setUser({
-            ...user,
-            ...data,
-            point: user.point,
-          });
+          //   updateUser(data);
         },
       },
     ]);
   };
 
   return (
-    <View className="w-full h-full py-2">
+    <View className="w-full h-full py-2 gap-2 flex-col">
       <Controller
         control={control}
         name="email"
@@ -83,7 +79,7 @@ const EditProfile = () => {
         render={({ field: { onChange, value } }) => (
           <FormField
             title="name"
-            text="Mağazanın adı"
+            text="Ad"
             handleChange={onChange}
             value={value}
             error={errors?.name?.message || undefined}
@@ -92,14 +88,14 @@ const EditProfile = () => {
       />
       <Controller
         control={control}
-        name="address"
+        name="surname"
         render={({ field: { onChange, value } }) => (
           <FormField
-            title="address"
-            text="Ünvan"
+            title="surname"
+            text="Soyad"
             handleChange={onChange}
             value={value}
-            error={errors?.address?.message || undefined}
+            error={errors?.surname?.message || undefined}
           />
         )}
       />
@@ -122,14 +118,23 @@ const EditProfile = () => {
 
       <Controller
         control={control}
-        name="description"
+        name="gender"
         render={({ field: { onChange, value } }) => (
-          <FormField
-            title="description"
-            text="Açıqlama"
+          <CustomSelect
+            title="Cins"
             handleChange={onChange}
-            value={value}
-            error={errors?.description?.message || undefined}
+            placeholder="Seç"
+            modalTitle="Cinsinizi seçin"
+            data={[
+              { id: "male", title: "Kişi" },
+              { id: "female", title: "Qadın" },
+            ]}
+            defaultValue={
+              value === "male"
+                ? { id: "male", title: "Kişi" }
+                : { id: "female", title: "Qadın" }
+            }
+            error={errors?.gender ? "Cinsinizi seçin" : undefined}
           />
         )}
       />

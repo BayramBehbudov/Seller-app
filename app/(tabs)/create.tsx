@@ -20,7 +20,7 @@ import { z } from "zod";
 import CustomSelect from "@/components/CustomSelect";
 import axios from "axios";
 import { uploadImagesToCloudinary } from "@/services/claudinaryActions";
-import CustomLoader from "@/components/CustomLoader";
+
 
 const create = () => {
   const [selectedCategory, setSelectedCategory] = useState<
@@ -80,14 +80,14 @@ const create = () => {
           features,
         }
       );
-      console.log(res.data);
       if (res.status === 200) {
-        refetchUser();
+        await refetchUser();
         reset();
         setSelectedCategory(undefined);
         setImages({} as IProductImages);
         setAttributes({} as ISelectedAttributes);
         setFeatures({} as ISelectedFeatures);
+        Alert.alert(res.data.message);
       } else {
         Alert.alert("Səhv", res.data.message);
       }
@@ -100,7 +100,6 @@ const create = () => {
 
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col">
-      <CustomLoader animating={isLoading} />
       <ScrollView className="w-full">
         <Text className="text-white text-2xl font-bold text-center mb-5">
           Məhsul Məlumatları

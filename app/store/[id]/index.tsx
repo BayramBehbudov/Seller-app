@@ -1,5 +1,4 @@
 import CustomButton from "@/components/CustomButton";
-import CustomLoader from "@/components/CustomLoader";
 import CustomSelect from "@/components/CustomSelect";
 import FormField from "@/components/FormField";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -103,7 +102,6 @@ const EditStore = () => {
 
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col">
-      <CustomLoader animating={isLoading} size={30} color="white" />
       <ScrollView className="w-full">
         <Text className="text-white text-2xl font-bold text-center mb-5">
           Mağaza məlumatları

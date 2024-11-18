@@ -19,7 +19,6 @@ import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
 import { useGlobalSearchParams } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import EditImageController from "@/components/ProductEdit.tsx/EditImageController";
-import CustomLoader from "@/components/CustomLoader";
 import axios from "axios";
 import CustomSelect from "@/components/CustomSelect";
 import { editedImages } from "@/services/claudinaryActions";
@@ -141,9 +140,6 @@ const EditProduct = () => {
   return (
     <SafeAreaView className="bg-primary w-full h-full">
       <ScrollView className="w-full px-3">
-        {isLoading && (
-          <CustomLoader animating={true} size={"large"} color="white" />
-        )}
         <Text className="text-white text-2xl font-bold text-center mb-5">
           Məlumatlara Düzəliş et
         </Text>

@@ -11,7 +11,7 @@ import CustomButton from "@/components/CustomButton";
 import { router } from "expo-router";
 
 const HomePage = () => {
-  const { user, setUser, refetchUser } = useGlobalContext();
+  const { user } = useGlobalContext();
   const [filteredProducts, setFilteredProducts] = useState<IProductDB[]>([]);
 
   const [filters, setFilters] = useState({
@@ -19,36 +19,6 @@ const HomePage = () => {
     search: null,
     id: null,
   });
-
-  const handleDelete = async (prodId: string) => {
-    const deletedProd = await axios.delete(
-      `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/${prodId}`
-    );
-
-    if (deletedProd.status === 200) {
-      refetchUser();
-      // əgər refetch state yaratmırsa aşağıdakı funksiyanı aç
-      // setFilteredProducts(filteredProducts.filter((prod) => prod._id !== prodId));
-    }
-  };
-
-  const handleUpdate = async (prodId: string, isActive: boolean) => {
-    const newProduct = await axios.patch(
-      `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/${prodId}`,
-      {
-        isActive,
-      }
-    );
-    if (newProduct.status === 200) {
-      refetchUser();
-      // əgər refetch state yaratmırsa aşağıdakı funksiyanı aç
-      // setFilteredProducts(
-      //   filteredProducts.map((prod) =>
-      //     prod._id === prodId ? { ...prod, isActive } : prod
-      //   )
-      // );
-    }
-  };
 
   useEffect(() => {
     const products = user.stores?.flatMap((store) => store.products);
@@ -86,13 +56,7 @@ const HomePage = () => {
               <HomeFilters setFilters={setFilters} />
             </View>
           }
-          renderItem={({ item }) => (
-            <ProductCard
-              product={item}
-              handleDelete={handleDelete}
-              handleUpdate={handleUpdate}
-            />
-          )}
+          renderItem={({ item }) => <ProductCard product={item} />}
           contentContainerClassName="gap-2"
           keyExtractor={(item) => item._id.toString()}
           ListEmptyComponent={

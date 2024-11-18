@@ -21,7 +21,7 @@ const StoreCard = ({ store }: { store: IStoreDB }) => {
           ID:
         </Text>
         <Text className="text-base line-clamp-1">
-          {getSlicedID(store._id).toUpperCase()}
+          {getSlicedID(store._id)}
         </Text>
       </View>
       <View className="flex-row ">
