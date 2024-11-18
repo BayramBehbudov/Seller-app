@@ -6,7 +6,6 @@ import HomeFilters from "@/components/Home/HomeFilters";
 import EmptyComponent from "@/components/EmptyComponent";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { IProductDB } from "@/types/interfaces";
-import axios from "axios";
 import CustomButton from "@/components/CustomButton";
 import { router } from "expo-router";
 

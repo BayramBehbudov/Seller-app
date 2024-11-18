@@ -189,18 +189,6 @@ export interface ISelectedAttributes {
 export interface ISelectedFeatures {
   [key: string]: string;
 }
-// export interface IOrderProduct extends IProductDB {
-//   count: number;
-//   selectedAtributes: { [key: string]: string };
-// }
-
-// export interface IOrder {
-//   _id: string;
-//   products: IOrderProduct[];
-//   sellerNote: string;
-//   createdAt: string;
-//   status: string;
-// }
 
 export interface IFilterSelectorProps {
   attributes: ISelectedAttributes;
