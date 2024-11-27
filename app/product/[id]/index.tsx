@@ -14,6 +14,7 @@ import {
   IProductImages,
   IProductDB,
   ISelectedAttributes,
+  IResponse,
 } from "@/types/interfaces";
 import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
 import { useGlobalSearchParams } from "expo-router";
@@ -121,12 +122,12 @@ const EditProduct = () => {
 
     if (Object.keys(newData).length > 0) {
       try {
-        const updated = await axios.patch(
+        await axios.patch(
           `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/${id}`,
           newData
         );
         await refetchUser();
-        Alert.alert(updated.data.message);
+        Alert.alert("Məlumatlar dəyişdirildi");
       } catch (error) {
         Alert.alert(
           "Xəta",

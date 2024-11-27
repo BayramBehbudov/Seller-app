@@ -30,7 +30,6 @@ const Register = () => {
         `${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/register`,
         data
       );
-      console.log("newUser", newUser);
       if (newUser.status === 200 && newUser.data) {
         setUser(newUser.data);
         setIsLoggedIn(true);

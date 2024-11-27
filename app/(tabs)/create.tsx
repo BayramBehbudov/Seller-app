@@ -13,6 +13,7 @@ import {
   ISelectedFeatures,
   ISelectedAttributes,
   IProductImages,
+  IResponse,
 } from "@/types/interfaces";
 import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -20,7 +21,6 @@ import { z } from "zod";
 import CustomSelect from "@/components/CustomSelect";
 import axios from "axios";
 import { uploadImagesToCloudinary } from "@/services/claudinaryActions";
-
 
 const create = () => {
   const [selectedCategory, setSelectedCategory] = useState<
@@ -71,7 +71,7 @@ const create = () => {
     if (!uploadedImages) return;
 
     try {
-      const res = await axios.post(
+      const res: IResponse = await axios.post(
         `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/create`,
         {
           ...data,
@@ -87,9 +87,9 @@ const create = () => {
         setImages({} as IProductImages);
         setAttributes({} as ISelectedAttributes);
         setFeatures({} as ISelectedFeatures);
-        Alert.alert(res.data.message);
+        Alert.alert("Məhsul əlavə edildi");
       } else {
-        Alert.alert("Səhv", res.data.message);
+        Alert.alert("Səhv", res.message);
       }
     } catch (error: any) {
       Alert.alert("Səhv", error.message);

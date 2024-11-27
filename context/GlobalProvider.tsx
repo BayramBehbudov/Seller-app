@@ -1,4 +1,4 @@
-import { IUserDB } from "@/types/interfaces";
+import { IResponse, IUserDB } from "@/types/interfaces";
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import CustomLoader from "@/components/CustomLoader";
@@ -23,10 +23,10 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const refetchUser = async () => {
     setIsLoading(true);
     try {
-      const { data: response } = await axios.get(
+      const response: IResponse = await axios.get(
         `${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/authentication`
       );
-      if (response.status === 200 && response.data.role === "seller") {
+      if (response.status === 200 && response.data?.role === "seller") {
         setIsLoggedIn(true);
         setUser(response.data as IUserDB);
       } else {

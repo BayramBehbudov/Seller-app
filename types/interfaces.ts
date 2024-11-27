@@ -4,13 +4,6 @@ import { ImagePickerResult } from "expo-image-picker";
 export interface ICategories {
   [key: string]: ICategoriesValue;
 }
-export interface IReviews {
-  name: string;
-  text: string;
-  rating: number;
-  date: string;
-}
-
 export interface ICategoriesValue {
   title: string;
   filters: ICategorieFilters[];
@@ -50,8 +43,16 @@ export interface IResponse {
   status: number;
   data: IUserDB | null;
   error: Error | null | unknown;
-  message: string | null;
+  message: string | undefined;
 }
+
+export interface IReviews {
+  name: string;
+  text: string;
+  rating: number;
+  date: string;
+}
+
 export interface IUser {
   email: string;
   password: string;
@@ -82,6 +83,48 @@ export interface IBankCard {
   cardHolder: string;
   expirationDate: string;
   cvv: string;
+}
+
+export interface IProduct {
+  name: string;
+  description: string;
+  price: string;
+  category: {
+    main: string;
+    sub: string;
+    child: string;
+  };
+
+  attributes: {
+    [key: string]: string[];
+  };
+  features: {
+    [key: string]: string;
+  };
+  images: IProductImages;
+}
+
+export interface IProductDB extends IProduct {
+  store: IStoreDB;
+  reviews: IReviews[];
+  viewed: number;
+  isActive: boolean;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface IProductImages {
+  main: {
+    imageUrl: string;
+    imageId: string | null;
+  };
+  subImages: {
+    imageUrl: string;
+    imageTag: string | null;
+    imageId: string | null;
+  }[];
 }
 export interface IStore {
   name: string;
@@ -118,35 +161,6 @@ export interface IPointDB extends IPoint {
   __v: number;
 }
 
-export interface IProduct {
-  name: string;
-  description: string;
-  price: string;
-  category: {
-    main: string;
-    sub: string;
-    child: string;
-  };
-
-  attributes: {
-    [key: string]: string[];
-  };
-  features: {
-    [key: string]: string;
-  };
-  images: IProductImages;
-}
-export interface IProductDB extends IProduct {
-  store: IStoreDB;
-  reviews: IReviews[];
-  viewed: number;
-  isActive: boolean;
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
 export interface ISelectedCategoryStructure {
   main: {
     title: string;
@@ -168,19 +182,6 @@ export interface ISelectedCategoryStructure {
     filters: ICategorieFilters[];
     features: IFeatures[];
   };
-}
-
-
-export interface IProductImages {
-  main: {
-    imageUrl: string;
-    imageId: string | null;
-  };
-  subImages: {
-    imageUrl: string;
-    imageTag: string | null;
-    imageId: string | null;
-  }[];
 }
 
 export interface ISelectedAttributes {

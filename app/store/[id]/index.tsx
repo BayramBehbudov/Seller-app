@@ -3,7 +3,7 @@ import CustomSelect from "@/components/CustomSelect";
 import FormField from "@/components/FormField";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { StoreSchema } from "@/settings/schemes";
-import { IPointDB, IStoreDB } from "@/types/interfaces";
+import { IPointDB, IResponse, IStoreDB } from "@/types/interfaces";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useGlobalSearchParams } from "expo-router";
@@ -19,15 +19,16 @@ const EditStore = () => {
   const [points, setPoints] = useState([]);
   const currentStore =
     id !== "add" ? user.stores?.find((store) => store._id === id) : null;
+
   useEffect(() => {
     (async () => {
       try {
         setIsLoading(true);
-        const { data } = await axios.get(
+        const response = await axios.get(
           `${process.env.EXPO_PUBLIC_BASE_URL}/api/point`
         );
-        if (data.status === 200) {
-          setPoints(data.data);
+        if (response.status === 200) {
+          setPoints(response.data);
         }
       } catch (error) {
       } finally {
@@ -57,14 +58,15 @@ const EditStore = () => {
 
     try {
       if (id === "add") {
-        const { data } = await axios.post(
+        const response = await axios.post(
           `${process.env.EXPO_PUBLIC_BASE_URL}/api/store/create`,
           {
             ...formValues,
             owner: user._id,
           }
         );
-        if (data.status === 200) {
+
+        if (response.status === 200) {
           reset();
           refetchUser();
         }
@@ -82,12 +84,12 @@ const EditStore = () => {
         });
 
         if (Object.keys(newValue).length > 0) {
-          const { data } = await axios.patch(
+          const response = await axios.patch(
             `${process.env.EXPO_PUBLIC_BASE_URL}/api/store/${id}`,
             newValue
           );
 
-          if (data.status === 200) {
+          if (response.status === 200) {
             reset();
             refetchUser();
             Alert.alert("Mağaza məlumatları dəyişdirildi");
