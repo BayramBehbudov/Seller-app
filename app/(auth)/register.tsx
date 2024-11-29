@@ -10,11 +10,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "@/settings/schemes";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import axios from "axios";
-import { IResponse, IUser } from "@/types/interfaces";
+import { IResponse } from "@/types/interfaces";
 
 const Register = () => {
   const { setUser, setIsLoggedIn, isLoading, setIsLoading } =
     useGlobalContext();
+
   const {
     control,
     handleSubmit,
@@ -27,8 +28,8 @@ const Register = () => {
     setIsLoading(true);
     try {
       const newUser: IResponse = await axios.post(
-        `${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/register`,
-        data
+        `https://express-bay-rho.vercel.app/api/auth/register`,
+        { ...data, role: "seller" }
       );
       if (newUser.status === 200 && newUser.data) {
         setUser(newUser.data);
@@ -37,6 +38,7 @@ const Register = () => {
       } else {
         Alert.alert("Qeydiyyat", newUser.message as string);
       }
+      
     } catch (error: any) {
       Alert.alert("Qeydiyyat", error.message);
     } finally {

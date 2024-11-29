@@ -15,6 +15,7 @@ import {
   IProductDB,
   ISelectedAttributes,
   IResponse,
+  IStoreDB,
 } from "@/types/interfaces";
 import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
 import { useGlobalSearchParams } from "expo-router";
@@ -123,7 +124,7 @@ const EditProduct = () => {
     if (Object.keys(newData).length > 0) {
       try {
         await axios.patch(
-          `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/${id}`,
+          `https://express-bay-rho.vercel.app/api/products/${id}`,
           newData
         );
         await refetchUser();

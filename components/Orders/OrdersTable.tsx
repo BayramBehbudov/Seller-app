@@ -1,23 +1,21 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { IOrder } from "@/types/interfaces";
 import { hoursSince } from "@/helpers/dateHelpers";
 import CustomModal from "../CustomModal";
 import OrdersDetail from "./OrdersDetail";
 import { getOrderStatus, getSlicedID } from "@/helpers/functions";
-import { IOrderFilters } from "@/app/(tabs)/orders";
-import EmptyComponent from "../EmptyComponent";
+import { IOrderDb } from "@/types/interfaces";
 
 const OrdersTable = ({
   orders,
   setOrders,
 }: {
-  orders: IOrder[];
-  setOrders: Dispatch<SetStateAction<IOrder[]>>;
+  orders: IOrderDb[];
+  setOrders: Dispatch<SetStateAction<IOrderDb[]>>;
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [selectedOrder, setSelectedOrder] = useState<IOrder>({} as IOrder);
+  const [selectedOrder, setSelectedOrder] = useState<IOrderDb>({} as IOrderDb);
 
   const header = ["ID", "Tarix", "Status"];
   const footer = ["", "", ""];
@@ -85,14 +83,14 @@ const OrdersTable = ({
         setModalVisible={setModalVisible}
         value={
           <OrdersDetail
-            setOrders={(value: IOrder) => {
+            order={selectedOrder}
+            setOrders={(value: IOrderDb) => {
               setOrders((prev) =>
-                prev.map((item: IOrder) =>
+                prev.map((item: IOrderDb) =>
                   item._id === value._id ? value : item
                 )
               );
             }}
-            order={selectedOrder}
             setModalVisible={setModalVisible}
           />
         }

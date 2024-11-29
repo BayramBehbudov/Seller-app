@@ -28,18 +28,22 @@ const Login = () => {
     setIsLoading(true);
     try {
       const auth: IResponse = await axios.post(
-        `${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/login`,
+        `https://express-bay-rho.vercel.app/api/auth/login`,
         data
       );
-      if (auth.status === 200 && auth.data) {
+      if (auth.status === 200 && auth.data && auth.data.role === "seller") {
         setUser(auth.data);
         setIsLoggedIn(true);
         router.push("/home");
       } else {
         setUser({} as IUserDB);
         setIsLoggedIn(false);
-        Alert.alert("Giriş", auth.message as string);
+        Alert.alert(
+          "Bu proqram yalnız satıcılar üçündür",
+          "Giriş ilə bağlı çətinliyiniz varsa dəstək xidməti ilə əlaqə saxlayın"
+        );
       }
+      console.log(auth.message);
     } catch (error) {
       console.log(error);
     } finally {

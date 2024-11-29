@@ -198,3 +198,45 @@ export interface IFilterSelectorProps {
   setAttributes: (value: ISelectedAttributes) => void;
   selectedCategory: ISelectedCategoryStructure;
 }
+
+export interface IOrderTotal {
+  products: number;
+  delivery: number;
+  discount: number;
+  summary: number;
+}
+
+export interface IProductForOrder extends IProduct {
+  store: string;
+  reviews: IReviews[];
+  viewed: number;
+  isActive: boolean;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+export interface IOrderProductDb {
+  product: IProductForOrder;
+  count: number;
+  selectedAttributes: {
+    [key: string]: string;
+  };
+  accepted: boolean;
+}
+
+export interface IOrderDb {
+  stores: {
+    store: string;
+    amount: IOrderTotal;
+    products: IOrderProductDb[];
+  }[];
+  deliveryNote: string;
+  sellerNote: string;
+  deliveryAddress: IUserAddress;
+  status: "pending" | "ready" | "handOver";
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}

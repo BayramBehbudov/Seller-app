@@ -1,25 +1,37 @@
 import { View, Text, ScrollView } from "react-native";
 import React from "react";
-import { IOrder } from "@/types/interfaces";
+import { IOrderDb } from "@/types/interfaces";
 import { formatterDate } from "@/helpers/dateHelpers";
-import { getSlicedID } from "@/helpers/functions";
+import { getOrderStatus, getSlicedID } from "@/helpers/functions";
 import OrderProductCard from "./OrderProductCard";
 import CustomButton from "../CustomButton";
+import axios from "axios";
 
 const OrdersDetail = ({
   order,
   setOrders,
   setModalVisible,
 }: {
-  order: IOrder;
-  setOrders: (value: IOrder) => void;
+  order: IOrderDb;
+  setOrders: (value: IOrderDb) => void;
   setModalVisible: (value: boolean) => void;
 }) => {
-  
-  const handleOrderStatus = (status: string) => {
-    setOrders({ ...order, status });
-    setModalVisible(false);
+  const handleOrderStatus = async (status: IOrderDb["status"]) => {
+    try {
+      await axios.patch(
+        `https://express-bay-rho.vercel.app/api/order/${order._id}`,
+        {
+          status,
+        }
+      );
+      setOrders({ ...order, status });
+      setModalVisible(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const products = order.stores.flatMap((store) => store.products);
 
   return (
     <View className="flex-col gap-3">
@@ -45,38 +57,37 @@ const OrdersDetail = ({
           </View>
           <View className="flex-row">
             <Text className="flex-1">Status</Text>
-            <Text className="flex-1">
-              {order.status === "pending" ? "Gözləyir" : "Tamamlandı"}
-            </Text>
+            <Text className="flex-1">{getOrderStatus(order.status)}</Text>
           </View>
           <View className="flex-row">
             <Text className="flex-1">Məhsul sayı</Text>
             <Text className="flex-1">
-              {order?.products?.length} çeşid {" /  "}
-              {order?.products?.reduce((a, b) => a + b.count, 0)} ədəd
+              {products.length} çeşid {" /  "}
+              {products.reduce((a, b) => a + b.count, 0)} ədəd
             </Text>
           </View>
           <View className="flex-row">
             <Text className="flex-1">Məbləğ</Text>
             <Text className="flex-1">
-              {order?.products?.reduce((a, b) => a + +b.price * b.count, 0)} AZN
+              {products
+                .reduce((a, p) => a + +p.product.price * p.count, 0)
+                .toFixed(2)}{" "}
+              AZN
             </Text>
           </View>
           <View className="flex-row">
             <Text className="flex-1">Müştəri qeydi</Text>
-            <Text className="flex-1">
-              {order.sellerNote} Lorem ipsum dolor sit, amet consectetur
-              adipisicing elit. Nostrum veniam voluptates officiis debitis illum
-              cumque, earum sed numquam possimus. Molestias hic veritatis odit
-              esse praesentium cum nostrum distinctio exercitationem iusto.
-            </Text>
+            <Text className="flex-1">{order.sellerNote}</Text>
           </View>
         </View>
 
-        <View className="flex-col gap-2">
-          {order?.products?.map((product, index) => {
+        <View className="flex-col gap-2 mt-2">
+          {products.map((product, index) => {
             return (
-              <OrderProductCard key={product._id + index} product={product} />
+              <OrderProductCard
+                key={product.product._id + index}
+                prod={product}
+              />
             );
           })}
         </View>

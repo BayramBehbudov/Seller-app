@@ -8,7 +8,6 @@ export const getOrderStatus = (status: string) => {
       return "Gözləyir";
     case "ready":
       return "Hazırdır";
-
     case "handOver":
       return "Təhvil verdim";
     default:

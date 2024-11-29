@@ -25,7 +25,7 @@ const EditStore = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `${process.env.EXPO_PUBLIC_BASE_URL}/api/point`
+          `https://express-bay-rho.vercel.app/api/point`
         );
         if (response.status === 200) {
           setPoints(response.data);
@@ -59,7 +59,7 @@ const EditStore = () => {
     try {
       if (id === "add") {
         const response = await axios.post(
-          `${process.env.EXPO_PUBLIC_BASE_URL}/api/store/create`,
+          `https://express-bay-rho.vercel.app/api/store/create`,
           {
             ...formValues,
             owner: user._id,
@@ -85,7 +85,7 @@ const EditStore = () => {
 
         if (Object.keys(newValue).length > 0) {
           const response = await axios.patch(
-            `${process.env.EXPO_PUBLIC_BASE_URL}/api/store/${id}`,
+            `https://express-bay-rho.vercel.app/api/store/${id}`,
             newValue
           );
 

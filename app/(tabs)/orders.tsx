@@ -1,20 +1,21 @@
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import OrdersTable from "@/components/Orders/OrdersTable";
 import { defaultOrders } from "@/static/data";
 import OrdersFilters from "@/components/Orders/OrdersFilters";
-import { IOrder } from "@/types/interfaces";
 import EmptyComponent from "@/components/EmptyComponent";
+import { IOrderDb } from "@/types/interfaces";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import CustomButton from "@/components/CustomButton";
 
 export interface IOrderFilters {
   status: null | string;
   _id: string | null;
 }
 const orders = () => {
-  const [orders, setOrders] = useState(defaultOrders);
-  const [filteredOrders, setFilteredOrders] = useState<IOrder[]>(orders);
-
+  const { orders, refetchOrders, user } = useGlobalContext();
+  const [filteredOrders, setFilteredOrders] = useState<IOrderDb[]>(orders);
   const [filters, setFilters] = useState<IOrderFilters>({
     status: null,
     _id: null,
@@ -39,7 +40,7 @@ const orders = () => {
       <OrdersFilters setFilters={setFilters} orders={orders} />
 
       {filteredOrders.length ? (
-        <OrdersTable orders={filteredOrders} setOrders={setOrders} />
+        <OrdersTable orders={filteredOrders} setOrders={setFilteredOrders} />
       ) : (
         <EmptyComponent
           title={
@@ -54,6 +55,11 @@ const orders = () => {
           }
         />
       )}
+      <CustomButton
+        handlePress={() => refetchOrders(user.stores)}
+        title="Yenilə"
+        containerStyles="w-full absolute bottom-3 self-center"
+      />
     </SafeAreaView>
   );
 };

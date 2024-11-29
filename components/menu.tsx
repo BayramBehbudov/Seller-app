@@ -16,6 +16,7 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import Stores from "./Profile/Store/Stores";
 import { IUserDB } from "@/types/interfaces";
+import axios from "axios";
 
 const MenuBar = ({
   setElement,
@@ -105,16 +106,23 @@ const MenuBar = ({
           </View>
           <TouchableOpacity
             onPress={() => {
-              Alert.alert("Hesabınızdan çıxış etmək istəyriniz?", "", [
+              Alert.alert("Hesabınızdan çıxış etmək istəyirsiniz?", "", [
                 {
                   text: "Xeyr",
                 },
                 {
                   text: "Bəli",
                   onPress: async () => {
-                    setUser({} as IUserDB),
-                      setIsLoggedIn(false),
-                      router.push("/");
+                    try {
+                      await axios.post(
+                        `https://express-bay-rho.vercel.app/api/auth/logout`
+                      );
+                      setUser({} as IUserDB),
+                        setIsLoggedIn(false),
+                        router.push("/");
+                    } catch (error: any) {
+                      Alert.alert("Çıxış edilmədi", error.message);
+                    }
                   },
                   style: "default",
                 },

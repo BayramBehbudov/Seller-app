@@ -42,42 +42,44 @@ const HomePage = () => {
     filteredProd && setFilteredProducts(filteredProd);
   }, [filters, user]);
 
+  if (user.stores.length === 0) {
+    return (
+      <View className="w-full h-full flex-col justify-center items-center bg-primary ">
+        <EmptyComponent
+          title="Sizin aktiv mağazanız yoxdur"
+          subtitle="Məhsul əlavə etmək üçün öncə hesabınıza mağaza əlavə edin"
+        />
+        <CustomButton
+          containerStyles="mt-10 w-[80%] "
+          title="Mağaza əlavə et"
+          handlePress={() => router.push(`/store/add`)}
+        />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col ">
-      {user.stores?.length > 0 ? (
-        <FlatList
-          data={filteredProducts}
-          ListHeaderComponent={
-            <View className="w-full gap-5 h-fit flex-col">
-              <Text className="text-white text-2xl font-bold text-center">
-                Bütün məhsullarınız burada
-              </Text>
-              <HomeFilters setFilters={setFilters} />
-            </View>
-          }
-          renderItem={({ item }) => <ProductCard product={item} />}
-          contentContainerClassName="gap-2"
-          keyExtractor={(item) => item._id.toString()}
-          ListEmptyComponent={
-            <EmptyComponent
-              title="Seçimlərə uyğun məhsul tapılmadı"
-              subtitle="Filterlərdə dəyişiklik edib yenidən yoxlayın"
-            />
-          }
-        />
-      ) : (
-        <View className="w-full h-full flex-col justify-center items-center ">
+      <FlatList
+        data={filteredProducts}
+        ListHeaderComponent={
+          <View className="w-full gap-5 h-fit flex-col">
+            <Text className="text-white text-2xl font-bold text-center">
+              Bütün məhsullarınız burada
+            </Text>
+            <HomeFilters setFilters={setFilters} />
+          </View>
+        }
+        renderItem={({ item }) => <ProductCard product={item} />}
+        contentContainerClassName="gap-2"
+        keyExtractor={(item) => item._id.toString()}
+        ListEmptyComponent={
           <EmptyComponent
-            title="Sizin aktiv mağazanız yoxdur"
-            subtitle="Davam etmək üçün öncə hesabınıza mağaza əlavə edin"
+            title="Seçimlərə uyğun məhsul tapılmadı"
+            subtitle="Filterlərdə dəyişiklik edib yenidən yoxlayın"
           />
-          <CustomButton
-            containerStyles="mt-10 w-[80%] "
-            title="Mağaza əlavə et"
-            handlePress={() => router.push(`/store/add`)}
-          />
-        </View>
-      )}
+        }
+      />
     </SafeAreaView>
   );
 };

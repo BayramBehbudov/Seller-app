@@ -21,6 +21,8 @@ import { z } from "zod";
 import CustomSelect from "@/components/CustomSelect";
 import axios from "axios";
 import { uploadImagesToCloudinary } from "@/services/claudinaryActions";
+import EmptyComponent from "@/components/EmptyComponent";
+import { router } from "expo-router";
 
 const create = () => {
   const [selectedCategory, setSelectedCategory] = useState<
@@ -72,7 +74,7 @@ const create = () => {
 
     try {
       const res: IResponse = await axios.post(
-        `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/create`,
+        `https://express-bay-rho.vercel.app/api/products/create`,
         {
           ...data,
           images: uploadedImages,
@@ -97,6 +99,22 @@ const create = () => {
       setIsLoading(false);
     }
   };
+
+  if (user.stores.length === 0) {
+    return (
+      <View className="w-full h-full flex-col justify-center items-center bg-primary ">
+        <EmptyComponent
+          title="Sizin aktiv mağazanız yoxdur"
+          subtitle="Məhsul əlavə etmək üçün öncə hesabınıza mağaza əlavə edin"
+        />
+        <CustomButton
+          containerStyles="mt-10 w-[80%] "
+          title="Mağaza əlavə et"
+          handlePress={() => router.push(`/store/add`)}
+        />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col">

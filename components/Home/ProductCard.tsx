@@ -12,7 +12,7 @@ const ProductCard = ({ product }: { product: IProductDB }) => {
   const handleDelete = async (prodId: string) => {
     setIsLoading(true);
     await axios.delete(
-      `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/${prodId}`
+      `https://express-bay-rho.vercel.app/api/products/${prodId}`
     );
     await refetchUser();
     setIsLoading(false);
@@ -21,7 +21,7 @@ const ProductCard = ({ product }: { product: IProductDB }) => {
   const handleUpdate = async (prodId: string, isActive: boolean) => {
     setIsLoading(true);
     await axios.patch(
-      `${process.env.EXPO_PUBLIC_BASE_URL}/api/products/${prodId}`,
+      `https://express-bay-rho.vercel.app/api/products/${prodId}`,
       {
         isActive,
       }
