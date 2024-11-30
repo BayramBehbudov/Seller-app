@@ -16,7 +16,6 @@ const OrdersTable = ({
   const [modalVisible, setModalVisible] = useState(false);
 
   const [selectedOrder, setSelectedOrder] = useState<IOrderDb>({} as IOrderDb);
-
   const header = ["ID", "Tarix", "Status"];
   const footer = ["", "", ""];
 

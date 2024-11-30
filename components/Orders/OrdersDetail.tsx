@@ -6,6 +6,7 @@ import { getOrderStatus, getSlicedID } from "@/helpers/functions";
 import OrderProductCard from "./OrderProductCard";
 import CustomButton from "../CustomButton";
 import axios from "axios";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const OrdersDetail = ({
   order,
@@ -16,15 +17,26 @@ const OrdersDetail = ({
   setOrders: (value: IOrderDb) => void;
   setModalVisible: (value: boolean) => void;
 }) => {
-  const handleOrderStatus = async (status: IOrderDb["status"]) => {
+  const { user } = useGlobalContext();
+  const handleOrderStatus = async (
+    storeId: string,
+    status: "pending" | "ready" | "handOver"
+  ) => {
     try {
-      await axios.patch(
-        `https://express-bay-rho.vercel.app/api/order/${order._id}`,
+      const res = await axios.post(
+        `https://express-bay-rho.vercel.app/api/order/store`,
         {
+          orderId: order._id,
+          storeId,
           status,
         }
       );
-      setOrders({ ...order, status });
+      setOrders({
+        ...order,
+        stores: order.stores.map((store) =>
+          store.store === storeId ? { ...store, status } : store
+        ),
+      });
       setModalVisible(false);
     } catch (error) {
       console.log(error);
@@ -82,30 +94,48 @@ const OrdersDetail = ({
         </View>
 
         <View className="flex-col gap-2 mt-2">
-          {products.map((product, index) => {
+          {order.stores.map((s) => {
+            const store = user.stores.find((store) => store._id === s.store);
+
             return (
-              <OrderProductCard
-                key={product.product._id + index}
-                prod={product}
-              />
+              <View
+                className="w-full flex-col p-3 gap-1  border rounded-lg border-gray-200 "
+                key={store?._id}
+              >
+                <View className="items-center justify-center ">
+                  <Text className="uppercase p-2 line text-cyan-600 font-bold bg-orange-100 rounded-md">
+                    {store?.name}
+                  </Text>
+                </View>
+
+                {s.products.map((product, index) => {
+                  return (
+                    <OrderProductCard
+                      key={product.product._id + index}
+                      prod={product}
+                    />
+                  );
+                })}
+                <View className="flex-row gap-2 mt-5">
+                  <CustomButton
+                    containerStyles="w-1/2 h-10"
+                    title={"Hazır"}
+                    handlePress={() => handleOrderStatus(s.store, "ready")}
+                    disabled={s.status !== "pending"}
+                  />
+
+                  <CustomButton
+                    containerStyles="w-1/2 h-10"
+                    title={"Təhvil verdim"}
+                    handlePress={() => {
+                      handleOrderStatus(s.store, "handOver");
+                    }}
+                    disabled={s.status !== "ready"}
+                  />
+                </View>
+              </View>
             );
           })}
-        </View>
-
-        <View className="flex-col gap-2 mt-2">
-          <CustomButton
-            title={"Təhvil verilməyə hazırdır"}
-            handlePress={() => handleOrderStatus("ready")}
-            disabled={order.status !== "pending"}
-          />
-
-          <CustomButton
-            title={"Təhvil verdim"}
-            handlePress={() => {
-              handleOrderStatus("handOver");
-            }}
-            disabled={order.status !== "ready"}
-          />
         </View>
       </ScrollView>
     </View>

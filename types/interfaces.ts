@@ -228,13 +228,14 @@ export interface IOrderProductDb {
 export interface IOrderDb {
   stores: {
     store: string;
+    status: "pending" | "ready" | "handOver";
     amount: IOrderTotal;
     products: IOrderProductDb[];
   }[];
   deliveryNote: string;
   sellerNote: string;
   deliveryAddress: IUserAddress;
-  status: "pending" | "ready" | "handOver";
+  status: "pending" | "accepted" | "delivered" | "fullfilled" | "cancelled";
   _id: string;
   createdAt: string;
   updatedAt: string;
