@@ -23,6 +23,7 @@ import axios from "axios";
 import { uploadImagesToCloudinary } from "@/services/claudinaryActions";
 import EmptyComponent from "@/components/EmptyComponent";
 import { router } from "expo-router";
+import mongoose from "mongoose";
 
 const create = () => {
   const [selectedCategory, setSelectedCategory] = useState<
@@ -80,6 +81,7 @@ const create = () => {
           images: uploadedImages,
           attributes,
           features,
+          store: new mongoose.Types.ObjectId(data.store),
         }
       );
       if (res.status === 200) {

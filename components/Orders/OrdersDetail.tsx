@@ -18,6 +18,7 @@ const OrdersDetail = ({
   setModalVisible: (value: boolean) => void;
 }) => {
   const { user } = useGlobalContext();
+
   const handleOrderStatus = async (
     storeId: string,
     status: "pending" | "ready" | "handOver"
@@ -118,18 +119,20 @@ const OrdersDetail = ({
                 })}
                 <View className="flex-row gap-2 mt-5">
                   <CustomButton
-                    containerStyles="w-1/2 h-10"
+                    containerStyles="w-1/2"
                     title={"Hazır"}
                     handlePress={() => handleOrderStatus(s.store, "ready")}
                     disabled={s.status !== "pending"}
+                    height={10}
                   />
 
                   <CustomButton
-                    containerStyles="w-1/2 h-10"
+                    containerStyles="w-1/2"
                     title={"Təhvil verdim"}
                     handlePress={() => {
                       handleOrderStatus(s.store, "handOver");
                     }}
+                    height={10}
                     disabled={s.status !== "ready"}
                   />
                 </View>

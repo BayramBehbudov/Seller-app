@@ -1,16 +1,19 @@
-export const beltMaterials = [
+export const beltMatereals = [
   "Dəri",
   "Süni Dəri",
   "Pambıq",
-  "Poliester",
   "Kanvas",
   "Naylon",
   "Metal",
-  "Kauçuk",
+  "Plastik",
+  "Elastik (Spandex)",
+  "Naylon",
+  "Rezin",
+  "Parça",
   "Toxuma",
 ];
 
-export const watchMaterials = [
+export const watchMatereals = [
   "Paslanmayan Polad",
   "Dəri",
   "Kauçuk",
@@ -30,6 +33,7 @@ export const watchTypes = [
   "Avtomatik",
   "Mexaniki",
 ];
+
 export const lensTypes = [
   "Polarizə edilmiş",
   "Fotoqramik",
@@ -38,6 +42,7 @@ export const lensTypes = [
   "Mavi işıq bloklayan",
   "Əks etdirməyən",
   "UV qoruma",
+  "UV400",
 ];
 
 export const frameShapes = [
@@ -50,4 +55,20 @@ export const frameShapes = [
   "Qaş Xətti",
   "Geometrik",
   "Wayfarer",
+];
+
+export const jewelryTypes = [
+  "Sadə",
+  "Qızıl",
+  "Qızıl örtüklü",
+  "Qızıl suyuna çəkilmiş",
+  "Gümüş",
+  "Gümüş örtüklü",
+  "Gümüş suyuna çəkilmiş",
+  "Toxunma",
+  "Metal",
+  "Plastik",
+  "Keramika",
+  "Əl işi",
+  "Digər",
 ];

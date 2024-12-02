@@ -12,6 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Alert, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { z } from "zod";
+import mongoose from "mongoose";
 
 const EditStore = () => {
   const { id } = useGlobalSearchParams();
@@ -62,7 +63,8 @@ const EditStore = () => {
           `https://express-bay-rho.vercel.app/api/store/create`,
           {
             ...formValues,
-            owner: user._id,
+            owner: new mongoose.Types.ObjectId(user._id),
+            point: new mongoose.Types.ObjectId(formValues.point),
           }
         );
 

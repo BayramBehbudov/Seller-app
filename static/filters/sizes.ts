@@ -1,6 +1,18 @@
 export const defaultSize = ["One Size/Vahid ölçü", "Over Size/Geniş ölçü"];
 
-export const letterSize = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+export const letterSize = [
+  "XXS",
+  "XS",
+  "S",
+  "M",
+  "L",
+  "XL",
+  "XXL",
+  "3XL",
+  "4XL",
+  "5XL",
+  "6XL",
+];
 
 export const kidsSize = [
   "Yeni doğulan",
@@ -216,4 +228,19 @@ export const braSizes = [
   "100H",
   "100I",
   "100J",
+];
+
+export const diametr = [
+  "0-5mm",
+  "5-10mm",
+  "10-15mm",
+  "15-20mm",
+  "20-25mm",
+  "25-30mm",
+  "30-35mm",
+  "35-40mm",
+  "40-45mm",
+  "45-50mm",
+  "50-55mm",
+  "digər",
 ];

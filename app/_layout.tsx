@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { GlobalProvider } from "@/context/GlobalProvider";
 import { StatusBar } from "expo-status-bar";
+import 'react-native-get-random-values';
 
 SplashScreen.preventAutoHideAsync();
 

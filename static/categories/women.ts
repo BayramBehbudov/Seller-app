@@ -1,6 +1,6 @@
 import { ICategoriesValue, ISubCategoryValue } from '@/types/interfaces'
 import { letterSize } from '../filters/sizes'
-import { closureTypes, collarTypes, liningOptions, material, patterns, pocketOptions, sleeveLength } from '../feautures/clothings'
+import { closureTypes, collarTypes, liningOptions, matereal, patterns, pocketOptions, sleeveLength } from '../feautures/clothings'
 
 const clothing: ISubCategoryValue = {
    title: 'Geyim',
@@ -10,7 +10,7 @@ const clothing: ISubCategoryValue = {
       { title: 'closureTypes', value: closureTypes },
       { title: 'pocketOptions', value: pocketOptions },
       { title: 'liningOptions', value: liningOptions },
-      { title: 'material', value: material },
+      { title: 'matereal', value: matereal },
    ],
    child: {
       suits: {

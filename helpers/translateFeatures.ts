@@ -1,67 +1,74 @@
 export const translateFeatures = (text: string) => {
-   switch (text) {
-      case 'beltMaterials':
-         return 'Kəmər matrealı'
+  switch (text) {
+    case "beltMatereals":
+      return "Kəmər matrealı";
 
-      case 'watchMaterials':
-         return 'Saat matrealı'
+    case "watchMatereals":
+      return "Saat matrealı";
 
-      case 'watchTypes':
-         return 'Saat tipi'
+    case "watchTypes":
+      return "Mexanizm tipi";
 
-      case 'lensTypes':
-         return 'Lens tipi'
+    case "lensTypes":
+      return "Lens tipi";
 
-      case 'frameShapes':
-         return 'Çərçivə forması'
+    case "ortam":
+      return "Mühit";
 
-      case 'season':
-         return 'Mövsüm'
-      case 'sleeveLength':
-         return 'Qol uzunluq'
-      case 'patterns':
-         return 'Bəzəklər'
-      case 'collarTypes':
-         return 'Yaxa tipi'
-      case 'closureTypes':
-         return 'Bağlanma forması'
+    case "frameShapes":
+      return "Çərçivə forması";
 
-      case 'heelHeight':
-         return 'Daban hündürlüyü'
+    case "season":
+      return "Mövsüm";
+    case "sleeveLength":
+      return "Qol uzunluq";
+    case "patterns":
+      return "Bəzəklər";
+    case "collarTypes":
+      return "Yaxa tipi";
+    case "closureTypes":
+      return "Bağlanma forması";
 
-      case 'material':
-         return 'Material'
+    case "heelHeight":
+      return "Daban hündürlüyü";
 
-      case 'hoodOptions':
-         return 'Kapşon forması'
+    case "matereal":
+      return "Matereal";
 
-      case 'pocketOptions':
-         return 'Cib forması'
+    case "hoodOptions":
+      return "Kapşon forması";
 
-      case 'liningOptions':
-         return 'Astar forması'
+    case "pocketOptions":
+      return "Cib forması";
 
-      case 'operatingSystem':
-         return 'Əməliyyat sistemi'
+    case "liningOptions":
+      return "Astar forması";
 
-      case 'batteryCapacities':
-         return 'Batareya həcmi'
+    case "operatingSystem":
+      return "Əməliyyat sistemi";
 
-      case 'screenSizes':
-         return 'Ekran ölçüsü'
-      case 'waterResistanceLevels':
-         return 'Suya davamlılıq'
-      case 'otherElectronicsFeatures':
-         return 'Digər'
-      case 'shoeMaterial':
-         return 'Material'
-      case 'soleType':
-         return 'Altlıq tipi'
-      case 'shoeClosureType':
-         return 'Bağlanma tipi'
-      case 'liningType':
-         return 'Astar tipi'
-      default:
-         return 'Seçin'
-   }
-}
+    case "batteryCapacities":
+      return "Batareya həcmi";
+
+    case "screenSizes":
+      return "Ekran ölçüsü";
+    case "waterResistanceLevels":
+      return "Suya davamlılıq";
+    case "otherElectronicsFeatures":
+      return "Digər";
+    case "soleType":
+      return "Altlıq tipi";
+    case "liningType":
+      return "Astar tipi";
+    case "entryMatereal":
+      return "İçlik matrealı";
+    case "diametr":
+      return "Diametr";
+    case "glass":
+      return "Şüşə örtüyü";
+    case "jewelryTypes":
+      return "Şüşə örtüyü";
+    default:
+      return "Seçin";
+  }
+};
