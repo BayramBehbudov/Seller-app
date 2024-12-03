@@ -4,6 +4,7 @@ import { ICategoriesValue } from "@/types/interfaces";
 import { clothing } from "./men/clothing";
 import { shoes } from "./men/shoes";
 import { accessories } from "./men/accessories";
+import { scincare } from "./men/scincare";
 
 const men: ICategoriesValue = {
   title: "Kişi",
@@ -13,6 +14,7 @@ const men: ICategoriesValue = {
     clothing,
     shoes,
     accessories,
+    // scincare,
   },
 };
 

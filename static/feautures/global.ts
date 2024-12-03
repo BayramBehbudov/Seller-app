@@ -61,3 +61,25 @@ export const patterns = [
 ];
 
 export const glassType = ["Şüşə", "Plastik", "Şüşə/plastik", "Kristal"];
+export const typeJewelry = [
+  "Qolbağı",
+  "Sırğa",
+  "Boyunbağı",
+  "Üzük",
+  "Piercing",
+  "Dəst 2li",
+  "Dəst 3lü",
+  "Dəst 4lü",
+  "Digər",
+];
+
+export const typeBag = [
+  "Bel çantası",
+  "Çiyin çantası",
+  "Məktəb çantası",
+  "Əl çantası",
+  "İdman çantası",
+  "Səyahət çantası",
+  "Çanta aksesuarları",
+  "Digər",
+];

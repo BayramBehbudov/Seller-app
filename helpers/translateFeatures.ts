@@ -2,7 +2,11 @@ export const translateFeatures = (text: string) => {
   switch (text) {
     case "beltMatereals":
       return "Kəmər matrealı";
-
+    case "type":
+      return "Növ";
+      case "capacity":
+        return "Həcm";
+  
     case "watchMatereals":
       return "Saat matrealı";
 
