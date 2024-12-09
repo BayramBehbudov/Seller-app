@@ -46,6 +46,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
 
   const refetchOrders = async (stores: IStoreDB[]) => {
     const ids = stores.map((store) => store._id);
+    
     try {
       setIsLoading(true);
       const response = await axios.get(

@@ -69,15 +69,6 @@ const HomePage = () => {
               Bütün məhsullarınız burada
             </Text>
             <HomeFilters setFilters={setFilters} />
-            <CustomButton
-              handlePress={async () => {
-                const res = await axios.get(
-                  "https://express-bay-rho.vercel.app/api/test"
-                );
-                console.log(res.data);
-              }}
-              title="bildiriş"
-            />
           </View>
         }
         renderItem={({ item }) => <ProductCard product={item} />}
