@@ -2,6 +2,7 @@ import { IOrderDb, IResponse, IStoreDB, IUserDB } from "@/types/interfaces";
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import CustomLoader from "@/components/CustomLoader";
+import { NotifyProvider } from "./NotificationProvider";
 
 const GlobalContext = createContext({
   user: {} as IUserDB,
@@ -22,7 +23,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [orders, setOrders] = useState<IOrderDb[]>([] as IOrderDb[]);
-
   const refetchUser = async () => {
     setIsLoading(true);
     try {
@@ -91,8 +91,10 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         refetchUser,
       }}
     >
-      <CustomLoader animating={isLoading} />
-      {children}
+      <NotifyProvider>
+        <CustomLoader animating={isLoading} />
+        {children}
+      </NotifyProvider>
     </GlobalContext.Provider>
   );
 };

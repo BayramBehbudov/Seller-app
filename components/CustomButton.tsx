@@ -7,7 +7,7 @@ const CustomButton = ({
   titleStyles,
   containerStyles,
   disabled,
-  height = 14,
+  height = 16,
 }: {
   handlePress: () => void;
   title: string;

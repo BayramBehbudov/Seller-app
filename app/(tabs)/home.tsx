@@ -8,6 +8,7 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { IProductDB } from "@/types/interfaces";
 import CustomButton from "@/components/CustomButton";
 import { router } from "expo-router";
+import axios from "axios";
 
 const HomePage = () => {
   const { user } = useGlobalContext();
@@ -68,6 +69,15 @@ const HomePage = () => {
               Bütün məhsullarınız burada
             </Text>
             <HomeFilters setFilters={setFilters} />
+            <CustomButton
+              handlePress={async () => {
+                const res = await axios.get(
+                  "https://express-bay-rho.vercel.app/api/test"
+                );
+                console.log(res.data);
+              }}
+              title="bildiriş"
+            />
           </View>
         }
         renderItem={({ item }) => <ProductCard product={item} />}

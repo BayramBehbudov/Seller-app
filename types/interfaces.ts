@@ -60,6 +60,7 @@ export interface IUser {
   surname: string;
   phone: string;
   gender: "male" | "female";
+  pushTokens: string[];
 }
 export interface IUserDB extends IUser {
   address: IUserAddress[];
