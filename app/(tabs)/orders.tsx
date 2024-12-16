@@ -2,7 +2,6 @@ import { Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import OrdersTable from "@/components/Orders/OrdersTable";
-import { defaultOrders } from "@/static/data";
 import OrdersFilters from "@/components/Orders/OrdersFilters";
 import EmptyComponent from "@/components/EmptyComponent";
 import { IOrderDb } from "@/types/interfaces";
@@ -40,7 +39,10 @@ const orders = () => {
       <OrdersFilters setFilters={setFilters} orders={orders} />
 
       {filteredOrders.length ? (
-        <OrdersTable orders={filteredOrders} setOrders={setFilteredOrders} />
+        <OrdersTable
+          orders={[...filteredOrders, ...filteredOrders]}
+          setOrders={setFilteredOrders}
+        />
       ) : (
         <EmptyComponent
           title={

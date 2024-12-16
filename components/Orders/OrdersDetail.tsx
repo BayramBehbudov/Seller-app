@@ -18,7 +18,6 @@ const OrdersDetail = ({
   setModalVisible: (value: boolean) => void;
 }) => {
   const { user } = useGlobalContext();
-
   const handleOrderStatus = async (
     storeId: string,
     status: "pending" | "ready" | "handOver"

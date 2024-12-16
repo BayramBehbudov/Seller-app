@@ -26,7 +26,7 @@ const OrdersTable = ({
   }));
 
   return (
-    <ScrollView className="w-full">
+    <ScrollView className="w-full" style={{ marginBottom: 70 }}>
       <View className="rounded-tl-2xl rounded-tr-2xl bg-white h-12 items-center  m-0 shadow-md w-full flex-row mb-2">
         {header.map((header) => (
           <Text

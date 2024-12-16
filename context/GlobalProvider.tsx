@@ -55,6 +55,14 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
           },
         }
       );
+      // const response = await axios.get(
+      //   `https://express-bay-rho.vercel.app/api/order/store`,
+      //   {
+      //     params: {
+      //       ids,
+      //     },
+      //   }
+      // );
 
       if (response.status === 200) {
         const updatedOrders = response.data.map((order: IOrderDb) => {
@@ -92,8 +100,8 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         refetchUser,
       }}
     >
-        <CustomLoader animating={isLoading} />
-        {children}
+      <CustomLoader animating={isLoading} />
+      {children}
     </GlobalContext.Provider>
   );
 };
