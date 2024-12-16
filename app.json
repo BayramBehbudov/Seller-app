@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Bazar",
-    "slug": "slug",
+    "name": "BazarSeller",
+    "slug": "bazarseller",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,19 +19,16 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.bb.bazar",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
-
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
-      },
-      "package": "com.bb.bazar"
+      }
     },
     "web": {
       "bundler": "metro",
@@ -47,8 +44,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "facd9250-1912-477e-a3cf-6dbbef1dbb57"
+        "projectId": "80c6c315-cfc6-4a45-88d0-4d80ae68654b"
       }
-    }
+    },
+    "owner": "bayrambehbudov"
   }
 }

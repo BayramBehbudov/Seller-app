@@ -2,7 +2,6 @@ import { IOrderDb, IResponse, IStoreDB, IUserDB } from "@/types/interfaces";
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import CustomLoader from "@/components/CustomLoader";
-import { NotifyProvider } from "./NotificationProvider";
 
 const GlobalContext = createContext({
   user: {} as IUserDB,
@@ -46,7 +45,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
 
   const refetchOrders = async (stores: IStoreDB[]) => {
     const ids = stores.map((store) => store._id);
-    
     try {
       setIsLoading(true);
       const response = await axios.get(
@@ -92,10 +90,8 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         refetchUser,
       }}
     >
-      <NotifyProvider>
-        <CustomLoader animating={isLoading} />
-        {children}
-      </NotifyProvider>
+      <CustomLoader animating={isLoading} />
+      {children}
     </GlobalContext.Provider>
   );
 };
