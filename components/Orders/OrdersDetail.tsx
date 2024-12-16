@@ -35,7 +35,7 @@ const OrdersDetail = ({
       setOrders({
         ...order,
         stores: order.stores.map((store) =>
-          store.store === storeId ? { ...store, status } : store
+          store.store._id === storeId ? { ...store, status } : store
         ),
       });
       setModalVisible(false);
@@ -96,7 +96,7 @@ const OrdersDetail = ({
 
         <View className="flex-col gap-2 mt-2">
           {order.stores.map((s) => {
-            const store = user.stores.find((store) => store._id === s.store);
+            const store = user.stores.find((store) => store._id === s.store._id);
 
             return (
               <View
@@ -121,7 +121,7 @@ const OrdersDetail = ({
                   <CustomButton
                     containerStyles="w-1/2"
                     title={"Hazır"}
-                    handlePress={() => handleOrderStatus(s.store, "ready")}
+                    handlePress={() => handleOrderStatus(s.store._id, "ready")}
                     disabled={s.status !== "pending"}
                     height={10}
                   />
@@ -130,7 +130,7 @@ const OrdersDetail = ({
                     containerStyles="w-1/2"
                     title={"Təhvil verdim"}
                     handlePress={() => {
-                      handleOrderStatus(s.store, "handOver");
+                      handleOrderStatus(s.store._id, "handOver");
                     }}
                     height={10}
                     disabled={s.status !== "ready"}
