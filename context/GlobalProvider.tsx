@@ -92,8 +92,8 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         refetchUser,
       }}
     >
-      <CustomLoader animating={isLoading} />
-      {children}
+        <CustomLoader animating={isLoading} />
+        {children}
     </GlobalContext.Provider>
   );
 };

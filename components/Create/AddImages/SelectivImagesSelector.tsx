@@ -17,6 +17,9 @@ const SelectivImagesSelector = ({
   deleteImage: (imageId: string | number) => void;
   disabled?: boolean;
 }) => {
+  const selectedTags: string[] = images.subImages
+    ? images.subImages.map((i) => i.imageTag).filter((i) => i !== null)
+    : [];
   return (
     <>
       <View className="mt-2 space-y-2">
@@ -96,6 +99,7 @@ const SelectivImagesSelector = ({
                           });
                         }}
                         containerStyles="w-[48%] ml-3"
+                        disabledValues={selectedTags}
                       />
                     )}
 

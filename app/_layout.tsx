@@ -5,7 +5,7 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { GlobalProvider } from "@/context/GlobalProvider";
 import { StatusBar } from "expo-status-bar";
-import 'react-native-get-random-values';
+import "react-native-get-random-values";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,8 +41,14 @@ export default function RootLayout() {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)/register" options={{ headerShown: false }} />
-        <Stack.Screen name="product/[id]/index" options={{ headerShown: false }} />
-        <Stack.Screen name="store/[id]/index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="product/[id]/index"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="store/[id]/index"
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar backgroundColor="#161622" style="light" />

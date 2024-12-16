@@ -21,9 +21,10 @@ const CustomMultiSelect = ({
   handleChange,
   error,
   multiSelect = false,
+  disabledValues = [],
 }: {
   title: string;
-  data?: { title: string; value: string[] } | null;
+  data: { title: string; value: string[] };
   modalTitle: string;
   containerStyles?: string;
   handleChange: (value: string[]) => void;
@@ -35,6 +36,7 @@ const CustomMultiSelect = ({
     | undefined;
   multiSelect?: boolean;
   defaultSelectValues: string[];
+  disabledValues?: string[];
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedValues, setSelectedValues] = useState<string[]>(
@@ -92,10 +94,11 @@ const CustomMultiSelect = ({
                 <Text className={"text-xl font-bold mb-4"}>{modalTitle}</Text>
 
                 <ScrollView>
-                  {data?.value?.map((item) => {
+                  {data.value.map((item) => {
                     return (
                       <TouchableOpacity
                         key={item}
+                        disabled={disabledValues.includes(item)}
                         className={`p-3 rounded-md flex-row items-start`}
                         onPress={() => handleSelection(item)}
                       >
@@ -108,7 +111,15 @@ const CustomMultiSelect = ({
                             />
                           )}
                         </View>
-                        <Text className={"text-lg ml-3"}>{item}</Text>
+                        <Text
+                          className={`text-lg ml-3 ${
+                            disabledValues.includes(item) &&
+                            !selectedValues.includes(item) &&
+                            "text-gray-400"
+                          }`}
+                        >
+                          {item}
+                        </Text>
                       </TouchableOpacity>
                     );
                   })}

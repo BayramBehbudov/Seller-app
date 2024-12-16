@@ -96,7 +96,9 @@ const OrdersDetail = ({
 
         <View className="flex-col gap-2 mt-2">
           {order.stores.map((s) => {
-            const store = user.stores.find((store) => store._id === s.store._id);
+            const store = user.stores.find(
+              (store) => store._id === s.store._id
+            );
 
             return (
               <View
