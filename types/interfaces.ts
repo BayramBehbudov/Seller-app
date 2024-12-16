@@ -228,7 +228,7 @@ export interface IOrderProductDb {
 
 export interface IOrderDb {
   stores: {
-    store: string;
+    store: IStoreDB;
     status: "pending" | "ready" | "handOver";
     amount: IOrderTotal;
     products: IOrderProductDb[];

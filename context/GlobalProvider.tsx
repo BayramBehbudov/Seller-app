@@ -60,7 +60,9 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         const updatedOrders = response.data.map((order: IOrderDb) => {
           return {
             ...order,
-            stores: order.stores.filter((store) => ids.includes(store.store)),
+            stores: order.stores.filter((store) =>
+              ids.includes(store.store._id)
+            ),
           };
         });
         setOrders(updatedOrders);
