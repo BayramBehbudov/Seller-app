@@ -17,6 +17,7 @@ const CustomSelect = ({
   data,
   containerStyles,
   placeholder,
+  modalStyles,
   handleChange,
   error,
   defaultValue,
@@ -25,6 +26,7 @@ const CustomSelect = ({
   data?: { id: string; title: string }[] | null;
   modalTitle: string;
   containerStyles?: string;
+  modalStyles?: string;
   handleChange: (value: string | string[]) => void;
   placeholder?: string;
   error?:
@@ -32,7 +34,6 @@ const CustomSelect = ({
     | FieldError
     | Merge<FieldError, FieldErrorsImpl<any>>
     | undefined;
-  multiSelect?: boolean;
   defaultValue?: { id: string; title: string };
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,7 +46,7 @@ const CustomSelect = ({
   }, [selectedValues]);
 
   return (
-    <View className={`space-y-2 ${containerStyles}`}>
+    <View className={`space-y-2  ${containerStyles}`}>
       {title && (
         <Text className={`text-base text-gray-100 font-pmedium mb-2`}>
           {title}
@@ -53,7 +54,7 @@ const CustomSelect = ({
       )}
 
       <View
-        className="border-2 border-black-200 w-full h-12 flex-row px-4 bg-black-100 rounded-2xl focus:border-secondary items-center"
+        className="border-2  border-black-200 w-full h-12 flex-row px-4 bg-black-100 rounded-2xl focus:border-secondary items-center"
         onTouchStart={() => setModalVisible(true)}
       >
         <Text className="text-gray-100">
@@ -72,7 +73,7 @@ const CustomSelect = ({
               }
             >
               <View
-                className={"bg-white p-6 rounded-lg w-80 max-h-[50vh] relative"}
+                className={`bg-white p-6 rounded-lg w-80 max-h-[50vh] relative ${modalStyles}`}
               >
                 <FlatList
                   ListHeaderComponent={

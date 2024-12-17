@@ -21,7 +21,9 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUserDB>({} as IUserDB);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [orders, setOrders] = useState<IOrderDb[]>([] as IOrderDb[]);
+
   const refetchUser = async () => {
     setIsLoading(true);
     try {

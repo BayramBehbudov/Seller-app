@@ -242,3 +242,33 @@ export interface IOrderDb {
   updatedAt: string;
   __v: number;
 }
+
+export type IPromoType =
+  | "percentage"
+  | "buyXgetY"
+  | "countPercentage"
+  | "together";
+
+export interface IPromotion {
+  name: string;
+  description: string;
+  type: string;
+
+  discountValue: number;
+  minCount: number;
+
+  isActive: boolean;
+}
+export interface IPromotionDB extends IPromotion {
+  _id: string;
+  creator: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+
+  // countPercentage və buyXgetY minCount tələb edilir
+  // buyXgetY və together discountValue məbləğ endirimidir, countPercentage və percentage faiz endirimi
+  // isactive satıcıdan soruşulsun
+  // creator mağazadır
+  //
+}

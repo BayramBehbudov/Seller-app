@@ -18,15 +18,15 @@ import {
   IStoreDB,
 } from "@/types/interfaces";
 import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
-import { useGlobalSearchParams } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import EditImageController from "@/components/ProductEdit.tsx/EditImageController";
 import axios from "axios";
 import CustomSelect from "@/components/CustomSelect";
 import { editedImages } from "@/services/claudinaryActions";
+import { useLocalSearchParams } from "expo-router";
 
 const EditProduct = () => {
-  const { id } = useGlobalSearchParams();
+  const { id } = useLocalSearchParams();
 
   const { user, isLoading, setIsLoading, refetchUser } = useGlobalContext();
 

@@ -3,19 +3,20 @@ import CustomSelect from "@/components/CustomSelect";
 import FormField from "@/components/FormField";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { StoreSchema } from "@/settings/schemes";
-import { IPointDB, IResponse, IStoreDB } from "@/types/interfaces";
+import { IPointDB, IStoreDB } from "@/types/interfaces";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useGlobalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { z } from "zod";
 import mongoose from "mongoose";
+import GoBackIcon from "@/components/GoBackIcon";
 
 const EditStore = () => {
-  const { id } = useGlobalSearchParams();
+  const { id } = useLocalSearchParams();
   const { user, refetchUser, isLoading, setIsLoading } = useGlobalContext();
   const [points, setPoints] = useState([]);
   const currentStore =
@@ -107,9 +108,12 @@ const EditStore = () => {
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col">
       <ScrollView className="w-full">
-        <Text className="text-white text-2xl font-bold text-center mb-5">
-          Mağaza məlumatları
-        </Text>
+        <View className="flex flex-row items-center mb-5 gap-4">
+          <GoBackIcon iconColor="white" size={20} />
+          <Text className="text-white text-2xl font-bold text-center ">
+            Mağaza məlumatları
+          </Text>
+        </View>
 
         <View className="w-full  gap-3 flex flex-col pb-3">
           <Controller

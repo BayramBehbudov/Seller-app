@@ -154,3 +154,87 @@ export const StoreSchema = z.object({
     })
     .length(24),
 });
+
+export const PromoSchema = z
+  .object({
+    name: z
+      .string({
+        required_error: "Aksiyanın adını daxil edin",
+      })
+      .trim()
+      .min(3, {
+        message: "Aksiyanın adı minimum 3 simvol ola bilər",
+      })
+      .max(50, {
+        message: "Aksiyanın adı maximum 50 simvol ola bilər",
+      }),
+
+    description: z
+      .string({
+        required_error: "Aksiya haqqında açıqlama daxil edin",
+      })
+      .trim()
+      .min(5, {
+        message: "Açıqlama minimum 5 simvol ola bilər",
+      })
+      .max(200, {
+        message: "Açıqlama maximum 200 simvol ola bilər",
+      }),
+
+    type: z.enum(["percentage", "buyXgetY", "countPercentage", "together"], {
+      required_error: "Aksiyanın tipini daxil edin",
+    }),
+
+    isActive: z.boolean({
+      required_error: "Aksiyanın statusunu daxil edin",
+    }),
+
+    discountValue: z
+      .number({
+        required_error: "Aksiya üçün endirim dəyərini daxil edin",
+      })
+      .optional(),
+
+    buyXgetY: z
+      .string({
+        required_error: "Hədiyyə növünü seçin",
+      })
+      .optional(),
+
+    minCount: z
+      .number({
+        required_error: "Aksiya üçün minimum alış sayını daxil edin",
+      })
+      .optional(),
+  })
+
+  .refine(
+    (data) =>
+      data.type !== "buyXgetY" ||
+      (data.buyXgetY !== undefined &&
+        ["2x1", "3x1", "3x2", "4x2", "4x3", "5x3", "5x4"].includes(
+          data.buyXgetY
+        )),
+    {
+      message: "Hədiyyə növünü seçin",
+      path: ["buyXgetY"],
+    }
+  )
+  .refine(
+    (data) =>
+      (data.type !== "percentage" && data.type !== "countPercentage") ||
+      (data.discountValue !== undefined && data.discountValue > 0),
+    {
+      message: "Endirim dəyəri 0 dan böyük olmalıdır",
+      path: ["discountValue"],
+    }
+  )
+  .refine(
+    (data) =>
+      data.type !== "countPercentage" ||
+      (data.minCount !== undefined && data.minCount > 0),
+    {
+      message: "Minimum alış sayı 0-dan böyük olmalıdır",
+      path: ["minCount"],
+    }
+  );

@@ -1,4 +1,4 @@
-import { View, Alert } from "react-native";
+import { View, Alert, ScrollView } from "react-native";
 import React from "react";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { Controller, useForm } from "react-hook-form";
@@ -43,7 +43,7 @@ const EditProfile = () => {
   };
 
   return (
-    <View className="w-full h-full py-2 gap-2 flex-col">
+    <ScrollView className="w-full h-full py-2 gap-2 flex-col">
       <Controller
         control={control}
         name="email"
@@ -142,9 +142,9 @@ const EditProfile = () => {
       <CustomButton
         title="Məlumatları yenilə"
         handlePress={handleSubmit(updateProfile)}
-        containerStyles="mt-5"
+        containerStyles="mt-5 mb-24"
       />
-    </View>
+    </ScrollView>
   );
 };
 

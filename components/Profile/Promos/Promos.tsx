@@ -1,26 +1,33 @@
-import { View, FlatList, Image, TouchableOpacity, Text } from "react-native";
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
-import { useGlobalContext } from "@/context/GlobalProvider";
-import { icons } from "@/constants";
-import StoreCard from "./StoreCard";
+import PromoCard from "./PromoCard";
+import { IPromotionDB } from "@/types/interfaces";
 import { router } from "expo-router";
+import { icons } from "@/constants";
 
-const Stores = () => {
-  const { user } = useGlobalContext();
+const Promos = () => {
+  const promos = [] as IPromotionDB[];
 
   return (
     <FlatList
-      data={user.stores}
+      data={promos}
       contentContainerClassName="gap-2 w-full"
       centerContent={true}
       contentContainerStyle={{ paddingBottom: 80 }}
-      renderItem={({ item }) => <StoreCard store={item} />}
+      renderItem={({ item }) => <PromoCard promo={item} />}
       keyExtractor={(item) => item._id}
       ListFooterComponent={
         <TouchableOpacity
           style={{ backgroundColor: "#FAFAFA" }}
           className="w-full items-center justify-center  h-[200px]  rounded-2xl p-3 flex-col "
-          onPress={() => router.push("/store/add")}
+          onPress={() => router.push("/promo/add")}
         >
           <Image
             source={icons.add}
@@ -28,7 +35,7 @@ const Stores = () => {
             resizeMode="contain"
           />
           <Text className="text-xl  font-psemibold text-center mt-4">
-            Yeni mağaza əlavə et
+            Yeni aksiya yarat
           </Text>
         </TouchableOpacity>
       }
@@ -36,4 +43,4 @@ const Stores = () => {
   );
 };
 
-export default Stores;
+export default Promos;

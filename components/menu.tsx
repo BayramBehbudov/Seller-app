@@ -17,6 +17,7 @@ import { router } from "expo-router";
 import Stores from "./Profile/Store/Stores";
 import { IUserDB } from "@/types/interfaces";
 import axios from "axios";
+import Promos from "./Profile/Promos/Promos";
 
 const MenuBar = ({
   setElement,
@@ -60,6 +61,10 @@ const MenuBar = ({
     {
       title: "Mağazalar",
       component: <Stores />,
+    },
+    {
+      title: "Aksiyalar",
+      component: <Promos />,
     },
   ];
 

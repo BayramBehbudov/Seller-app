@@ -17,7 +17,6 @@ const profile = () => {
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col">
       <MenuBar setElement={setElement} element={element} />
-
       <View className="w-full h-full mt-2">{element.component}</View>
     </SafeAreaView>
   );

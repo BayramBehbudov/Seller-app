@@ -49,6 +49,10 @@ export default function RootLayout() {
           name="store/[id]/index"
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="promo/[id]/index"
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar backgroundColor="#161622" style="light" />
