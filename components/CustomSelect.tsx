@@ -21,6 +21,7 @@ const CustomSelect = ({
   handleChange,
   error,
   defaultValue,
+  disabled,
 }: {
   title?: string;
   data?: { id: string; title: string }[] | null;
@@ -35,6 +36,7 @@ const CustomSelect = ({
     | Merge<FieldError, FieldErrorsImpl<any>>
     | undefined;
   defaultValue?: { id: string; title: string };
+  disabled?: boolean;
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -49,13 +51,15 @@ const CustomSelect = ({
     <View className={`space-y-2  ${containerStyles}`}>
       {title && (
         <Text className={`text-base text-gray-100 font-pmedium mb-2`}>
-          {title}
+          {title} {disabled && "(Dəyişdirmək olmaz)"}
         </Text>
       )}
 
       <View
         className="border-2  border-black-200 w-full h-12 flex-row px-4 bg-black-100 rounded-2xl focus:border-secondary items-center"
-        onTouchStart={() => setModalVisible(true)}
+        onTouchStart={() => {
+          !disabled && setModalVisible(true);
+        }}
       >
         <Text className="text-gray-100">
           {selectedValues?.title || placeholder}

@@ -12,7 +12,9 @@ const FormField = ({
   keyboardType,
   value,
   error,
+  disabled,
 }: {
+  disabled?: boolean;
   title: string;
   text: string;
   placeholder?: string;
@@ -29,26 +31,38 @@ const FormField = ({
   const [showPassword, setShowPassword] = useState(false);
   return (
     <View className={`space-y-2 ${otherStyles} gap-2`}>
-      <Text className={`text-base text-gray-100  font-pmedium`}>{text}</Text>
+      <Text className={`text-base text-gray-100  font-pmedium`}>
+        {text} {disabled && "(Dəyişdirmək olmaz)"}
+      </Text>
 
       <View
         className={`border-2 border-black-200 w-full  flex-row px-4 bg-black-100 rounded-2xl focus:border-secondary items-center  ${
           title === "description" ? 120 : "h-12"
         }`}
       >
-        <TextInput
-          className={`flex-1 text-white font-psemibold text-base focus:outline-none ${
-            title === "description" ? "h-[120px] align-top py-2" : ""
-          }`}
-          placeholder={placeholder}
-          placeholderTextColor={"#7b7b8b"}
-          onChangeText={handleChange}
-          keyboardType={keyboardType ? keyboardType : "default"}
-          secureTextEntry={title === "password" && !showPassword}
-          multiline={title === "description"}
-          numberOfLines={title === "description" ? 4 : 1}
-          value={value}
-        />
+        {disabled ? (
+          <Text
+            className={`flex-1 text-white font-psemibold text-base focus:outline-none ${
+              title === "description" ? "h-[120px] align-top py-2" : ""
+            }`}
+          >
+            {value}
+          </Text>
+        ) : (
+          <TextInput
+            className={`flex-1 text-white font-psemibold text-base focus:outline-none ${
+              title === "description" ? "h-[120px] align-top py-2" : ""
+            }`}
+            placeholder={placeholder}
+            placeholderTextColor={"#7b7b8b"}
+            onChangeText={handleChange}
+            keyboardType={keyboardType ? keyboardType : "default"}
+            secureTextEntry={title === "password" && !showPassword}
+            multiline={title === "description"}
+            numberOfLines={title === "description" ? 4 : 1}
+            value={value}
+          />
+        )}
 
         {title === "password" && (
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>

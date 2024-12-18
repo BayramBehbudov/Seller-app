@@ -8,11 +8,13 @@ const PromoStatusControl = ({
   setSelectedStatus,
   setProducts,
   message,
+  type,
 }: {
   control: any;
   setSelectedStatus: React.Dispatch<React.SetStateAction<boolean>>;
   message: string | undefined;
   setProducts: React.Dispatch<React.SetStateAction<string[]>>;
+  type: string;
 }) => {
   return (
     <>
@@ -29,7 +31,7 @@ const PromoStatusControl = ({
               } else {
                 onChange(false);
                 setSelectedStatus(false);
-                setProducts([]);
+                type === "add" && setProducts([]);
               }
             }}
             placeholder="Seç"
@@ -48,10 +50,10 @@ const PromoStatusControl = ({
         )}
       />
       <Text className="text-green-500">
-        Status aktiv seçilərsə mütləq şəkildə ən azı 1 məhsul seçilməlidir və beləliklə
-        aksiya yaradılan kimi seçilmiş məhsullara endirim tətbiq ediləcəkdir.
-        Deaktiv seçilərsə aksiya yaradılacaq lakin siz aktiv edənə qədər endirim
-        tətbiq edilməyəcək. 
+        Status aktiv seçilərsə mütləq şəkildə ən azı 1 məhsul seçilməlidir və
+        beləliklə aksiya yaradılan kimi seçilmiş məhsullara endirim tətbiq
+        ediləcəkdir. Deaktiv seçilərsə aksiya yaradılacaq lakin siz aktiv edənə
+        qədər endirim tətbiq edilməyəcək.
       </Text>
     </>
   );

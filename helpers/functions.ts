@@ -30,3 +30,18 @@ export const getPromoInfo = (p: string) => {
       return "";
   }
 };
+
+export const translatePromoType = (type: string) => {
+  switch (type) {
+    case "buyXgetY":
+      return "X al Y ödə";
+    case "percentage":
+      return "Faiz endirimi";
+    case "countPercentage":
+      return "Məhsul sayına uyğun faiz endirimi";
+    case "together":
+      return "İki məhsula birlikdə endirim";
+    default:
+      return type;
+  }
+};

@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { Text } from "react-native";
 import React from "react";
 import { Controller } from "react-hook-form";
 import CustomSelect from "../CustomSelect";
@@ -11,12 +11,14 @@ const TypeControl = ({
   setSelectedType,
   selectedType,
   message,
+  disabled,
 }: {
   control: any;
   setValue: any;
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
   selectedType: string;
   message: string | undefined;
+  disabled?: boolean;
 }) => {
   return (
     <>
@@ -29,7 +31,6 @@ const TypeControl = ({
             handleChange={(t) => {
               setSelectedType(t.toString());
               onChange(t);
-
               if (t === "buyXgetY") {
                 setValue("discountValue", 0);
                 setValue("minCount", 0);
@@ -47,10 +48,13 @@ const TypeControl = ({
             modalTitle="Aksiya növünü seçin"
             data={promoTypes}
             error={message}
+            disabled={disabled}
           />
         )}
       />
-      <Text className="text-green-500">{getPromoInfo(selectedType)}</Text>
+      {!disabled && (
+        <Text className="text-green-500">{getPromoInfo(selectedType)}</Text>
+      )}
     </>
   );
 };

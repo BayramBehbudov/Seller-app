@@ -1,4 +1,10 @@
-import { IOrderDb, IResponse, IStoreDB, IUserDB } from "@/types/interfaces";
+import {
+  IOrderDb,
+  IPromotionDB,
+  IResponse,
+  IStoreDB,
+  IUserDB,
+} from "@/types/interfaces";
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import CustomLoader from "@/components/CustomLoader";
@@ -8,11 +14,15 @@ const GlobalContext = createContext({
   isLoading: false,
   isLoggedIn: false,
   orders: [] as IOrderDb[],
+  promos:[] as IPromotionDB[],
+  setPromos: (promos: IPromotionDB[]) => {},
   refetchOrders: (stores: IStoreDB[]) => {},
   setUser: (user: IUserDB) => {},
   setIsLoggedIn: (isLoggedIn: boolean) => {},
   setIsLoading: (isLoading: boolean) => {},
   refetchUser: async () => {},
+  
+
 });
 
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -21,7 +31,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUserDB>({} as IUserDB);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [promos, setPromos] = useState<IPromotionDB[]>([]);
   const [orders, setOrders] = useState<IOrderDb[]>([] as IOrderDb[]);
 
   const refetchUser = async () => {
@@ -34,6 +44,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggedIn(true);
         setUser(response.data as IUserDB);
         refetchOrders(response.data.stores);
+        refetchPromos(response.data.stores.map((store) => store._id));
       } else {
         setIsLoggedIn(false);
         setUser({} as IUserDB);
@@ -84,6 +95,27 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const refetchPromos = async (ids: string[]) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `https://express-bay-rho.vercel.app/api/promo/`,
+        {
+          params: {
+            ids,
+          },
+        }
+      );
+      if (response.status === 200 && response.data?.length > 0) {
+        setPromos(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     refetchUser();
   }, []);
@@ -95,6 +127,8 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         isLoading,
         isLoggedIn,
         orders,
+        promos,
+        setPromos,
         refetchOrders,
         setIsLoading,
         setUser,

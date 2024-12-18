@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomButton from "../CustomButton";
 import CustomSelect from "../CustomSelect";
 import { IStoreDB } from "@/types/interfaces";
@@ -9,7 +9,7 @@ import { Controller } from "react-hook-form";
 import FormField from "../FormField";
 import { buyXgetYTypes } from "@/static/data";
 import PromoStatusControl from "./PromoStatusControl";
-import PromoModal from "./promoModal";
+import PromoModal from "./PromoModal";
 
 const PromoControllers = ({
   selectedStore,
@@ -21,6 +21,8 @@ const PromoControllers = ({
   selectedProducts,
   type,
   submit,
+  defaultType,
+  disabled,
 }: {
   selectedStore: IStoreDB;
   setSelectedStore: React.Dispatch<React.SetStateAction<IStoreDB>>;
@@ -31,11 +33,13 @@ const PromoControllers = ({
   selectedProducts: string[];
   type: string;
   submit: () => void;
+  defaultType: string;
+  disabled?: boolean;
 }) => {
-  const [selectedType, setSelectedType] = useState("");
   const [selectedStatus, setSelectedStatus] = useState(false);
-
+  const [selectedType, setSelectedType] = useState(defaultType || "");
   const { user, isLoading } = useGlobalContext();
+
   return (
     <View className="w-full  gap-3 flex flex-col pb-3">
       <CustomSelect
@@ -43,21 +47,17 @@ const PromoControllers = ({
         handleChange={(t) => {
           setSelectedStore(user.stores.find((s) => s._id === t) as IStoreDB);
         }}
-        defaultValue={
-          user.stores
-            .map((s) =>
-              s._id === selectedStore?._id
-                ? { id: s._id, title: s.name }
-                : { id: "", title: "" }
-            )
-            .filter(Boolean)[0]
-        }
+        defaultValue={{
+          id: selectedStore ? selectedStore._id : "",
+          title: selectedStore ? selectedStore.name : "",
+        }}
         placeholder="Seç"
         modalTitle="Mağazanı seçin"
         data={user.stores
           .map((s) => ({ id: s._id, title: s.name }))
           .filter(Boolean)}
         error={!selectedStore?._id ? "Mağazanı seçin" : undefined}
+        disabled={disabled}
       />
 
       {selectedStore?._id && (
@@ -67,6 +67,7 @@ const PromoControllers = ({
           setSelectedType={setSelectedType}
           selectedType={selectedType}
           message={errors?.type?.message ? "Aksiyanın növünü seçin" : undefined}
+          disabled={disabled}
         />
       )}
       {selectedType && (
@@ -116,6 +117,7 @@ const PromoControllers = ({
                   }}
                   value={value.toString()}
                   error={errors?.discountValue?.message || undefined}
+                  disabled={disabled}
                 />
               )}
             />
@@ -135,6 +137,7 @@ const PromoControllers = ({
                   }}
                   value={value.toString()}
                   error={errors?.minCount?.message || undefined}
+                  disabled={disabled}
                 />
               )}
             />
@@ -153,6 +156,7 @@ const PromoControllers = ({
                   data={buyXgetYTypes}
                   defaultValue={buyXgetYTypes.find((t) => t.id === value)}
                   error={errors?.buyXgetY?.message}
+                  disabled={disabled}
                 />
               )}
             />
@@ -167,6 +171,7 @@ const PromoControllers = ({
             }
             setProducts={setProducts}
             setSelectedStatus={setSelectedStatus}
+            type={type}
           />
 
           {selectedStatus && (

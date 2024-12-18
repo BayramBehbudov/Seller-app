@@ -1,19 +1,12 @@
-import {
-  FlatList,
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import PromoCard from "./PromoCard";
-import { IPromotionDB } from "@/types/interfaces";
 import { router } from "expo-router";
 import { icons } from "@/constants";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const Promos = () => {
-  const promos = [] as IPromotionDB[];
+  const { promos } = useGlobalContext();
 
   return (
     <FlatList

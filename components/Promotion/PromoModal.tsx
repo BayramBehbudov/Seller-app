@@ -30,7 +30,11 @@ const PromoModal = ({
         className="border-2  border-black-200 w-full h-12 flex-row px-4 bg-black-100 rounded-2xl focus:border-secondary items-center"
         onTouchStart={() => setVisible(true)}
       >
-        <Text className="text-gray-100">Seçin</Text>
+        <Text className="text-gray-100">
+          {selectedProducts.length > 0
+            ? `${selectedProducts.length} məhsul seçilib`
+            : `Seçin`}
+        </Text>
         <Modal
           animationType="slide"
           transparent={true}
@@ -51,7 +55,7 @@ const PromoModal = ({
                     Məhsulları seçin
                   </Text>
                 }
-                data={selectedStore.products}
+                data={selectedStore?.products}
                 keyExtractor={(item) => item._id}
                 renderItem={({ item }) => (
                   <Checkbox.Item

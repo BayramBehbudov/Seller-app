@@ -108,6 +108,7 @@ export interface IProduct {
 export interface IProductDB extends IProduct {
   store: IStoreDB;
   reviews: IReviews[];
+  promo: string;
   viewed: number;
   isActive: boolean;
   _id: string;
@@ -272,3 +273,7 @@ export interface IPromotionDB extends IPromotion {
   // creator mağazadır
   //
 }
+
+// export interface IPromoWithProds extends IPromotionDB {
+//   products: string[];
+// }

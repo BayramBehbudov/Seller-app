@@ -76,3 +76,4 @@ export const translateFeatures = (text: string) => {
       return "Seçin";
   }
 };
+
