@@ -56,6 +56,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
 
   const refetchOrders = async (stores: IStoreDB[]) => {
     const ids = stores.map((store) => store._id);
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `https://express-bay-rho.vercel.app/api/order`,
@@ -87,6 +88,8 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

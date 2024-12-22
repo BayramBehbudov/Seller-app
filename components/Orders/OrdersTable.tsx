@@ -12,6 +12,7 @@ import OrdersDetail from "./OrdersDetail";
 import { getOrderStatus, getSlicedID } from "@/helpers/functions";
 import { IOrderDb } from "@/types/interfaces";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { isLoading } from "expo-font";
 
 const OrdersTable = ({
   orders,
@@ -20,9 +21,8 @@ const OrdersTable = ({
   orders: IOrderDb[];
   setOrders: Dispatch<SetStateAction<IOrderDb[]>>;
 }) => {
-  const [refreshControl, setRefreshControl] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const { user, refetchOrders } = useGlobalContext();
+  const { user, refetchOrders, isLoading } = useGlobalContext();
   const [selectedOrder, setSelectedOrder] = useState<IOrderDb>({} as IOrderDb);
   const header = ["ID", "Tarix", "Status"];
   const footer = ["", "", ""];
@@ -39,11 +39,9 @@ const OrdersTable = ({
       style={{ marginBottom: 70 }}
       refreshControl={
         <RefreshControl
-          refreshing={refreshControl}
+          refreshing={isLoading}
           onRefresh={() => {
-            setRefreshControl(true);
             refetchOrders(user.stores);
-            setRefreshControl(false);
           }}
           colors={["#FF9001"]}
         />

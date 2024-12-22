@@ -7,9 +7,9 @@ import UnpaidCard from "./UnpaidCard";
 import { Ionicons } from "@expo/vector-icons";
 
 const UnpaidOrders = () => {
-  const { orders, refetchOrders, user, setIsLoading } = useGlobalContext();
+  const { orders, refetchOrders, user, setIsLoading, isLoading } =
+    useGlobalContext();
   const [unpaidOrders, setUnpaidOrders] = useState<IOrderDb[]>([]);
-  const [refreshing, setRefreshing] = useState(false);
 
   const filterUnpaidOrders = () => {
     const unpaids = orders.filter((o: IOrderDb) =>
@@ -30,12 +30,6 @@ const UnpaidOrders = () => {
       return acc + total;
     }, 0);
   }, [unpaidOrders]);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    filterUnpaidOrders();
-    setRefreshing(false);
-  }, []);
 
   const totals = unpaidOrders.reduce((acc, order) => {
     const total = order.stores.reduce((acc, store) => {
@@ -67,8 +61,8 @@ const UnpaidOrders = () => {
       keyExtractor={(item) => item._id}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
+          refreshing={isLoading}
+          onRefresh={filterUnpaidOrders}
           colors={["#FF9001"]}
         />
       }
