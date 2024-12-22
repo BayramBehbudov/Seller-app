@@ -19,10 +19,6 @@ const OrderProductCard = ({ prod }: { prod: IOrderProductDb }) => {
         <Text className="flex-1 uppercase">{getSlicedID(product._id)}</Text>
       </View>
       <View className="flex-row">
-        <Text className="flex-1">Mağaza</Text>
-        <Text className="flex-1 uppercase line-clamp-1">{store?.name}</Text>
-      </View>
-      <View className="flex-row">
         <Text className=" flex-1">Say</Text>
         <Text className=" flex-1">{count}</Text>
       </View>

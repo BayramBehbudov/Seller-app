@@ -61,7 +61,7 @@ const ProductCard = ({ product }: { product: IProductDB }) => {
               className="text-gray-600  text-base font-psemibold h-5"
               style={{ maxWidth: "45%" }}
             >
-              #{getSlicedID(product._id)}
+              {getSlicedID(product._id)}
             </Text>
           </View>
         </View>

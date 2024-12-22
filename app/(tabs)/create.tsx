@@ -84,6 +84,7 @@ const create = () => {
           store: new mongoose.Types.ObjectId(data.store),
         }
       );
+      
       if (res.status === 200) {
         await refetchUser();
         reset();

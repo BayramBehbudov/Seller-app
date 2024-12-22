@@ -39,10 +39,7 @@ const orders = () => {
       <OrdersFilters setFilters={setFilters} orders={orders} />
 
       {filteredOrders.length ? (
-        <OrdersTable
-          orders={[...filteredOrders, ...filteredOrders]}
-          setOrders={setFilteredOrders}
-        />
+        <OrdersTable orders={filteredOrders} setOrders={setFilteredOrders} />
       ) : (
         <EmptyComponent
           title={

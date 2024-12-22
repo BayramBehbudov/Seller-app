@@ -1,5 +1,5 @@
 export const getSlicedID = (id: string) => {
-  return id.slice(id.length - 6).toUpperCase();
+  return "#" + id.slice(id.length - 6).toUpperCase();
 };
 
 export const getOrderStatus = (status: string) => {
@@ -10,11 +10,18 @@ export const getOrderStatus = (status: string) => {
       return "Hazırdır";
     case "handOver":
       return "Təhvil verdim";
+    case "fullfilled":
+      return "Tamamlanıb";
+    case "cancelled":
+      return "Ləğv edilib";
+    case "delivered":
+      return "Çatdırılır";
+    case "accepted":
+      return "Təyinat məntəqəsində";
     default:
       return status;
   }
 };
-
 export const getPromoInfo = (p: string) => {
   switch (p) {
     case "buyXgetY":

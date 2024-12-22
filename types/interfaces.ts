@@ -233,11 +233,12 @@ export interface IOrderDb {
     status: "pending" | "ready" | "handOver";
     amount: IOrderTotal;
     products: IOrderProductDb[];
+    payToStore: boolean;
   }[];
   deliveryNote: string;
   sellerNote: string;
-  deliveryAddress: IUserAddress;
   status: "pending" | "accepted" | "delivered" | "fullfilled" | "cancelled";
+  deliveryAddress: IUserAddress;
   _id: string;
   createdAt: string;
   updatedAt: string;

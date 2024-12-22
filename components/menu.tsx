@@ -18,6 +18,7 @@ import Stores from "./Profile/Store/Stores";
 import { IUserDB } from "@/types/interfaces";
 import axios from "axios";
 import Promos from "./Profile/Promos/Promos";
+import UnpaidOrders from "./Profile/UnpaidOrders/UnpaidOrders";
 
 const MenuBar = ({
   setElement,
@@ -65,6 +66,10 @@ const MenuBar = ({
     {
       title: "Aksiyalar",
       component: <Promos />,
+    },
+    {
+      title: "Ödənilməmiş sifarişlər",
+      component: <UnpaidOrders />,
     },
   ];
 
