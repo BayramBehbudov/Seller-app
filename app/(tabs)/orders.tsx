@@ -6,14 +6,13 @@ import OrdersFilters from "@/components/Orders/OrdersFilters";
 import EmptyComponent from "@/components/EmptyComponent";
 import { IOrderDb } from "@/types/interfaces";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import CustomButton from "@/components/CustomButton";
 
 export interface IOrderFilters {
   status: null | string;
   _id: string | null;
 }
 const orders = () => {
-  const { orders, refetchOrders, user } = useGlobalContext();
+  const { orders } = useGlobalContext();
   const [filteredOrders, setFilteredOrders] = useState<IOrderDb[]>(orders);
   const [filters, setFilters] = useState<IOrderFilters>({
     status: null,
@@ -54,11 +53,6 @@ const orders = () => {
           }
         />
       )}
-      <CustomButton
-        handlePress={() => refetchOrders(user.stores)}
-        title="Yenilə"
-        containerStyles="w-full absolute bottom-3 self-center"
-      />
     </SafeAreaView>
   );
 };

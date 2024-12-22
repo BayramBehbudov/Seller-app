@@ -14,15 +14,13 @@ const GlobalContext = createContext({
   isLoading: false,
   isLoggedIn: false,
   orders: [] as IOrderDb[],
-  promos:[] as IPromotionDB[],
+  promos: [] as IPromotionDB[],
   setPromos: (promos: IPromotionDB[]) => {},
   refetchOrders: (stores: IStoreDB[]) => {},
   setUser: (user: IUserDB) => {},
   setIsLoggedIn: (isLoggedIn: boolean) => {},
   setIsLoading: (isLoading: boolean) => {},
   refetchUser: async () => {},
-  
-
 });
 
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -59,7 +57,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const refetchOrders = async (stores: IStoreDB[]) => {
     const ids = stores.map((store) => store._id);
     try {
-      setIsLoading(true);
       const response = await axios.get(
         `https://express-bay-rho.vercel.app/api/order`,
         {
@@ -90,8 +87,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

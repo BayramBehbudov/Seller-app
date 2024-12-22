@@ -1,10 +1,17 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { hoursSince } from "@/helpers/dateHelpers";
 import CustomModal from "../CustomModal";
 import OrdersDetail from "./OrdersDetail";
 import { getOrderStatus, getSlicedID } from "@/helpers/functions";
 import { IOrderDb } from "@/types/interfaces";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const OrdersTable = ({
   orders,
@@ -13,8 +20,9 @@ const OrdersTable = ({
   orders: IOrderDb[];
   setOrders: Dispatch<SetStateAction<IOrderDb[]>>;
 }) => {
+  const [refreshControl, setRefreshControl] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const { user, refetchOrders } = useGlobalContext();
   const [selectedOrder, setSelectedOrder] = useState<IOrderDb>({} as IOrderDb);
   const header = ["ID", "Tarix", "Status"];
   const footer = ["", "", ""];
@@ -26,7 +34,21 @@ const OrdersTable = ({
   }));
 
   return (
-    <ScrollView className="w-full" style={{ marginBottom: 70 }}>
+    <ScrollView
+      className="w-full"
+      style={{ marginBottom: 70 }}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshControl}
+          onRefresh={() => {
+            setRefreshControl(true);
+            refetchOrders(user.stores);
+            setRefreshControl(false);
+          }}
+          colors={["#FF9001"]}
+        />
+      }
+    >
       <View className="rounded-tl-2xl rounded-tr-2xl bg-white h-12 items-center  m-0 shadow-md w-full flex-row mb-2">
         {header.map((header) => (
           <Text
