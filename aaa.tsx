@@ -11,7 +11,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-const CustomMultiSelect = ({
+const aaa = ({
   title,
   modalTitle,
   placeholder,
@@ -149,4 +149,4 @@ const CustomMultiSelect = ({
   );
 };
 
-export default CustomMultiSelect;
+export default aaa;

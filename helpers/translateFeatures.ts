@@ -4,9 +4,9 @@ export const translateFeatures = (text: string) => {
       return "Kəmər matrealı";
     case "type":
       return "Növ";
-      case "capacity":
-        return "Həcm";
-  
+    case "capacity":
+      return "Həcm";
+
     case "watchMatereals":
       return "Saat matrealı";
 
@@ -72,8 +72,21 @@ export const translateFeatures = (text: string) => {
       return "Şüşə örtüyü";
     case "jewelryTypes":
       return "Şüşə örtüyü";
-    default:
+
+    case "skinType":
+      return "Dəri tipi";
+
+    case "formType":
+      return "Məhsulun forması";
+
+    case "parfumType":
+      return "Qoxu tipi";
+      case 'effectType': 
+      return "Təsir növü";
+case 'power':
+  return 'Güc səviyyəsi'
+
+      default:
       return "Seçin";
   }
 };
-

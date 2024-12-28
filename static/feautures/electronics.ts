@@ -54,3 +54,24 @@ export const otherElectronicsFeatures = [
   "Mövzu Fərdiləşdirmə",
   "Məlumat Şifrələmə",
 ];
+
+export const matereal = [
+  "Metal",
+  "Plastik",
+  "Şüşə",
+  "Polad",
+  "Paslanmayan",
+  "Keramika",
+];
+
+export const power = [
+  "3.7V",
+  "5V",
+  "9V",
+  "12V",
+  "24V",
+  "48V",
+  "110V",
+  "220V",
+  "380V",
+];

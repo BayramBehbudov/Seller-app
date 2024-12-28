@@ -43,7 +43,7 @@ const Login = () => {
           "Giriş ilə bağlı çətinliyiniz varsa dəstək xidməti ilə əlaqə saxlayın"
         );
       }
-      console.log(auth.message);
+      // console.log(auth.message);
     } catch (error) {
       console.log(error);
     } finally {

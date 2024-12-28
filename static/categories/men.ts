@@ -14,7 +14,7 @@ const men: ICategoriesValue = {
     clothing,
     shoes,
     accessories,
-    // scincare,
+    scincare,
   },
 };
 

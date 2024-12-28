@@ -19,12 +19,7 @@ import { ISubCategoryValue } from "@/types/interfaces";
 
 export const accessories: ISubCategoryValue = {
   title: "Aksesuarlar",
-  filters: [
-    {
-      title: "color",
-      value: colors,
-    },
-  ],
+  filters: [],
   features: [],
   child: {
     watches: {

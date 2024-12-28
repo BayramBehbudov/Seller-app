@@ -1,82 +1,19 @@
-import { ICategoriesValue, ISubCategoryValue } from '@/types/interfaces'
+import { ICategoriesValue } from "@/types/interfaces";
+import { phone } from "./electronics/phone";
+import { televisions } from "./electronics/tv";
+import { computer } from "./electronics/computer";
+import { kitchen } from "./electronics/kitchen";
 
-const phones: ISubCategoryValue = {
-   title: 'Telefonlar',
-   filters: [],
-   features: [],
-   child: {
-      smartphones: {
-         title: 'Smartfonlar',
-         filters: [{ title: 'color', value: [] }],
-         features: [],
-      },
-      accessories: {
-         title: 'Aksessuarlar',
-         filters: [],
-         features: [],
-      },
-      tablets: {
-         title: 'Planşetlər',
-         filters: [],
-         features: [],
-      },
-   },
-}
-
-const computers: ISubCategoryValue = {
-   title: 'Kompüterlər',
-   filters: [],
-   features: [],
-   child: {
-      laptops: {
-         title: 'Noutbuklar',
-         filters: [],
-         features: [],
-      },
-      desktops: {
-         title: 'Masaüstü kompüterlər',
-         filters: [],
-         features: [],
-      },
-      accessories: {
-         title: 'Aksessuarlar',
-         filters: [],
-         features: [],
-      },
-   },
-}
-
-const televisions: ISubCategoryValue = {
-   title: 'Televizorlar',
-   filters: [],
-   features: [],
-   child: {
-      'smart-tv': {
-         title: 'Smart TV',
-         filters: [],
-         features: [],
-      },
-      'led-tv': {
-         title: 'LED TV',
-         filters: [],
-         features: [],
-      },
-      '4k-tv': {
-         title: '4K TV',
-         filters: [],
-         features: [],
-      },
-   },
-}
 const electronics: ICategoriesValue = {
-   title: 'Elektronika',
-   features: [],
-   filters: [{ title: 'screenSizes', value: [] }],
-   subs: {
-      phones,
-      computers,
-      televisions,
-   },
-}
+  title: "Elektronika",
+  features: [],
+  filters: [{ title: "screenSizes", value: [] }],
+  subs: {
+   kitchen,
+   //  phone,
+   //  computer,
+   //  televisions,
+  },
+};
 
-export default electronics
+export default electronics;

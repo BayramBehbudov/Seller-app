@@ -5,10 +5,10 @@ export const scincare: ISubCategoryValue = {
     filters: [],
     features: [],
     child: {
-        // skincare: {
-        //     title: "Dəriyə qulluq",
-        //     filters: [],
-        //     features: [],
-        // },
+        parfum: {
+            title: "Ətir",
+            filters: [],
+            features: [],
+        },
     },
 };

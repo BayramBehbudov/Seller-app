@@ -5,7 +5,7 @@ import { accessories } from "./men/accessories";
 import { colors } from "../filters/colors";
 import { season } from "../feautures/clothings";
 import { underwear } from "./women/underwear";
-import { scincare } from "./women/scincare";
+import { cosmetic } from "./women/cosmetic";
 
 const women: ICategoriesValue = {
   title: "Qadın",
@@ -17,7 +17,7 @@ const women: ICategoriesValue = {
     shoes,
     accessories,
     underwear,
-    // scincare,
+    cosmetic,
   },
 };
 

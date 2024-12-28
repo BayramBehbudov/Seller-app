@@ -211,15 +211,15 @@ const create = () => {
                 )}
               />
 
-              <ImageController setImage={setImages} />
+              <ImageController setImage={setImages} selectedCategory={selectedCategory} />
 
-              <FilterSelector
+              {/* <FilterSelector
                 selectedCategory={selectedCategory}
                 setAttributes={setAttributes}
                 attributes={attributes}
                 features={features}
                 setFeatures={setFeatures}
-              />
+              /> */}
             </>
           )}
 

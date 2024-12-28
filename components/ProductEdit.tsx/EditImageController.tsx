@@ -51,16 +51,17 @@ const EditImageController = ({
 
   return (
     <>
-      <Text className={`text-base text-gray-100 font-pmedium`}>Əsas şəkil</Text>
       <MainImagesSelector
         images={newImages.main ? newImages : currentImages}
         setImages={setNewImages}
       />
-      <SelectivImagesSelector
-        images={currentImages}
-        deleteImage={handleDeleteImage}
-        disabled={true}
-      />
+      {currentImages.subImages.length > 0 && (
+        <SelectivImagesSelector
+          images={currentImages}
+          deleteImage={handleDeleteImage}
+          disabled={true}
+        />
+      )}
       <SelectivImagesSelector
         images={newImages}
         setImages={setNewImages}

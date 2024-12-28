@@ -2,12 +2,14 @@ import { Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import MainImagesSelector from "./MainImagesSelector";
 import SelectivImagesSelector from "./SelectivImagesSelector";
-import {  IProductImages } from "@/types/interfaces";
+import { IProductImages, ISelectedCategoryStructure } from "@/types/interfaces";
 
 const ImageController = ({
   setImage,
+  selectedCategory,
 }: {
   setImage: (value: IProductImages) => void;
+  selectedCategory: ISelectedCategoryStructure;
 }) => {
   const [images, setImages] = useState<IProductImages>({} as IProductImages);
 
@@ -18,37 +20,18 @@ const ImageController = ({
     });
   };
 
-  // useEffect(() => {
-  //   if (defaultImages && type === "edit") {
-  //     setImages({
-  //       main: {
-  //         image: defaultImages.main.imageUrl,
-  //         imageId: defaultImages.main.imageId,
-  //       },
-  //       subImages: defaultImages?.subImages?.map(
-  //         (item: any, index: number) => ({
-  //           image: item.imageUrl,
-  //           imageId: item.imageId,
-  //           imageTag: item.imageTag,
-  //         })
-  //       ),
-  //     });
-  //   }
-  //   // setImage(images);
-  // }, [defaultImages]);
-
   useEffect(() => {
     setImage(images);
   }, [images]);
 
   return (
     <>
-      <Text className={`text-base text-gray-100 font-pmedium`}>Əsas şəkil</Text>
       <MainImagesSelector images={images} setImages={setImages} />
       <SelectivImagesSelector
         images={images}
         setImages={setImages}
         deleteImage={handleDeleteImage}
+        selectedCategory={selectedCategory}
       />
     </>
   );

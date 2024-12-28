@@ -6,7 +6,7 @@ import {
   IFilterSelectorProps,
 } from "@/types/interfaces";
 import { translateFeatures } from "@/helpers/translateFeatures";
-import CustomMultiSelect from "./CustomMultiSelect";
+import CustomMultiSelect from "@/components/CustomMultiSelect";
 
 const FilterSelector = ({
   selectedCategory,
@@ -22,7 +22,7 @@ const FilterSelector = ({
   }) => {
     return title !== "color" ? (
       <CustomMultiSelect
-        title={title === "size" ? "Ölçü" : title}
+        // title={title === "size" ? "Ölçü" : title}
         data={{ title, value }}
         modalTitle={"Seçin"}
         defaultSelectValues={attributes[title] ? attributes[title] : []}
@@ -35,7 +35,7 @@ const FilterSelector = ({
           }
         }}
         multiSelect={true}
-        containerStyles="mb-4 mt-4"
+        triggerClassName="mb-4 mt-4"
         placeholder="Seçilməyib"
       />
     ) : (
@@ -50,7 +50,7 @@ const FilterSelector = ({
   }) => {
     return (
       <CustomMultiSelect
-        title={translateFeatures(title)}
+        // title={translateFeatures(title)}
         data={{ title, value }}
         defaultSelectValues={features ? [features[title]] : []}
         modalTitle={translateFeatures(title) + " seçin"}
@@ -60,7 +60,7 @@ const FilterSelector = ({
             [title]: value[0],
           });
         }}
-        containerStyles="mb-4 mt-4"
+        triggerClassName="mb-4 mt-4"
         placeholder="Seçilməyib"
       />
     );

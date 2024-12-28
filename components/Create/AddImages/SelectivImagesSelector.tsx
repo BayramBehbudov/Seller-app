@@ -1,30 +1,42 @@
 import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { openPicker } from "@/helpers/openPicker";
 import { icons } from "@/constants";
-import { colors } from "@/static/filters/colors";
-import CustomMultiSelect from "../FilterSelector/CustomMultiSelect";
-import { IProductImages } from "@/types/interfaces";
+import { IProductImages, ISelectedCategoryStructure } from "@/types/interfaces";
+import { translateAttributes } from "@/helpers/translateFilters";
+import CustomMultiSelect from "@/components/CustomMultiSelect";
+
 
 const SelectivImagesSelector = ({
   images,
   setImages,
   deleteImage,
   disabled = false,
+  selectedCategory,
 }: {
   images: IProductImages;
   setImages?: any;
   deleteImage: (imageId: string | number) => void;
   disabled?: boolean;
+  selectedCategory?: ISelectedCategoryStructure;
 }) => {
-  const selectedTags: string[] = images.subImages
+  const selectedTags = images.subImages
     ? images.subImages.map((i) => i.imageTag).filter((i) => i !== null)
     : [];
+
+  const attr = selectedCategory
+    ? [
+        ...selectedCategory.main.filters,
+        ...selectedCategory.sub.filters,
+        ...selectedCategory.child.filters,
+      ]
+    : [];
+
   return (
     <>
       <View className="mt-2 space-y-2">
         <Text className="text-base text-gray-100 mb-2 font-pmedium">
-          {!disabled ? "Yeni şəkil əlavə et" : "Selektiv Şəkillər"}
+          Alternativ şəkillər {!disabled && "əlavə et"}
         </Text>
         {!disabled && (
           <TouchableOpacity onPress={() => openPicker(setImages, "sub")}>
@@ -56,14 +68,15 @@ const SelectivImagesSelector = ({
               return (
                 image.imageUrl && (
                   <View
-                    className="w-full items-center relative h-[200px] border border-gray-200 p-2 rounded-2xl flex-row"
+                    className="w-full items-center relative  border border-gray-200 rounded-2xl flex-row p-2"
                     key={image.imageUrl + index}
                   >
                     <Image
                       source={{ uri: image.imageUrl }}
-                      className="w-[48%] h-full"
+                      className="w-[48%] h-[200px]  max-h-[300px]"
                       resizeMode="contain"
                     />
+
                     {disabled ? (
                       <View className={`w-[48%] ml-3 `}>
                         <Text className="text-base text-gray-100 font-pmedium mb-2">
@@ -71,40 +84,46 @@ const SelectivImagesSelector = ({
                         </Text>
                       </View>
                     ) : (
-                      <CustomMultiSelect
-                        title=""
-                        defaultSelectValues={
-                          image.imageTag ? [image.imageTag] : []
-                        }
-                        placeholder="Rəng seçin"
-                        data={{
-                          title: "Rəng",
-                          value: colors,
-                        }}
-                        modalTitle="Rəng seçin"
-                        handleChange={(value) => {
-                          setImages({
-                            ...images,
-                            subImages: images.subImages.map(
-                              (item: any, i: number) => {
-                                if (i === index) {
-                                  return {
-                                    ...item,
-                                    imageTag: value[0],
-                                  };
-                                }
-                                return item;
+                      <View className="flex-col w-full ml-2 pt-7 gap-1">
+                        {attr.map((a) => {
+                          const { title, value } = a;
+                          return (
+                            <CustomMultiSelect
+                              triggerClassName="w-[48%]"
+                              multiSelect={title === "color" ? false : true}
+                              disabledValues={selectedTags}
+                              data={a}
+                              placeholder={translateAttributes(title)}
+                              modalTitle={translateAttributes(title) + " seçin"}
+                              key={title + index}
+                              handleChange={(v: string[]) => {
+                                setImages({
+                                  ...images,
+                                  subImages: images.subImages.map(
+                                    (item: any, i: number) => {
+                                      if (i === index) {
+                                        return {
+                                          ...item,
+                                          imageTag: v[0],
+                                        };
+                                      }
+                                      return item;
+                                    }
+                                  ),
+                                });
+                              }}
+                              // aşağıda düzəliş edilməlidir
+                              defaultSelectValues={
+                                image.imageTag ? [image.imageTag] : []
                               }
-                            ),
-                          });
-                        }}
-                        containerStyles="w-[48%] ml-3"
-                        disabledValues={selectedTags}
-                      />
+                            />
+                          );
+                        })}
+                      </View>
                     )}
 
                     <TouchableOpacity
-                      className="w-8 h-8 top-3 absolute right-3 rounded-full bg-white border-black-200 border-2"
+                      className="w-8 h-8 top-1 absolute right-1 rounded-full bg-white border-black-200 border-2"
                       onPress={() =>
                         Alert.alert(
                           "Bu şəkili silmək istədiyinizdən əminsiniz?",
