@@ -24,6 +24,7 @@ import { uploadImagesToCloudinary } from "@/services/claudinaryActions";
 import EmptyComponent from "@/components/EmptyComponent";
 import { router } from "expo-router";
 import mongoose from "mongoose";
+import CustomMultiSelect from "@/components/CustomMultiSelect";
 
 const create = () => {
   const [selectedCategory, setSelectedCategory] = useState<
@@ -84,7 +85,7 @@ const create = () => {
           store: new mongoose.Types.ObjectId(data.store),
         }
       );
-      
+
       if (res.status === 200) {
         await refetchUser();
         reset();
@@ -211,15 +212,18 @@ const create = () => {
                 )}
               />
 
-              <ImageController setImage={setImages} selectedCategory={selectedCategory} />
+              <ImageController
+                setImage={setImages}
+                selectedCategory={selectedCategory}
+              />
 
-              {/* <FilterSelector
+              <FilterSelector
                 selectedCategory={selectedCategory}
                 setAttributes={setAttributes}
                 attributes={attributes}
                 features={features}
                 setFeatures={setFeatures}
-              /> */}
+              />
             </>
           )}
 

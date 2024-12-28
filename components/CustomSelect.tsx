@@ -1,15 +1,8 @@
 import { icons } from "@/constants";
 import React, { useEffect, useState } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
-import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
+import Modal from "react-native-modal";
 
 const CustomSelect = ({
   title,
@@ -64,67 +57,59 @@ const CustomSelect = ({
         <Text className="text-gray-100">
           {selectedValues?.title || placeholder}
         </Text>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-            <View
-              className={
-                "flex-1 justify-center items-center w-full h-full bg-black/50"
-              }
-            >
-              <View
-                className={`bg-white p-6 rounded-lg w-80 max-h-[50vh] relative ${modalStyles}`}
-              >
-                <FlatList
-                  ListHeaderComponent={
-                    <Text className={"text-xl font-bold mb-4"}>
-                      {modalTitle}
-                    </Text>
-                  }
-                  data={data}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      className={`p-3 rounded-md flex-row items-start`}
-                      onPress={() => {
-                        setSelectedValues(item);
-                        setModalVisible(false);
-                        handleChange(item.id);
-                      }}
-                    >
-                      <View className="w-6">
-                        {selectedValues.id === item.id && (
-                          <Image
-                            source={icons.done}
-                            className="w-6 h-6"
-                            resizeMode="contain"
-                          />
-                        )}
-                      </View>
-                      <Text className={"text-lg ml-3"}>{item.title}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-
-                <TouchableOpacity
-                  className="absolute items-center justify-center top-2 right-2 w-6 h-6"
-                  onPress={() => setModalVisible(false)}
-                >
-                  <Image
-                    source={icons.close}
-                    resizeMode="contain"
-                    className="w-5 h-5"
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
       </View>
+
+      <Modal
+        isVisible={modalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+        onBackButtonPress={() => setModalVisible(false)}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        style={{ margin: 0, justifyContent: "flex-end" }}
+      >
+        <View
+          className={`bg-white  w-full ${modalStyles} relative p-5 h-auto rounded-s-[20px] max-h-[80%]`}
+        >
+          <FlatList
+            ListHeaderComponent={
+              <Text className={"text-xl font-bold mb-4"}>{modalTitle}</Text>
+            }
+            data={data}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                className={`p-3 rounded-md flex-row items-start`}
+                onPress={() => {
+                  setSelectedValues(item);
+                  handleChange(item.id);
+                }}
+              >
+                <View className="w-6">
+                  {selectedValues.id === item.id && (
+                    <Image
+                      source={icons.done}
+                      className="w-6 h-6"
+                      resizeMode="contain"
+                    />
+                  )}
+                </View>
+                <Text className={"text-lg ml-3"}>{item.title}</Text>
+              </TouchableOpacity>
+            )}
+          />
+
+          <TouchableOpacity
+            className="absolute items-center justify-center top-2 right-2 w-6 h-6"
+            onPress={() => setModalVisible(false)}
+          >
+            <Image
+              source={icons.close}
+              resizeMode="contain"
+              className="w-5 h-5"
+            />
+          </TouchableOpacity>
+        </View>
+      </Modal>
       {error && (
         <Text className="text-red-500 w-full overflow-hidden text-sm">
           {error.toString()}

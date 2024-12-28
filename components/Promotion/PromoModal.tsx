@@ -1,15 +1,9 @@
-import {
-  View,
-  Text,
-  Modal,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
 import React, { useState } from "react";
 import { IStoreDB } from "@/types/interfaces";
 import { Checkbox } from "react-native-paper";
 import { icons } from "@/constants";
+import Modal from "react-native-modal";
 
 const PromoModal = ({
   selectedStore,
@@ -36,59 +30,55 @@ const PromoModal = ({
             : `Seçin`}
         </Text>
         <Modal
-          animationType="slide"
-          transparent={true}
-          visible={visible}
-          onRequestClose={() => setVisible(false)}
+          isVisible={visible}
+          onBackdropPress={() => setVisible(false)}
+          onBackButtonPress={() => setVisible(false)}
+          animationIn="slideInUp"
+          animationOut="slideOutDown"
+          style={{ margin: 0, justifyContent: "flex-end" }}
         >
           <View
-            className={
-              "flex-1 justify-center items-center w-full h-full bg-black/50"
-            }
+            className={`bg-white  relative w-full p-5 h-auto rounded-s-[20px] max-h-[80%]`}
           >
-            <View
-              className={`bg-white p-6 rounded-lg w-80 max-h-[50vh] relative `}
-            >
-              <FlatList
-                ListHeaderComponent={
-                  <Text className={"text-xl font-bold mb-4"}>
-                    Məhsulları seçin
-                  </Text>
-                }
-                data={selectedStore?.products}
-                keyExtractor={(item) => item._id}
-                renderItem={({ item }) => (
-                  <Checkbox.Item
-                    label={item.name}
-                    color="green"
-                    labelStyle={{ color: "black" }}
-                    status={
-                      selectedProducts.includes(item._id)
-                        ? "checked"
-                        : "unchecked"
-                    }
-                    onPress={() => {
-                      selectedProducts.includes(item._id)
-                        ? setSelectedProducts(
-                            selectedProducts.filter((i) => i !== item._id)
-                          )
-                        : setSelectedProducts([...selectedProducts, item._id]);
-                    }}
-                  />
-                )}
-              />
-
-              <TouchableOpacity
-                className="absolute items-center justify-center top-2 right-2 w-6 h-6"
-                onPress={() => setVisible(false)}
-              >
-                <Image
-                  source={icons.close}
-                  resizeMode="contain"
-                  className="w-5 h-5"
+            <FlatList
+              ListHeaderComponent={
+                <Text className={"text-xl font-bold mb-4"}>
+                  Məhsulları seçin
+                </Text>
+              }
+              data={selectedStore?.products}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => (
+                <Checkbox.Item
+                  label={item.name}
+                  color="green"
+                  labelStyle={{ color: "black" }}
+                  status={
+                    selectedProducts.includes(item._id)
+                      ? "checked"
+                      : "unchecked"
+                  }
+                  onPress={() => {
+                    selectedProducts.includes(item._id)
+                      ? setSelectedProducts(
+                          selectedProducts.filter((i) => i !== item._id)
+                        )
+                      : setSelectedProducts([...selectedProducts, item._id]);
+                  }}
                 />
-              </TouchableOpacity>
-            </View>
+              )}
+            />
+
+            <TouchableOpacity
+              className="absolute items-center justify-center top-2 right-2 w-6 h-6"
+              onPress={() => setVisible(false)}
+            >
+              <Image
+                source={icons.close}
+                resizeMode="contain"
+                className="w-5 h-5"
+              />
+            </TouchableOpacity>
           </View>
         </Modal>
       </View>
