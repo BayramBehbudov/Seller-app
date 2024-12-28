@@ -24,7 +24,6 @@ import { uploadImagesToCloudinary } from "@/services/claudinaryActions";
 import EmptyComponent from "@/components/EmptyComponent";
 import { router } from "expo-router";
 import mongoose from "mongoose";
-import CustomMultiSelect from "@/components/CustomMultiSelect";
 
 const create = () => {
   const [selectedCategory, setSelectedCategory] = useState<

@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import MenuBar from "@/components/menu";
-import Dashboard from "@/components/Profile/Dashboard";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
+import EditProfile from "@/components/Profile/EditProfile";
 export interface IProfileElement {
   title: string;
   component: React.ReactElement;
 }
 const profile = () => {
   const [element, setElement] = useState<IProfileElement>({
-    title: "Dashboard",
-    component: <Dashboard />,
+    title: "Hesab Məlumatları",
+    component: <EditProfile />,
   });
 
   return (

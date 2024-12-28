@@ -10,7 +10,6 @@ import {
   Image,
   Alert,
 } from "react-native";
-import Dashboard from "./Profile/Dashboard";
 import EditProfile from "./Profile/EditProfile";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
@@ -51,10 +50,6 @@ const MenuBar = ({
   };
 
   const menuItems = [
-    {
-      title: "Dashboard",
-      component: <Dashboard />,
-    },
     {
       title: "Hesab Məlumatları",
       component: <EditProfile />,
