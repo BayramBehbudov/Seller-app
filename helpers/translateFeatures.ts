@@ -21,7 +21,8 @@ export const translateFeatures = (text: string) => {
 
     case "frameShapes":
       return "Çərçivə forması";
-
+    case "forma":
+      return "Forma";
     case "season":
       return "Mövsüm";
     case "sleeveLength":
@@ -81,12 +82,12 @@ export const translateFeatures = (text: string) => {
 
     case "parfumType":
       return "Qoxu tipi";
-      case 'effectType': 
+    case "effectType":
       return "Təsir növü";
-case 'power':
-  return 'Güc səviyyəsi'
+    case "power":
+      return "Güc səviyyəsi";
 
-      default:
+    default:
       return "Seçin";
   }
 };
