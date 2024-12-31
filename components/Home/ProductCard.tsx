@@ -1,126 +1,60 @@
-import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import React from "react";
-import { IProductDB } from "@/types/interfaces";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { router } from "expo-router";
-import { useGlobalContext } from "@/context/GlobalProvider";
-import axios from "axios";
+import { IProductDB } from "@/types/interfaces";
 import { getSlicedID } from "@/helpers/functions";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
 const ProductCard = ({ product }: { product: IProductDB }) => {
-  const { setIsLoading, refetchUser } = useGlobalContext();
-
-  const handleDelete = async (prodId: string) => {
-    setIsLoading(true);
-    await axios.delete(
-      `https://express-bay-rho.vercel.app/api/products/${prodId}`
-    );
-    await refetchUser();
-    setIsLoading(false);
-  };
-
-  const handleUpdate = async (prodId: string, isActive: boolean) => {
-    setIsLoading(true);
-    await axios.patch(
-      `https://express-bay-rho.vercel.app/api/products/${prodId}`,
-      {
-        isActive,
-      }
-    );
-    await refetchUser();
-    setIsLoading(false);
-  };
   return (
     <TouchableOpacity
-      className="w-full  rounded-lg bg-white p-2 flex-row justify-between"
+      className="bg-white rounded-lg overflow-hidden mb-4 shadow-lg"
       onPress={() => router.push(`/product/${product._id}`)}
-      style={{ height: 180 }}
+      activeOpacity={0.7}
     >
-      <View className="w-[48%] h-full ">
+      <View className="relative h-[200px]">
         <Image
-          source={{ uri: product.images.main.imageUrl }}
-          className="w-full h-full object-cover  rounded"
-          resizeMode="cover"
+          source={{ uri: product.image.imageUrl }}
+          className="w-full h-full"
         />
+        <View className="absolute right-2 top-3 bg-green-500 rounded-xl py-1 px-3">
+          <Text className="text-white text-center text-xl font-bold">
+            {product.price} AZN
+          </Text>
+        </View>
       </View>
-      <View className="w-[48%]  h-full gap-1 flex-col justify-between">
-        <View className="">
-          <Text className="text-base  h-11 font-semibold line-clamp-2 w-full">
+      <View className="p-4">
+        <View className="flex-row justify-between items-center mb-2">
+          <Text className="text-xl font-bold text-gray-800" numberOfLines={1}>
             {product.name}
           </Text>
-          <Text className="text-gray-600 text-base h-[58px] line-clamp-3 w-full">
-            {product.description}
-          </Text>
-          <Text className="text-gray-600 text-base font-psemibold h-5 line-clamp-1 w-full">
-            {product.store.name}
-          </Text>
-          <View className="flex w-full flex-row justify-between items-center">
-            <Text className="text-gray-600 w-[45%] text-base font-psemibold  h-5">
-              {product.price} AZN
-            </Text>
-            <Text
-              className="text-gray-600  text-base font-psemibold h-5"
-              style={{ maxWidth: "45%" }}
-            >
+          <View
+            style={{ backgroundColor: "#F3F4F6" }}
+            className="flex-row items-center px-2 py-1 rounded-md"
+          >
+            <FontAwesome name="barcode" size={12} color="#6B7280" />
+            <Text className="text-sm ml-2 text-gray-800">
               {getSlicedID(product._id)}
             </Text>
           </View>
         </View>
-        <View className=" flex-row gap-1 ">
-          <TouchableOpacity
-            onPress={() =>
-              Alert.alert(
-                `${
-                  product.isActive
-                    ? "Deaktiv etmək istədiyinizə əminmisiniz?"
-                    : "Aktiv etmək istədiyinizə əminmisiniz?"
-                }`,
-                `${
-                  product.isActive
-                    ? "Məhsul serverimizdə qalacaq, lakin müştərilər görməyəcək"
-                    : "Müştərilər məhsulu görəcəklər"
-                }`,
-                [
-                  {
-                    text: "Xeyr",
-                    style: "cancel",
-                  },
-                  {
-                    text: "Bəli",
-                    onPress: () => handleUpdate(product._id, !product.isActive),
-                  },
-                ]
-              )
-            }
-            className={`${
-              product.isActive ? "bg-green-500" : "bg-red-500"
-            }  w-[80px] justify-center items-center  px-3 py-2  rounded-full`}
-          >
-            <Text className="text-white">
-              {product.isActive ? "Aktiv" : "Deaktiv"}
+        <Text className="text-base text-gray-600 mb-3" numberOfLines={2}>
+          {product.description}
+        </Text>
+        <View className="flex-row justify-between items-center">
+          <View className="flex-row items-center">
+            <FontAwesome5 name="store" size={16} color="#f97316" />
+            <Text className="text-base text-gray-800 ml-2" numberOfLines={1}>
+              {product.store.name}
             </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() =>
-              Alert.alert(
-                "Məhsulu silmək istədiyinə əminsən?",
-                "Bu əməliyyatı geri qaytarmaq mümkün olmayacaq",
-                [
-                  {
-                    text: "Xeyr",
-                    style: "cancel",
-                  },
-                  {
-                    text: "Bəli",
-                    onPress: () => handleDelete(product._id),
-                  },
-                ]
-              )
-            }
-            className={`bg-red-500 w-[80px] justify-center items-center  px-3 py-2  rounded-full`}
+          </View>
+          <Text
+            className={`text-white px-4 py-1 rounded-full ${
+              product.isActive ? "bg-green-500" : "bg-red-500"
+            }`}
           >
-            <Text className="text-white">Sil</Text>
-          </TouchableOpacity>
+            {product.isActive ? "Aktiv" : "Deaktiv"}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

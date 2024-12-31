@@ -8,5 +8,4 @@
 // ödənilməmiş sifarişlər səhifəsində stores status yoxlanılır burada storesdə olan bütün mağazaların statusuna baxır every ilə. əgər bir mağaza ödənilib digəri ödənilməyibsə həmin sifarişə baxılmayacaq. və ödənilməmiş sifariş ödənilməyəcək. hərçənd belə hal olmaya da bilər. yoxlamaq lazımdır
 
 
-// atributlar birbirilə əlaqələndirilməlidir
-// çıxış zamanı error verir
+/*çıxış zamanı error verir */

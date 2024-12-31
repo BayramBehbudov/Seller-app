@@ -1,97 +1,114 @@
-import { View, Text, ScrollView, Alert } from "react-native";
+import { View, Text, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SelectCategory from "@/components/SelectCategory";
-import FormField from "@/components/FormField";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AddProductSchema } from "@/settings/schemes";
-import CustomButton from "@/components/CustomButton";
-import ImageController from "@/components/Create/AddImages/ImageController";
-import {
-  ISelectedCategoryStructure,
-  ISelectedFeatures,
-  ISelectedAttributes,
-  IProductImages,
-  IResponse,
-} from "@/types/interfaces";
-import FilterSelector from "@/components/Create/FilterSelector/FilterSelector";
+import CategorySelector from "@/components/Create/category/CategorySelector";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { z } from "zod";
-import CustomSelect from "@/components/CustomSelect";
-import axios from "axios";
-import { uploadImagesToCloudinary } from "@/services/claudinaryActions";
+import ProductInfo from "@/components/Create/info/ProductInfo";
+import CustomButton from "@/components/CustomButton";
 import EmptyComponent from "@/components/EmptyComponent";
 import { router } from "expo-router";
+import { IProduct, IResponse } from "@/types/interfaces";
+import FeaturesComp from "@/components/Create/feature/FeaturesComp";
+import { imageUploaderCloudinary } from "@/services/claudinaryActions";
 import mongoose from "mongoose";
+import axios from "axios";
+import ImageandVariants from "@/components/Create/image/ImageandVariants";
 
 const create = () => {
-  const [selectedCategory, setSelectedCategory] = useState<
-    ISelectedCategoryStructure | undefined
-  >(undefined);
-
-  const [images, setImages] = useState<IProductImages>({} as IProductImages);
-  const [attributes, setAttributes] = useState<ISelectedAttributes>(
-    {} as ISelectedAttributes
-  );
-  const [features, setFeatures] = useState<ISelectedFeatures>(
-    {} as ISelectedFeatures
-  );
-
-  const { user, isLoading, setIsLoading, refetchUser } = useGlobalContext();
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    resolver: zodResolver(AddProductSchema),
-    defaultValues: {
-      name: "",
-      price: "",
-      description: "",
-      store: "",
-      category: {
-        main: "",
-        sub: "",
-        child: "",
-      },
+  const [formData, setFormData] = useState<IProduct & { store: string }>({
+    name: "",
+    price: "",
+    description: "",
+    store: "",
+    features: {},
+    category: {
+      main: "",
+      sub: "",
+      child: "",
     },
+    image: {
+      _id: "",
+      imageUrl: "",
+    },
+
+    variants: [],
   });
 
-  const submit = async (data: z.infer<typeof AddProductSchema>) => {
-    setIsLoading(true);
-    if (!images.main.imageUrl)
-      return Alert.alert("Səhv", "Məhsul üçün əsas şəkil seçilməlidir");
+  const [submitStep, setSubmitStep] = useState<
+    "cat" | "info" | "images" | "features"
+  >("cat");
 
+  const { user, setIsLoading, refetchUser } = useGlobalContext();
+
+  const submit = async () => {
+    setIsLoading(true);
     if (!user?.stores.length)
       return Alert.alert("Səhv", "Öncə mağaza yaratmalısınız");
 
-    if (!data.store) return Alert.alert("Səhv", "Mağaza seçilməlidir");
+    if (!formData.image.imageUrl || !formData.image._id)
+      return Alert.alert("Səhv", "Məhsul üçün əsas şəkil seçilməlidir");
 
-    const uploadedImages = await uploadImagesToCloudinary(images);
-    if (!uploadedImages) return;
+    if (!formData.store) return Alert.alert("Səhv", "Mağaza seçilməlidir");
+
+    if (
+      !formData.category.main ||
+      !formData.category.sub ||
+      !formData.category.child ||
+      !formData.description ||
+      !formData.name ||
+      !formData.price
+    ) {
+      return Alert.alert("Səhv", "Məhsul məlumatlarını doldurun");
+    }
+
+    const mainImage = await imageUploaderCloudinary(formData.image);
+
+    const subImages = await Promise.all(
+      formData.variants
+        .flatMap((v) => v.images)
+        .map((i) => imageUploaderCloudinary(i))
+    );
+
+    const newVariants = formData.variants.map((v) => ({
+      ...v,
+      images: v.images.map((i) => subImages.find((s) => s?._id === i._id)),
+    }));
+
+    const newForm = {
+      ...formData,
+      store: new mongoose.Types.ObjectId(formData.store),
+      image: mainImage,
+      variants: newVariants,
+    };
 
     try {
       const res: IResponse = await axios.post(
         `https://express-bay-rho.vercel.app/api/products/create`,
-        {
-          ...data,
-          images: uploadedImages,
-          attributes,
-          features,
-          store: new mongoose.Types.ObjectId(data.store),
-        }
+        newForm
       );
 
       if (res.status === 200) {
         await refetchUser();
-        reset();
-        setSelectedCategory(undefined);
-        setImages({} as IProductImages);
-        setAttributes({} as ISelectedAttributes);
-        setFeatures({} as ISelectedFeatures);
+
+        setFormData({
+          name: "",
+          price: "",
+          description: "",
+          store: "",
+          features: {},
+          category: {
+            main: "",
+            sub: "",
+            child: "",
+          },
+          image: {
+            _id: "",
+            imageUrl: "",
+          },
+
+          variants: [],
+        });
+        setSubmitStep("cat");
         Alert.alert("Məhsul əlavə edildi");
       } else {
         Alert.alert("Səhv", res.message);
@@ -121,119 +138,49 @@ const create = () => {
 
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col">
-      <ScrollView className="w-full">
-        <Text className="text-white text-2xl font-bold text-center mb-5">
-          Məhsul Məlumatları
-        </Text>
+      <Text className="text-white text-2xl font-bold text-center mb-5">
+        {submitStep === "cat" && "Kateqoriya"}
+        {submitStep === "info" && "Məhsul məlumatları"}
+        {submitStep === "images" && "Şəkillər və Çeşidlər"}
+        {submitStep === "features" && "Xüsusiyyətlər"}
+      </Text>
 
-        <View className="w-full  gap-3 flex flex-col pb-3">
-          <Controller
-            control={control}
-            name="category"
-            render={({ field: { onChange, value } }) => (
-              <SelectCategory
-                setValue={(value) => {
-                  onChange({
-                    main: value.main.id,
-                    sub: value.sub.id,
-                    child: value.child.id,
-                  });
-                  setSelectedCategory(value);
-                }}
-                value={value}
-                error={errors?.category ? "Kategoriya seçin" : undefined}
-              />
-            )}
+      <View className="w-full gap-3 flex pb-[55px] flex-col">
+        {submitStep === "cat" && (
+          <CategorySelector
+            selectedCategory={formData.category}
+            setSelectedCategory={(e) => {
+              setFormData({ ...formData, category: e as IProduct["category"] });
+            }}
+            setSubmitStep={setSubmitStep}
           />
+        )}
 
-          {selectedCategory && (
-            <>
-              <Controller
-                control={control}
-                name="name"
-                render={({ field: { onChange, value } }) => (
-                  <FormField
-                    title="name"
-                    text="Ad"
-                    handleChange={onChange}
-                    value={value}
-                    error={errors?.name?.message || undefined}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="description"
-                render={({ field: { onChange, value } }) => (
-                  <FormField
-                    title="description"
-                    text="Açıqlama"
-                    handleChange={onChange}
-                    value={value}
-                    error={errors?.description?.message || undefined}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="price"
-                render={({ field: { onChange, value } }) => (
-                  <FormField
-                    title="price"
-                    text="Qiymət"
-                    handleChange={onChange}
-                    keyboardType="numeric"
-                    value={value}
-                    error={errors?.price?.message || undefined}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="store"
-                render={({ field: { onChange } }) => (
-                  <CustomSelect
-                    title="Mağaza"
-                    handleChange={onChange}
-                    placeholder="Seç"
-                    modalTitle="Mağaza seçin"
-                    data={
-                      user.stores?.map((store) => ({
-                        title: store.name,
-                        id: store._id,
-                      })) || []
-                    }
-                    error={errors?.store?.message || undefined}
-                  />
-                )}
-              />
-
-              <ImageController
-                setImage={setImages}
-                selectedCategory={selectedCategory}
-              />
-
-              <FilterSelector
-                selectedCategory={selectedCategory}
-                setAttributes={setAttributes}
-                attributes={attributes}
-                features={features}
-                setFeatures={setFeatures}
-              />
-            </>
-          )}
-
-          <CustomButton
-            title="Məhsul Yarat"
-            handlePress={handleSubmit(submit)}
-            containerStyles="mt-5"
-            disabled={isLoading}
+        {submitStep === "info" && (
+          <ProductInfo
+            formData={formData}
+            setFormData={setFormData}
+            setSubmitStep={setSubmitStep}
           />
-        </View>
-      </ScrollView>
+        )}
+
+        {submitStep === "images" && (
+          <ImageandVariants
+            selectedCategory={formData.category}
+            formData={formData}
+            setFormData={setFormData}
+            setSubmitStep={setSubmitStep}
+          />
+        )}
+        {submitStep === "features" && (
+          <FeaturesComp
+            selectedCategory={formData.category}
+            formData={formData}
+            setFormData={setFormData}
+            submit={submit}
+          />
+        )}
+      </View>
     </SafeAreaView>
   );
 };

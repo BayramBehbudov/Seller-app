@@ -108,7 +108,7 @@ const EditStore = () => {
   return (
     <SafeAreaView className="bg-primary px-3 w-full h-full pt-3 gap-3 flex-col">
       <ScrollView className="w-full">
-        <View className="flex flex-row items-center mb-5 gap-4">
+        <View className="flex flex-row items-center mb-5 gap-4 ">
           <GoBackIcon iconColor="white" size={20} />
           <Text className="text-white text-2xl font-bold text-center ">
             Mağaza məlumatları

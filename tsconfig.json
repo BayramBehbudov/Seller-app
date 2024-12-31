@@ -15,6 +15,7 @@
     "expo-env.d.ts",
     "nativewind-env.d.ts",
     "types/images.d.ts",
-    "constants/images.ts"
+    "constants/images.ts",
+    "react-app-env.d.ts"
   ]
 }

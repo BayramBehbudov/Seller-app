@@ -12,7 +12,6 @@ import OrdersDetail from "./OrdersDetail";
 import { getOrderStatus, getSlicedID } from "@/helpers/functions";
 import { IOrderDb } from "@/types/interfaces";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { isLoading } from "expo-font";
 
 const OrdersTable = ({
   orders,

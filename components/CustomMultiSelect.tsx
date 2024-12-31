@@ -14,7 +14,7 @@ const CustomMultiSelect = ({
   modalTitle,
 }: {
   data: { title: string; value: string[] };
-  defaultSelectValues: string[];
+  defaultSelectValues?: string[];
   disabledValues?: string[];
   multiSelect?: boolean;
   handleChange: (value: string[]) => void;
@@ -24,7 +24,7 @@ const CustomMultiSelect = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedValues, setSelectedValues] = useState<string[]>(
-    defaultSelectValues[0] ? defaultSelectValues : []
+    defaultSelectValues ? defaultSelectValues : []
   );
 
   const handleSelection = (item: string) => {
@@ -39,6 +39,9 @@ const CustomMultiSelect = ({
       if (!selectedValues.includes(item)) {
         setSelectedValues([item]);
         handleChange([item]);
+      } else {
+        setSelectedValues([]);
+        handleChange([]);
       }
     }
   };
@@ -78,7 +81,10 @@ const CustomMultiSelect = ({
               return (
                 <TouchableOpacity
                   key={item}
-                  disabled={disabledValues.includes(item)}
+                  disabled={
+                    disabledValues.includes(item) &&
+                    !selectedValues.includes(item)
+                  }
                   className={`p-3 rounded-md flex-row items-start`}
                   onPress={() => handleSelection(item)}
                 >

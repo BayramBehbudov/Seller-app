@@ -1,8 +1,14 @@
-import { IProductImages } from "@/types/interfaces";
 import * as ImagePicker from "expo-image-picker";
 
+import { ObjectId } from "bson";
+import { IProduct } from "@/types/interfaces";
+
+export const generateUniqueId = (): string => {
+  return new ObjectId().toHexString();
+};
+
 export const openPicker = async (
-  setValue: (prev: any) => void,
+  setValue: ([{ imageUrl, _id }]: IProduct["image"][]) => void,
   title: "main" | "sub"
 ) => {
   const result = await ImagePicker.launchImageLibraryAsync({
@@ -13,23 +19,20 @@ export const openPicker = async (
 
   if (!result.canceled) {
     if (title === "main") {
-      setValue((prev: IProductImages) => ({
-        subImages: prev.subImages,
-        main: {
+      setValue([
+        {
           imageUrl: `data:image/jpeg;base64,${result.assets[0].base64}`,
-          imageId: null,
+          _id: generateUniqueId(),
         },
-      }));
+      ]);
     }
     if (title === "sub") {
-      setValue((prev: IProductImages) => ({
-        main: prev.main,
-        subImages: result.assets.map((image: ImagePicker.ImagePickerAsset) => ({
+      setValue(
+        result.assets.map((image: ImagePicker.ImagePickerAsset) => ({
           imageUrl: `data:image/jpeg;base64,${image.base64}`,
-          imageId: null,
-          imageTag: null,
-        })),
-      }));
+          _id: generateUniqueId(),
+        }))
+      );
     }
   }
 };

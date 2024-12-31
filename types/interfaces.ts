@@ -1,6 +1,3 @@
-import { DocumentPickerAsset } from "expo-document-picker";
-import { ImagePickerResult } from "expo-image-picker";
-
 export interface ICategories {
   [key: string]: ICategoriesValue;
 }
@@ -29,6 +26,7 @@ export interface IChildCategory {
     features: IFeatures[];
   };
 }
+
 export interface IFeatures {
   title: string;
   value: string[];
@@ -96,15 +94,23 @@ export interface IProduct {
     child: string;
   };
 
-  attributes: {
-    [key: string]: string[];
+  image: {
+    imageUrl: string;
+    _id: string;
   };
+
+  variants: IProductVariant[];
+
   features: {
     [key: string]: string;
   };
-  images: IProductImages;
 }
 
+export interface IProductVariant {
+  images: { _id: string; imageUrl: string }[];
+  attributes: Record<string, string[]>;
+  _id: string;
+}
 export interface IProductDB extends IProduct {
   store: IStoreDB;
   reviews: IReviews[];
@@ -117,17 +123,6 @@ export interface IProductDB extends IProduct {
   __v: number;
 }
 
-export interface IProductImages {
-  main: {
-    imageUrl: string;
-    imageId: string | null;
-  };
-  subImages: {
-    imageUrl: string;
-    imageTag: string | null;
-    imageId: string | null;
-  }[];
-}
 export interface IStore {
   name: string;
   address: string;

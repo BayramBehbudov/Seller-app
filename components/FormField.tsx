@@ -16,7 +16,7 @@ const FormField = ({
 }: {
   disabled?: boolean;
   title: string;
-  text: string;
+  text?: string;
   placeholder?: string;
   handleChange?: (value: string) => void;
   otherStyles?: string;
@@ -31,9 +31,11 @@ const FormField = ({
   const [showPassword, setShowPassword] = useState(false);
   return (
     <View className={`space-y-2 ${otherStyles} gap-2`}>
-      <Text className={`text-base text-gray-100  font-pmedium`}>
-        {text} {disabled && "(Dəyişdirmək olmaz)"}
-      </Text>
+      {text && (
+        <Text className={`text-base text-gray-100  font-pmedium`}>
+          {text} {disabled && "(Dəyişdirmək olmaz)"}
+        </Text>
+      )}
 
       <View
         className={`border-2 border-black-200 w-full  flex-row px-4 bg-black-100 rounded-2xl focus:border-secondary items-center  ${

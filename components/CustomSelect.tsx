@@ -21,7 +21,7 @@ const CustomSelect = ({
   modalTitle: string;
   containerStyles?: string;
   modalStyles?: string;
-  handleChange: (value: string | string[]) => void;
+  handleChange: (value: string) => void;
   placeholder?: string;
   error?:
     | string

@@ -25,7 +25,7 @@ const CustomButton = ({
       } h-${height}`}
       disabled={disabled}
     >
-      <Text className={`text-primary font-psemibold text-lg ${titleStyles}`}>
+      <Text className={`text-primary  font-psemibold text-lg ${titleStyles}`}>
         {title}
       </Text>
     </TouchableOpacity>

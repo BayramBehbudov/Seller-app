@@ -65,54 +65,6 @@ export const LoginSchema = z.object({
     .trim(),
 });
 
-export const AddProductSchema = z.object({
-  name: z
-    .string({
-      required_error: "Məhsulun adını daxil edin",
-    })
-    .min(5, {
-      message: "Məhsulun adını daxil edin",
-    })
-    .trim(),
-  store: z
-    .string({
-      required_error: "Mağazanızı seçin",
-    })
-    .min(5, {
-      message: "Mağaza seçilməlidir",
-    })
-    .trim(),
-  description: z
-    .string({
-      required_error: "Məhsul haqqında açıqlama daxil edin",
-    })
-    .min(5, {
-      message: "Məhsul haqqında açıqlama daxil edin",
-    })
-    .trim(),
-  price: z
-    .string({ message: "Qiyməti düzgün daxil edin" })
-    .regex(/^\d+(\.\d{1,2})?$/)
-    .trim(),
-  category: z.object({
-    main: z
-      .string({
-        required_error: "Kateqoriyanı daxil edin",
-      })
-      .trim(),
-    sub: z
-      .string({
-        required_error: "Kateqoriyanı daxil edin",
-      })
-      .trim(),
-    child: z
-      .string({
-        required_error: "Kateqoriyanı daxil edin",
-      })
-      .trim(),
-  }),
-});
-
 export const StoreSchema = z.object({
   name: z
     .string({
