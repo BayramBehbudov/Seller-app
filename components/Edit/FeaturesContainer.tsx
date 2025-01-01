@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Alert } from "react-native";
+import { View, Text, Alert } from "react-native";
 import React, { useState } from "react";
 import { IProductDB } from "@/types/interfaces";
 import ButtonsContainer from "./ButtonsContainer";

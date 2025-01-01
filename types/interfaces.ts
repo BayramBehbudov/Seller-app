@@ -262,14 +262,9 @@ export interface IPromotionDB extends IPromotion {
   createdAt: string;
   updatedAt: string;
   __v: number;
-
-  // countPercentage və buyXgetY minCount tələb edilir
-  // buyXgetY və together discountValue məbləğ endirimidir, countPercentage və percentage faiz endirimi
-  // isactive satıcıdan soruşulsun
-  // creator mağazadır
-  //
 }
-
-// export interface IPromoWithProds extends IPromotionDB {
-//   products: string[];
-// }
+// countPercentage və buyXgetY minCount tələb edilir
+// buyXgetY və together discountValue məbləğ endirimidir, countPercentage və percentage faiz endirimi
+// isactive satıcıdan soruşulsun
+// creator mağazadır
+//

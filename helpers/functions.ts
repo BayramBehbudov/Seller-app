@@ -49,6 +49,25 @@ export const translatePromoType = (type: string) => {
     case "together":
       return "İki məhsula birlikdə endirim";
     default:
-      return type;
+      return "Digər";
   }
+};
+
+
+export const getPromoTypeColor = (type: string) => {
+  switch (type) {
+    case "percentage":
+      return "bg-blue-500";
+    case "buyXgetY":
+      return "bg-purple-500";
+    case "countPercentage":
+      return "bg-green-500";
+    default:
+      return "bg-gray-500";
+  }
+};
+
+
+export const getDiscountSymbol = (type: string) => {
+  return type === "percentage" || type === "countPercentage" ? "%" : "";
 };

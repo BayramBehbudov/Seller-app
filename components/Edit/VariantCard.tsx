@@ -10,6 +10,7 @@ import { IProductDB, IProductVariant } from "@/types/interfaces";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { getSlicedID } from "@/helpers/functions";
 import AttributContainer from "./AttributContainer";
+import { openPicker } from "@/helpers/openPicker";
 
 const VariantCard = ({
   variant,
@@ -121,6 +122,31 @@ const VariantCard = ({
             )}
           </View>
         ))}
+
+        {type && (
+          <TouchableOpacity
+            className="w-40 h-40 bg-white/10 rounded-lg p-4 flex-col items-center justify-center"
+            onPress={() => {
+              openPicker((v) => {
+                if (v.length > 0) {
+                  const newVariant = {
+                    ...variant,
+                    images: [...variant.images, ...v],
+                  };
+                  const newVariants = variants.map((v) =>
+                    v._id === variant._id ? newVariant : v
+                  );
+                  setVariants(newVariants);
+                }
+              }, "sub");
+            }}
+          >
+            <FontAwesome5 name="plus-circle" size={30} color="orange" />
+            <Text className="text-sm text-gray-100 text-center font-pmedium mt-2">
+              Şəkilləri seçin
+            </Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
 
       <AttributContainer

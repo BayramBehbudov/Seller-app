@@ -10,6 +10,7 @@ import EditMainImage from "@/components/Edit/EditMainImage";
 import VariantsContainer from "@/components/Edit/VariantsContainer";
 import FeaturesContainer from "@/components/Edit/FeaturesContainer";
 import StatusContainer from "@/components/Edit/StatusContainer";
+import PromoContainer from "@/components/Edit/PromoContainer";
 
 const index = () => {
   const { id } = useLocalSearchParams();
@@ -37,6 +38,7 @@ const index = () => {
         <EditMainImage currentProduct={currentProduct} />
         <VariantsContainer currentProduct={currentProduct} />
         <FeaturesContainer currentProduct={currentProduct} />
+        <PromoContainer currentProduct={currentProduct} />
         <StatusContainer currentProduct={currentProduct} />
       </ScrollView>
     </SafeAreaView>
