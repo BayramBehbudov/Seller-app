@@ -71,3 +71,18 @@ export const getPromoTypeColor = (type: string) => {
 export const getDiscountSymbol = (type: string) => {
   return type === "percentage" || type === "countPercentage" ? "%" : "";
 };
+
+
+
+export const getPromoIcon = (type: string) => {
+  switch (type) {
+    case "percentage":
+      return "percent";
+    case "buyXgetY":
+      return "gift";
+    case "countPercentage":
+      return "tags";
+    default:
+      return "tag";
+  }
+};

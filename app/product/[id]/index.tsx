@@ -46,7 +46,3 @@ const index = () => {
 };
 
 export default index;
-
-{
-  /* {currentProduct.promo} */
-}

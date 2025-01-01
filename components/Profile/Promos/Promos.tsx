@@ -18,8 +18,7 @@ const Promos = () => {
       keyExtractor={(item) => item._id}
       ListFooterComponent={
         <TouchableOpacity
-          style={{ backgroundColor: "#FAFAFA" }}
-          className="w-full items-center justify-center  h-[200px]  rounded-2xl p-3 flex-col "
+          className="w-full items-center justify-center bg-[#FAFAFA]  h-[200px]  rounded-2xl p-3 flex-col "
           onPress={() => router.push("/promo/add")}
         >
           <Image
