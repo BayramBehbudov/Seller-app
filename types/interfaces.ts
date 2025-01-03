@@ -59,6 +59,7 @@ export interface IUser {
   phone: string;
   gender: "male" | "female";
   pushTokens: string[];
+  lastSeen: Date;
 }
 export interface IUserDB extends IUser {
   address: IUserAddress[];
@@ -93,6 +94,9 @@ export interface IProduct {
     sub: string;
     child: string;
   };
+  features: {
+    [key: string]: string;
+  };
 
   image: {
     imageUrl: string;
@@ -100,10 +104,6 @@ export interface IProduct {
   };
 
   variants: IProductVariant[];
-
-  features: {
-    [key: string]: string;
-  };
 }
 
 export interface IProductVariant {

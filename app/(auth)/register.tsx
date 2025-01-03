@@ -29,7 +29,7 @@ const Register = () => {
     try {
       const newUser: IResponse = await axios.post(
         `https://express-bay-rho.vercel.app/api/auth/register`,
-        { ...data, role: "seller" }
+        { ...data, role: "seller", lastSeen: new Date() }
       );
       if (newUser.status === 200 && newUser.data) {
         setUser(newUser.data);
@@ -38,7 +38,6 @@ const Register = () => {
       } else {
         Alert.alert("Qeydiyyat", newUser.message as string);
       }
-      
     } catch (error: any) {
       Alert.alert("Qeydiyyat", error.message);
     } finally {
