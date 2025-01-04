@@ -10,10 +10,12 @@ import { IPromotion, IStoreDB } from "@/types/interfaces";
 import PromoControllers from "@/components/Promotion/PromoControllers";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import axios from "axios";
+import { usePromosContext } from "@/context/PromosProvider";
 
 const index = () => {
   const { id } = useLocalSearchParams();
-  const { setIsLoading, promos, user, refetchUser } = useGlobalContext();
+  const { setIsLoading, user, refetchUser } = useGlobalContext();
+  const { promos } = usePromosContext();
 
   const currentPromo = id === "add" ? null : promos.find((p) => p._id === id);
 

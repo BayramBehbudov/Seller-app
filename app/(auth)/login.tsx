@@ -21,7 +21,7 @@ const Login = () => {
     resolver: zodResolver(LoginSchema),
   });
 
-  const { setUser, setIsLoggedIn, isLoading, setIsLoading, refetchUser } =
+  const { setUser,  isLoading, setIsLoading } =
     useGlobalContext();
 
   const submit = async (data: any) => {
@@ -33,20 +33,32 @@ const Login = () => {
       );
       if (auth.status === 200 && auth.data && auth.data.role === "seller") {
         setUser(auth.data);
-        setIsLoggedIn(true);
-        refetchUser();
         router.push("/home");
       } else {
-        setUser({} as IUserDB);
-        setIsLoggedIn(false);
         Alert.alert(
-          "Bu proqram yalnız satıcılar üçündür",
+          "Bu program yalnız satıcılar üçündür",
           "Giriş ilə bağlı çətinliyiniz varsa dəstək xidməti ilə əlaqə saxlayın"
         );
       }
-      // console.log(auth.message);
-    } catch (error) {
-      console.log(error);
+
+      if (auth.status === 505) {
+        Alert.alert("Giriş", "Daxil edilən məlumatlar doğru deyil");
+      }
+    } catch (error: any) {
+      let message = error.message;
+
+      if (error.status === 500) {
+        message =
+          "Gözlənilməyən xəta baş verdi. Bir qədər sonra yenidən cəhd edin";
+      }
+      if (error.status === 505) {
+        message = "Daxil edilən məlumatlar doğru deyil";
+      }
+      if (error.status === 404) {
+        message = "Məlumatlar daxil edilmədi";
+      }
+
+      Alert.alert("Giriş", message);
     } finally {
       setIsLoading(false);
     }

@@ -8,8 +8,8 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import CustomButton from "@/components/CustomButton";
 
 const HomePage = () => {
-  const { isLoading, isLoggedIn } = useGlobalContext();
-  if (!isLoading && isLoggedIn) return <Redirect href={"/home"} />;
+  const { isLoading, user } = useGlobalContext();
+  if (user?._id) return <Redirect href={"/home"} />;
 
   return (
     <SafeAreaView className="bg-primary h-full w-full">

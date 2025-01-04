@@ -20,9 +20,8 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    const products = user.stores?.flatMap((store) => store.products);
-
-    const filteredProd = products?.filter((product: IProductDB) => {
+    const products = user.stores?.flatMap((store) => store.products) || [];
+    const filteredProd = products.filter((product: IProductDB) => {
       if (!product) return;
       const matchesSearch = filters.search
         ? product.name.toLowerCase().includes(filters.search)
@@ -42,7 +41,7 @@ const HomePage = () => {
     filteredProd && setFilteredProducts(filteredProd);
   }, [filters, user]);
 
-  if (user.stores.length === 0) {
+  if (!user.stores || user.stores.length === 0) {
     return (
       <View className="w-full h-full flex-col justify-center items-center bg-primary ">
         <EmptyComponent

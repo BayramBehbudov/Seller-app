@@ -5,10 +5,11 @@ import { IOrderDb, IProductDB } from "@/types/interfaces";
 import EmptyComponent from "@/components/EmptyComponent";
 import UnpaidCard from "./UnpaidCard";
 import { Ionicons } from "@expo/vector-icons";
+import { useOrdersContext } from "@/context/OrdersProvider";
 
 const UnpaidOrders = () => {
-  const { orders, refetchOrders, user, setIsLoading, isLoading } =
-    useGlobalContext();
+  const {  isLoading } = useGlobalContext();
+  const { orders, refetchOrders } = useOrdersContext();
   const [unpaidOrders, setUnpaidOrders] = useState<IOrderDb[]>([]);
 
   const filterUnpaidOrders = () => {
@@ -71,7 +72,7 @@ const UnpaidOrders = () => {
   ) : (
     <EmptyComponent
       title="Ödənilməmiş sifarişiniz yoxdur"
-      subtitle="Bütün sifarişləriniz ödənilib"
+      subtitle={orders.length > 0 ? "Bütün sifarişləriniz ödənilib" : ""}
     />
   );
 };

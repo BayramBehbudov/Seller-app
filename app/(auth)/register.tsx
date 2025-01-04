@@ -13,7 +13,7 @@ import axios from "axios";
 import { IResponse } from "@/types/interfaces";
 
 const Register = () => {
-  const { setUser, setIsLoggedIn, isLoading, setIsLoading } =
+  const { setUser,  isLoading, setIsLoading } =
     useGlobalContext();
 
   const {
@@ -33,13 +33,24 @@ const Register = () => {
       );
       if (newUser.status === 200 && newUser.data) {
         setUser(newUser.data);
-        setIsLoggedIn(true);
         router.push("/home");
       } else {
         Alert.alert("Qeydiyyat", newUser.message as string);
       }
     } catch (error: any) {
-      Alert.alert("Qeydiyyat", error.message);
+      let message = error.message;
+      if (error.status === 400) {
+        message = "Bu email və ya telefon artıq qeydiyyatdan keçib";
+      }
+      if (error.status === 500) {
+        message =
+          "Gözlənilməyən xəta baş verdi. Bir qədər sonra yenidən cəhd edin";
+      }
+      if (error.status === 404) {
+        message = "Məlumatlar daxil edilmədi";
+      }
+
+      Alert.alert("Qeydiyyat", message);
     } finally {
       setIsLoading(false);
     }

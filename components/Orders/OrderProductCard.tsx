@@ -3,12 +3,12 @@ import React from "react";
 import { translateAttributes } from "@/helpers/translateFilters";
 import { getSlicedID } from "@/helpers/functions";
 import { IOrderProductDb } from "@/types/interfaces";
-import { useGlobalContext } from "@/context/GlobalProvider";
+// import { useGlobalContext } from "@/context/GlobalProvider";
 
 const OrderProductCard = ({ prod }: { prod: IOrderProductDb }) => {
   const { product, count, selectedAttributes } = prod;
-  const { user } = useGlobalContext();
-  const store = user.stores.find((store) => store._id === product.store);
+  // const { user } = useGlobalContext();
+  // const store = user.stores.find((store) => store._id === product.store);
   return (
     <View className="w-full border border-gray-200 rounded-lg p-3 flex-col gap-2">
       <Text className="line-clamp-2  font-semibold w-full  h-10">

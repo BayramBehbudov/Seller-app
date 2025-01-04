@@ -9,7 +9,7 @@ import {
   translatePromoType,
 } from "@/helpers/functions";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import {  FontAwesome5 } from "@expo/vector-icons";
 
 const PromoCard = ({ promo }: { promo: IPromotionDB }) => {
   const { user } = useGlobalContext();

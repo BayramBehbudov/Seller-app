@@ -9,7 +9,7 @@ import CustomButton from "../CustomButton";
 import CustomSelect from "../CustomSelect";
 
 const EditProfile = () => {
-  const { user, setUser } = useGlobalContext();
+  const { user} = useGlobalContext();
 
   const {
     control,

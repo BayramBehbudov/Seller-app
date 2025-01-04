@@ -42,7 +42,7 @@ const create = () => {
 
   const submit = async () => {
     setIsLoading(true);
-    if (!user?.stores.length)
+    if (!user.stores || user.stores?.length === 0)
       return Alert.alert("Səhv", "Öncə mağaza yaratmalısınız");
 
     if (!formData.image.imageUrl || !formData.image._id)
@@ -120,7 +120,7 @@ const create = () => {
     }
   };
 
-  if (user.stores.length === 0) {
+  if (!user.stores || user.stores.length === 0) {
     return (
       <View className="w-full h-full flex-col justify-center items-center bg-primary ">
         <EmptyComponent

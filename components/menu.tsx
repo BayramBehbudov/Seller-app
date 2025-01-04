@@ -11,13 +11,15 @@ import {
   Alert,
 } from "react-native";
 import EditProfile from "./Profile/EditProfile";
-import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import Stores from "./Profile/Store/Stores";
 import { IUserDB } from "@/types/interfaces";
 import axios from "axios";
 import Promos from "./Profile/Promos/Promos";
 import UnpaidOrders from "./Profile/UnpaidOrders/UnpaidOrders";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { usePromosContext } from "@/context/PromosProvider";
+import { useOrdersContext } from "@/context/OrdersProvider";
 
 const MenuBar = ({
   setElement,
@@ -26,7 +28,10 @@ const MenuBar = ({
   setElement: Dispatch<SetStateAction<IProfileElement>>;
   element: IProfileElement;
 }) => {
-  const { setUser, setIsLoggedIn } = useGlobalContext();
+  const { setUser } = useGlobalContext();
+  const { setPromos } = usePromosContext();
+  const { setOrders } = useOrdersContext();
+
   const [menuVisible, setMenuVisible] = useState(false);
   const slideAnim = useRef(
     new Animated.Value(Dimensions.get("window").width)
@@ -123,7 +128,8 @@ const MenuBar = ({
                         `https://express-bay-rho.vercel.app/api/auth/logout`
                       );
                       setUser({} as IUserDB),
-                        setIsLoggedIn(false),
+                        setPromos([]),
+                        setOrders([]),
                         router.push("/");
                     } catch (error: any) {
                       Alert.alert("Çıxış edilmədi", error.message);

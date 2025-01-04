@@ -14,9 +14,11 @@ import {
 } from "@/helpers/functions";
 import CustomButton from "../CustomButton";
 import { router } from "expo-router";
+import { usePromosContext } from "@/context/PromosProvider";
 
 const PromoContainer = ({ currentProduct }: { currentProduct: IProductDB }) => {
-  const { promos, setIsLoading, refetchUser } = useGlobalContext();
+  const { setIsLoading, refetchUser } = useGlobalContext();
+  const { promos } = usePromosContext();
   const [type, setType] = useState(false);
   const [currentPromo, setCurrentPromo] = useState<IPromotionDB | undefined>(
     undefined

@@ -6,13 +6,14 @@ import OrdersFilters from "@/components/Orders/OrdersFilters";
 import EmptyComponent from "@/components/EmptyComponent";
 import { IOrderDb } from "@/types/interfaces";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { useOrdersContext } from "@/context/OrdersProvider";
 
 export interface IOrderFilters {
   status: null | string;
   _id: string | null;
 }
 const orders = () => {
-  const { orders } = useGlobalContext();
+  const { orders } = useOrdersContext();
   const [filteredOrders, setFilteredOrders] = useState<IOrderDb[]>(orders);
   const [filters, setFilters] = useState<IOrderFilters>({
     status: null,

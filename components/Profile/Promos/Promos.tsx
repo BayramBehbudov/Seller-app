@@ -3,10 +3,10 @@ import React from "react";
 import PromoCard from "./PromoCard";
 import { router } from "expo-router";
 import { icons } from "@/constants";
-import { useGlobalContext } from "@/context/GlobalProvider";
+import { usePromosContext } from "@/context/PromosProvider";
 
 const Promos = () => {
-  const { promos } = useGlobalContext();
+  const { promos } = usePromosContext();
 
   return (
     <FlatList
