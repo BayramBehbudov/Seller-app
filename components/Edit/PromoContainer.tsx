@@ -12,6 +12,8 @@ import {
   getPromoTypeColor,
   translatePromoType,
 } from "@/helpers/functions";
+import CustomButton from "../CustomButton";
+import { router } from "expo-router";
 
 const PromoContainer = ({ currentProduct }: { currentProduct: IProductDB }) => {
   const { promos, setIsLoading, refetchUser } = useGlobalContext();
@@ -140,7 +142,7 @@ const PromoContainer = ({ currentProduct }: { currentProduct: IProductDB }) => {
             </TouchableOpacity>
           )}
         </View>
-      ) : (
+      ) : promos.length > 0 ? (
         <View className="bg-white/10 rounded-xl p-4 items-center justify-center">
           <Text className="text-gray-300 text-lg">Aktiv aksiya yoxdur</Text>
 
@@ -159,6 +161,17 @@ const PromoContainer = ({ currentProduct }: { currentProduct: IProductDB }) => {
             containerStyles="w-full mt-4"
             modalTitle="Aksiya seçin"
             placeholder="Yenisini təyin edin"
+          />
+        </View>
+      ) : (
+        <View className="bg-white/10 rounded-xl p-4 items-center justify-center">
+          <Text className="text-gray-300 text-lg">Mövcud aksiya tapılmadı</Text>
+          <CustomButton
+            handlePress={() => router.push("/promo/add")}
+            title="Yeni aksiya yarat"
+            height={12}
+            containerStyles="mt-4 bg-[#10B981] w-full"
+            titleStyles="text-white"
           />
         </View>
       )}

@@ -21,7 +21,7 @@ const Login = () => {
     resolver: zodResolver(LoginSchema),
   });
 
-  const { setUser, setIsLoggedIn, isLoading, setIsLoading } =
+  const { setUser, setIsLoggedIn, isLoading, setIsLoading, refetchUser } =
     useGlobalContext();
 
   const submit = async (data: any) => {
@@ -34,6 +34,7 @@ const Login = () => {
       if (auth.status === 200 && auth.data && auth.data.role === "seller") {
         setUser(auth.data);
         setIsLoggedIn(true);
+        refetchUser();
         router.push("/home");
       } else {
         setUser({} as IUserDB);
