@@ -6,7 +6,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { useGlobalContext } from "./GlobalProvider";
 import axios from "axios";
 
 interface IOrdersContext {
