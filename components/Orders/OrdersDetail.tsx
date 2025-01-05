@@ -115,6 +115,7 @@ const OrdersDetail = ({
                     <OrderProductCard
                       key={product.product._id + index}
                       prod={product}
+                      setModalVisible={setModalVisible}
                     />
                   );
                 })}

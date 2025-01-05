@@ -8,13 +8,13 @@ const GoBackIcon = ({
   iconColor = "black",
   size = 30,
   text,
-  textStyle,
+  textClassName,
 }: {
   className?: string;
   iconColor?: string;
   size?: number;
   text?: string;
-  textStyle?: { [key: string]: string | number };
+  textClassName?: string;
 }) => {
   return (
     <TouchableOpacity
@@ -22,7 +22,7 @@ const GoBackIcon = ({
       onPress={() => router.back()}
     >
       <FontAwesome6 name="arrow-left-long" size={size} color={iconColor} />
-      {text && <Text style={textStyle}>{text}</Text>}
+      {text && <Text className={textClassName}>{text}</Text>}
     </TouchableOpacity>
   );
 };

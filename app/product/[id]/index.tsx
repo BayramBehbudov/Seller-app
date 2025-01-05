@@ -1,4 +1,4 @@
-import { ScrollView, Text } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,6 +11,7 @@ import VariantsContainer from "@/components/Edit/VariantsContainer";
 import FeaturesContainer from "@/components/Edit/FeaturesContainer";
 import StatusContainer from "@/components/Edit/StatusContainer";
 import PromoContainer from "@/components/Edit/PromoContainer";
+import GoBackIcon from "@/components/GoBackIcon";
 
 const index = () => {
   const { id } = useLocalSearchParams();
@@ -32,6 +33,14 @@ const index = () => {
 
   return (
     <SafeAreaView className="bg-primary w-full h-full p-4">
+      <GoBackIcon
+        iconColor="white"
+        size={26}
+        text="Məhsul Məlumatları"
+        textClassName="text-white text-2xl font-bold text-center ml-2"
+        className="mb-4"
+      />
+
       <ScrollView>
         <HeaderContainer currentProduct={currentProduct} />
         <DetailContainer currentProduct={currentProduct} />
