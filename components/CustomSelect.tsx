@@ -1,4 +1,5 @@
 import { icons } from "@/constants";
+import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
@@ -99,14 +100,10 @@ const CustomSelect = ({
           />
 
           <TouchableOpacity
-            className="absolute items-center justify-center top-2 right-2 w-6 h-6"
+            className="absolute items-center justify-center top-2 right-2 w-7 h-7"
             onPress={() => setModalVisible(false)}
           >
-            <Image
-              source={icons.close}
-              resizeMode="contain"
-              className="w-5 h-5"
-            />
+            <Ionicons name="close" size={30} color="black" />
           </TouchableOpacity>
         </View>
       </Modal>

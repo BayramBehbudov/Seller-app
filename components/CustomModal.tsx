@@ -1,6 +1,6 @@
-import { View, Modal, TouchableOpacity, Image } from "react-native";
+import { View, Modal, TouchableOpacity } from "react-native";
 import React from "react";
-import { icons } from "@/constants";
+import { Ionicons } from "@expo/vector-icons";
 
 const CustomModal = ({
   modalVisible,
@@ -21,14 +21,10 @@ const CustomModal = ({
       <View className="h-full bg-black-100/65 justify-end">
         <View className={`w-full bg-white p-5 rounded-lg h-[90%]`}>
           <TouchableOpacity
-            className={"absolute top-2 right-2"}
+            className={"absolute top-1 right-1"}
             onPress={() => setModalVisible(false)}
           >
-            <Image
-              source={icons.close}
-              resizeMode="contain"
-              className="w-5 h-5"
-            />
+            <Ionicons name="close" size={30} color="black" />
           </TouchableOpacity>
           {value}
         </View>

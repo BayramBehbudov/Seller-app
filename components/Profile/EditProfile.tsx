@@ -7,9 +7,11 @@ import { RegisterSchema } from "@/settings/schemes";
 import FormField from "../FormField";
 import CustomButton from "../CustomButton";
 import CustomSelect from "../CustomSelect";
+import axios from "axios";
+import { IUser, IUserDB } from "@/types/interfaces";
 
 const EditProfile = () => {
-  const { user} = useGlobalContext();
+  const { user, setUser, setIsLoading } = useGlobalContext();
 
   const {
     control,
@@ -27,7 +29,19 @@ const EditProfile = () => {
     },
   });
 
-  const updateProfile = async (data: any) => {
+  const findUpdate = (data: IUser) => {
+    const newData: IUser = data;
+
+    Object.keys(data).forEach((key) => {
+      if (data[key as keyof IUser] === user[key as keyof IUser]) {
+        delete newData[key as keyof IUser];
+      }
+    });
+
+    return Object.keys(newData).length > 0 ? newData : null;
+  };
+
+  const updateProfile = async (data: IUser) => {
     Alert.alert("Hesab məlumatlarınızı dəyişmək istəyirsiniz", "", [
       {
         text: "Xeyr",
@@ -35,8 +49,24 @@ const EditProfile = () => {
       },
       {
         text: "Bəli",
-        onPress: () => {
-          //   updateUser(data);
+        onPress: async () => {
+          try {
+            const updatedData = findUpdate(data);
+            if (updatedData) {
+              setIsLoading(true);
+
+              await axios.patch(
+                `https://express-bay-rho.vercel.app/api/user/${user?._id}`,
+                updatedData
+              );
+              setUser({ ...user, ...updatedData } as IUserDB);
+              Alert.alert("Təbriklər", "Hesab məlumatları uğurla dəyişdirildi");
+            }
+          } catch (error) {
+            console.log("error in update user", error);
+          } finally {
+            setIsLoading(false);
+          }
         },
       },
     ]);

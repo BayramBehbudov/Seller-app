@@ -20,6 +20,7 @@ import UnpaidOrders from "./Profile/UnpaidOrders/UnpaidOrders";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { usePromosContext } from "@/context/PromosProvider";
 import { useOrdersContext } from "@/context/OrdersProvider";
+import { Feather, Ionicons } from "@expo/vector-icons";
 
 const MenuBar = ({
   setElement,
@@ -78,7 +79,7 @@ const MenuBar = ({
       <View className="flex-row w-full py-3 items-center justify-between">
         <Text className="text-white text-2xl">{element.title}</Text>
         <TouchableOpacity onPress={toggleMenu} className="px-2">
-          <Image source={icons.menu} className="h-8" resizeMode="contain" />
+          <Feather name="menu" size={28} color="white" />
         </TouchableOpacity>
       </View>
 
@@ -92,11 +93,7 @@ const MenuBar = ({
               onPress={toggleMenu}
               className="w-full mt-2 pr-3 flex-row items-center justify-end"
             >
-              <Image
-                source={icons.close}
-                className="h-5 w-5"
-                resizeMode="contain"
-              />
+              <Ionicons name="close" size={28} color="black" />
             </TouchableOpacity>
             <View className="p-3 flex-col gap-2">
               {menuItems.map((item, index) => (

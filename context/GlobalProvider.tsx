@@ -32,7 +32,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         setUser({} as IUserDB);
       }
     } catch (error) {
-      console.log(error);
+      console.log("error refetchUser", error);
     } finally {
       setIsLoading(false);
     }

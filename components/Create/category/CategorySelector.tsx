@@ -8,6 +8,7 @@ import { categories } from "@/static/categories";
 import CatInput from "./CatInput";
 import CustomButton from "@/components/CustomButton";
 import { IProduct } from "@/types/interfaces";
+import { Ionicons } from "@expo/vector-icons";
 
 const CategorySelector = ({
   selectedCategory,
@@ -113,14 +114,10 @@ const CategorySelector = ({
           </ScrollView>
 
           <TouchableOpacity
-            className="absolute items-center justify-center top-2 right-2 w-6 h-6"
+            className="absolute items-center justify-center top-2 right-2 w-7 h-7"
             onPress={() => setModalVisible(false)}
           >
-            <Image
-              source={icons.close}
-              resizeMode="contain"
-              className="w-5 h-5"
-            />
+            <Ionicons name="close" size={30} color="black" />
           </TouchableOpacity>
         </View>
       </Modal>

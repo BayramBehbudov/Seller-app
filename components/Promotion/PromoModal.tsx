@@ -4,6 +4,7 @@ import { IStoreDB } from "@/types/interfaces";
 import { Checkbox } from "react-native-paper";
 import { icons } from "@/constants";
 import Modal from "react-native-modal";
+import { Ionicons } from "@expo/vector-icons";
 
 const PromoModal = ({
   selectedStore,
@@ -70,14 +71,10 @@ const PromoModal = ({
             />
 
             <TouchableOpacity
-              className="absolute items-center justify-center top-2 right-2 w-6 h-6"
+              className="absolute items-center justify-center top-2 right-2 w-7 h-7 "
               onPress={() => setVisible(false)}
             >
-              <Image
-                source={icons.close}
-                resizeMode="contain"
-                className="w-5 h-5"
-              />
+              <Ionicons name="close" size={30} color="black" />
             </TouchableOpacity>
           </View>
         </Modal>

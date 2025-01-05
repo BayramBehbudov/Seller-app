@@ -2,6 +2,7 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import Modal from "react-native-modal";
 import { icons } from "@/constants";
+import { Ionicons } from "@expo/vector-icons";
 
 const CustomMultiSelect = ({
   data,
@@ -112,14 +113,10 @@ const CustomMultiSelect = ({
           </ScrollView>
 
           <TouchableOpacity
-            className="absolute items-center justify-center top-2 right-2 w-6 h-6"
+            className="absolute items-center justify-center top-2 right-2 w-7 h-7"
             onPress={() => setIsVisible(false)}
           >
-            <Image
-              source={icons.close}
-              resizeMode="contain"
-              className="w-5 h-5"
-            />
+            <Ionicons name="close" size={30} color="black" />
           </TouchableOpacity>
         </View>
       </Modal>

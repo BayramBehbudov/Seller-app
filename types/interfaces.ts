@@ -58,10 +58,10 @@ export interface IUser {
   surname: string;
   phone: string;
   gender: "male" | "female";
-  pushTokens: string[];
-  lastSeen: Date;
 }
 export interface IUserDB extends IUser {
+  pushTokens: string[];
+  lastSeen: Date;
   address: IUserAddress[];
   cards: IBankCard[];
   stores: IStoreDB[];
