@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
 import React from "react";
 import { IOrderDb } from "@/types/interfaces";
 import { formatterDate } from "@/helpers/dateHelpers";
@@ -18,32 +18,56 @@ const OrdersDetail = ({
   setModalVisible: (value: boolean) => void;
 }) => {
   const { user } = useGlobalContext();
+
   const handleOrderStatus = async (
     storeId: string,
-    status: "pending" | "ready" | "handOver"
+    status: "ready" | "handOver"
   ) => {
-    try {
-      const res = await axios.post(
-        `https://express-bay-rho.vercel.app/api/order/store`,
+    Alert.alert(
+      "Bağlamanın statusunu dəyişmək istədiyinizdən əminsinizmi?",
+      `Status "${
+        status === "ready" ? "Hazır" : "Təhvil verdim"
+      }" olaraq qeyd ediləcək`,
+      [
+        { text: "Xeyr" },
         {
-          orderId: order._id,
-          storeId,
-          status,
-        }
-      );
-      setOrders({
-        ...order,
-        stores: order.stores.map((store) =>
-          store.store._id === storeId ? { ...store, status } : store
-        ),
-      });
-      setModalVisible(false);
-    } catch (error) {
-      console.log(error);
-    }
+          text: "Bəli",
+          onPress: async () => {
+            try {
+              await axios.post(
+                `https://express-bay-rho.vercel.app/api/order/store`,
+                {
+                  orderId: order._id,
+                  storeId,
+                  status,
+                }
+              );
+              setOrders({
+                ...order,
+                stores: order.stores.map((store) =>
+                  store.store._id === storeId ? { ...store, status } : store
+                ),
+              });
+              setModalVisible(false);
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        },
+      ]
+    );
   };
 
   const products = order.stores.flatMap((store) => store.products);
+
+  const getInfoLabel = (label: string, value: string | number) => {
+    return (
+      <View className="flex-row justify-between mb-1">
+        <Text>{label}</Text>
+        <Text>{value}</Text>
+      </View>
+    );
+  };
 
   return (
     <View className="flex-col gap-3">
@@ -56,41 +80,23 @@ const OrdersDetail = ({
 
       <ScrollView className="flex-col gap-2 mb-24">
         <View className="w-full flex-col p-3 gap-1 border-b border rounded-lg border-gray-200 ">
-          <View className="flex-row">
-            <Text className="flex-1 ">Sifariş ID</Text>
-            <Text className="flex-1 uppercase">{getSlicedID(order._id)}</Text>
-          </View>
-
-          <View className="flex-row">
-            <Text className="flex-1">Tarix</Text>
-            <Text className="flex-1">
-              {formatterDate(order.createdAt.toString())}
-            </Text>
-          </View>
-          <View className="flex-row">
-            <Text className="flex-1">Status</Text>
-            <Text className="flex-1">{getOrderStatus(order.status)}</Text>
-          </View>
-          <View className="flex-row">
-            <Text className="flex-1">Məhsul sayı</Text>
-            <Text className="flex-1">
-              {products.length} çeşid {" /  "}
-              {products.reduce((a, b) => a + b.count, 0)} ədəd
-            </Text>
-          </View>
-          <View className="flex-row">
-            <Text className="flex-1">Məbləğ</Text>
-            <Text className="flex-1">
-              {order.stores
-                .reduce((acc, store) => acc + store.amount.summary, 0)
-                .toFixed(2)}
-              AZN
-            </Text>
-          </View>
-          <View className="flex-row">
-            <Text className="flex-1">Müştəri qeydi</Text>
-            <Text className="flex-1">{order.sellerNote}</Text>
-          </View>
+          {getInfoLabel("Sifariş ID", getSlicedID(order._id))}
+          {getInfoLabel("Tarix", formatterDate(order.createdAt.toString()))}
+          {getInfoLabel("Status", getOrderStatus(order.status))}
+          {getInfoLabel(
+            "Məhsul sayı",
+            `${products.length} çeşid / ${products.reduce(
+              (a, b) => a + b.count,
+              0
+            )} ədəd`
+          )}
+          {getInfoLabel(
+            "Məbləğ",
+            `${order.stores
+              .reduce((acc, store) => acc + store.amount.summary, 0)
+              .toFixed(2)} AZN`
+          )}
+          {getInfoLabel("Müşteri qeydi", order.sellerNote)}
         </View>
 
         <View className="flex-col gap-2 mt-2">
@@ -125,7 +131,7 @@ const OrdersDetail = ({
                     title={"Hazır"}
                     handlePress={() => handleOrderStatus(s.store._id, "ready")}
                     disabled={s.status !== "pending"}
-                    height={10}
+                    height={12}
                   />
 
                   <CustomButton
