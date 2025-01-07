@@ -50,15 +50,6 @@ export const OrdersProvider = ({
         }
       );
 
-      // const response = await axios.get(
-      //   `https://express-bay-rho.vercel.app/api/order/store`,
-      //   {
-      //     params: {
-      //       ids,
-      //     },
-      //   }
-      // );
-
       if (response.status === 200) {
         const updatedOrders = response.data.map((order: IOrderDb) => {
           return {
