@@ -41,6 +41,12 @@ const CustomSelect = ({
     handleChange(selectedValues.id);
   }, [selectedValues]);
 
+  useEffect(() => {
+    if (!defaultValue?.title && selectedValues.title) {
+      setSelectedValues({ id: "", title: "" });
+    }
+  }, [defaultValue]);
+
   return (
     <View className={`space-y-2  ${containerStyles}`}>
       {title && (
@@ -50,7 +56,7 @@ const CustomSelect = ({
       )}
 
       <View
-        className="border-2  border-black-200 w-full h-12 flex-row px-4 bg-black-100 rounded-2xl focus:border-secondary items-center"
+        className={`border-2  border-black-200 w-full h-12 flex-row px-4 bg-black-100 rounded-2xl items-center`}
         onTouchStart={() => {
           !disabled && setModalVisible(true);
         }}
@@ -67,6 +73,7 @@ const CustomSelect = ({
         animationIn="slideInUp"
         animationOut="slideOutDown"
         style={{ margin: 0, justifyContent: "flex-end" }}
+        backdropTransitionOutTiming={400}
       >
         <View
           className={`bg-white  w-full ${modalStyles} relative p-5 h-auto rounded-s-[20px] max-h-[80%]`}

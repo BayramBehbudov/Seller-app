@@ -188,6 +188,13 @@ export interface ISelectedFeatures {
   [key: string]: string;
 }
 
+export interface IHomeFilter {
+  isActive: boolean | null;
+  search: string | null;
+  id: string | null;
+  storeId: string | null;
+}
+
 export interface IFilterSelectorProps {
   attributes: ISelectedAttributes;
   features: ISelectedFeatures;

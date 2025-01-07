@@ -37,6 +37,7 @@ const PromoModal = ({
           animationIn="slideInUp"
           animationOut="slideOutDown"
           style={{ margin: 0, justifyContent: "flex-end" }}
+          backdropTransitionOutTiming={400}
         >
           <View
             className={`bg-white  relative w-full p-5 h-auto rounded-s-[20px] max-h-[80%]`}

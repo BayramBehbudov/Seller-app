@@ -19,6 +19,7 @@ const CustomModal = ({
       isVisible={modalVisible}
       onBackdropPress={() => setModalVisible(false)}
       onBackButtonPress={() => setModalVisible(false)}
+      backdropTransitionOutTiming={400}
       style={{ margin: 0, justifyContent: "flex-end" }}
     >
       <View className={`w-full bg-white p-5 rounded-lg h-[85%]`}>

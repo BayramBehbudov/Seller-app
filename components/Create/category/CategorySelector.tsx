@@ -40,6 +40,8 @@ const CategorySelector = ({
         onBackButtonPress={() => setModalVisible(false)}
         animationIn="slideInUp"
         animationOut="slideOutDown"
+        backdropTransitionOutTiming={400}
+
         style={{ margin: 0, justifyContent: "flex-end" }}
       >
         <View className="relative p-5 rounded-s-[20px] h-[80%] bg-white">

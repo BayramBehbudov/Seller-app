@@ -2,23 +2,26 @@ import { Text, FlatList, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProductCard from "@/components/Home/ProductCard";
-import HomeFilters from "@/components/Home/HomeFilters";
+// import HomeFilters from "@/components/Home/HomeFilters";
 import EmptyComponent from "@/components/EmptyComponent";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { IProductDB } from "@/types/interfaces";
+import { IHomeFilter, IProductDB } from "@/types/interfaces";
 import CustomButton from "@/components/CustomButton";
 import { router } from "expo-router";
+import FilterModal from "@/components/Home/FilterModal";
 
 const HomePage = () => {
   const { user } = useGlobalContext();
   const [filteredProducts, setFilteredProducts] = useState<IProductDB[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<IHomeFilter>({
     isActive: null,
     search: null,
     id: null,
+    storeId: null,
   });
-
+  
   useEffect(() => {
     const products = user.stores?.flatMap((store) => store.products) || [];
     const filteredProd = products.filter((product: IProductDB) => {
@@ -33,9 +36,17 @@ const HomePage = () => {
           : true;
       const matchesId =
         filters.id !== null
-          ? product._id.slice(-6).toLowerCase() === filters.id
+          ? product._id
+              .slice(-6)
+              .toLowerCase()
+              .includes(filters.id.toLowerCase())
           : true;
-      return matchesSearch && matchesIsActive && matchesId;
+
+      const matchesStoreId =
+        filters.storeId !== null
+          ? product.store._id.toLowerCase() === filters.storeId.toLowerCase()
+          : true;
+      return matchesSearch && matchesIsActive && matchesId && matchesStoreId;
     });
 
     filteredProd && setFilteredProducts(filteredProd);
@@ -62,11 +73,11 @@ const HomePage = () => {
       <FlatList
         data={filteredProducts}
         ListHeaderComponent={
-          <View className="w-full gap-5 h-fit flex-col">
-            <Text className="text-white text-2xl font-bold text-center">
+          <View className="w-full h-fit flex-row items-center justify-between flex-1 mb-4">
+            <Text className="text-white text-2xl font-bold">
               Bütün məhsullarınız burada
             </Text>
-            <HomeFilters setFilters={setFilters} />
+            <FilterModal setFilters={setFilters} filters={filters} />
           </View>
         }
         renderItem={({ item }) => <ProductCard product={item} />}
