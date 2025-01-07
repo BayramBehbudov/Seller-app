@@ -1,2 +1,2 @@
 1. Bağlamanı kuryerə təhvil verərkən təhvil verdim qeyd etməyən satıcı ödəniş almayacaq.
-2. 
+2. Ödəniş hesablanarkən sifarişin statusunun fulfilled olduğu, sifarişin updatedAt tarixindən 7 gün keçdiyi, məhsulların accept olması və mağazanın təhvil verdim vurduğu nəzərə alınır.

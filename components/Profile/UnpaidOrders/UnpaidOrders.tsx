@@ -31,9 +31,10 @@ const UnpaidOrders = () => {
     unpaidOrders.forEach((order) => {
       order.stores.forEach((s) => {
         if (
-          hoursSince(order.updatedAt) / 24 > 5 &&
+          hoursSince(order.updatedAt) / 24 > 7 &&
           order.status === "fullfilled" &&
-          s.status === "handOver"
+          s.status === "handOver" &&
+          s.products.every((p) => p.accepted)
         ) {
           balance.payable += s.amount.summary;
         } else {
