@@ -81,9 +81,9 @@ const OrdersDetail = ({
           <View className="flex-row">
             <Text className="flex-1">Məbləğ</Text>
             <Text className="flex-1">
-              {products
-                .reduce((a, p) => a + +p.product.price * p.count, 0)
-                .toFixed(2)}{" "}
+              {order.stores
+                .reduce((acc, store) => acc + store.amount.summary, 0)
+                .toFixed(2)}
               AZN
             </Text>
           </View>

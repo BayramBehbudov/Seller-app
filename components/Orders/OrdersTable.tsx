@@ -48,7 +48,7 @@ const OrdersTable = ({
           style={styles.orderButton}
         >
           <View style={styles.orderHeader}>
-            <Text style={styles.orderId}>#{getSlicedID(order._id)}</Text>
+            <Text style={styles.orderId}>{getSlicedID(order._id)}</Text>
             <Text style={styles.orderTime}>
               {hoursSince(order.createdAt.toString())} saat əvvəl
             </Text>
