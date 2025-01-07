@@ -11,13 +11,13 @@ import axios from "axios";
 interface IOrdersContext {
   orders: IOrderDb[];
   setOrders: (orders: IOrderDb[]) => void;
-  refetchOrders: (stores: IStoreDB[]) => void;
+  refetchOrders: () => void;
 }
 
 const OrdersContext = createContext<IOrdersContext>({
   orders: [],
   setOrders: (orders: IOrderDb[]) => {},
-  refetchOrders: (stores: IStoreDB[]) => {},
+  refetchOrders: () => {},
 });
 
 export const useOrdersContext = () => useContext(OrdersContext);

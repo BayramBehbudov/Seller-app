@@ -7,17 +7,21 @@ import OrderProductCard from "./OrderProductCard";
 import CustomButton from "../CustomButton";
 import axios from "axios";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { useOrdersContext } from "@/context/OrdersProvider";
 
 const OrdersDetail = ({
-  order,
-  setOrders,
+  orderId,
   setModalVisible,
+  action = true,
 }: {
-  order: IOrderDb;
-  setOrders: (value: IOrderDb) => void;
+  orderId: string;
   setModalVisible: (value: boolean) => void;
+  action?: boolean;
 }) => {
-  const { user } = useGlobalContext();
+  const { user, setIsLoading } = useGlobalContext();
+  const { orders, refetchOrders, setOrders } = useOrdersContext();
+  const order =
+    orders.find((o: IOrderDb) => o._id === orderId) || ({} as IOrderDb);
 
   const handleOrderStatus = async (
     storeId: string,
@@ -34,6 +38,7 @@ const OrdersDetail = ({
           text: "Bəli",
           onPress: async () => {
             try {
+              setIsLoading(true);
               await axios.post(
                 `https://express-bay-rho.vercel.app/api/order/store`,
                 {
@@ -42,15 +47,21 @@ const OrdersDetail = ({
                   status,
                 }
               );
-              setOrders({
-                ...order,
-                stores: order.stores.map((store) =>
-                  store.store._id === storeId ? { ...store, status } : store
-                ),
-              });
-              setModalVisible(false);
+              const newOrders = orders.map((o: IOrderDb) =>
+                o._id === orderId
+                  ? {
+                      ...o,
+                      stores: o.stores.map((s) =>
+                        s.store._id === storeId ? { ...s, status } : s
+                      ),
+                    }
+                  : o
+              );
+              setOrders(newOrders);
             } catch (error) {
               console.log(error);
+            } finally {
+              setIsLoading(false);
             }
           },
         },
@@ -62,9 +73,56 @@ const OrdersDetail = ({
 
   const getInfoLabel = (label: string, value: string | number) => {
     return (
-      <View className="flex-row justify-between mb-1">
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          gap: 4,
+          borderBottomWidth: 1,
+          borderBottomColor: "#ddd",
+          paddingBottom: 4,
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
         <Text>{label}</Text>
         <Text>{value}</Text>
+      </View>
+    );
+  };
+
+  const getOrderHeader = () => {
+    return (
+      <View className="w-full flex-col p-3 gap-1 border-b border rounded-lg border-gray-200 ">
+        {getInfoLabel("Sifariş ID", getSlicedID(order._id))}
+        {getInfoLabel("Tarix", formatterDate(order.createdAt.toString()))}
+        {getInfoLabel("Status", getOrderStatus(order.status))}
+        {getInfoLabel(
+          "Məhsul sayı",
+          `${products.length} çeşid / ${products.reduce(
+            (a, b) => a + b.count,
+            0
+          )} ədəd`
+        )}
+        {getInfoLabel(
+          "Məhsulların dəyəri",
+          `${order.stores
+            .reduce((acc, store) => acc + store.amount.products, 0)
+            .toFixed(2)} AZN`
+        )}
+        {getInfoLabel(
+          "Endirim",
+          `${order.stores
+            .reduce((acc, store) => acc + store.amount.discount, 0)
+            .toFixed(2)} AZN`
+        )}
+        {getInfoLabel(
+          "Yekun",
+          `${order.stores
+            .reduce((acc, store) => acc + store.amount.summary, 0)
+            .toFixed(2)} AZN`
+        )}
+        {order.sellerNote && getInfoLabel("Müşteri qeydi", order.sellerNote)}
       </View>
     );
   };
@@ -79,25 +137,7 @@ const OrdersDetail = ({
       </View>
 
       <ScrollView className="flex-col gap-2 mb-24">
-        <View className="w-full flex-col p-3 gap-1 border-b border rounded-lg border-gray-200 ">
-          {getInfoLabel("Sifariş ID", getSlicedID(order._id))}
-          {getInfoLabel("Tarix", formatterDate(order.createdAt.toString()))}
-          {getInfoLabel("Status", getOrderStatus(order.status))}
-          {getInfoLabel(
-            "Məhsul sayı",
-            `${products.length} çeşid / ${products.reduce(
-              (a, b) => a + b.count,
-              0
-            )} ədəd`
-          )}
-          {getInfoLabel(
-            "Məbləğ",
-            `${order.stores
-              .reduce((acc, store) => acc + store.amount.summary, 0)
-              .toFixed(2)} AZN`
-          )}
-          {getInfoLabel("Müşteri qeydi", order.sellerNote)}
-        </View>
+        {getOrderHeader()}
 
         <View className="flex-col gap-2 mt-2">
           {order.stores.map((s) => {
@@ -111,11 +151,10 @@ const OrdersDetail = ({
                 key={store?._id}
               >
                 <View className="items-center justify-center ">
-                  <Text className="uppercase p-2 line text-cyan-600 font-bold bg-orange-100 rounded-md">
+                  <Text className="uppercase p-2 line text-white font-bold bg-cyan-600 rounded-md">
                     {store?.name}
                   </Text>
                 </View>
-
                 {s.products.map((product, index) => {
                   return (
                     <OrderProductCard
@@ -125,25 +164,29 @@ const OrdersDetail = ({
                     />
                   );
                 })}
-                <View className="flex-row gap-2 mt-5">
-                  <CustomButton
-                    containerStyles="w-1/2"
-                    title={"Hazır"}
-                    handlePress={() => handleOrderStatus(s.store._id, "ready")}
-                    disabled={s.status !== "pending"}
-                    height={12}
-                  />
+                {action && (
+                  <View className="flex-row gap-2 mt-5">
+                    <CustomButton
+                      containerStyles="w-1/2"
+                      title={"Hazır"}
+                      handlePress={() =>
+                        handleOrderStatus(s.store._id, "ready")
+                      }
+                      disabled={s.status !== "pending"}
+                      height={12}
+                    />
 
-                  <CustomButton
-                    containerStyles="w-1/2"
-                    title={"Təhvil verdim"}
-                    handlePress={() => {
-                      handleOrderStatus(s.store._id, "handOver");
-                    }}
-                    height={10}
-                    disabled={s.status !== "ready"}
-                  />
-                </View>
+                    <CustomButton
+                      containerStyles="w-1/2"
+                      title={"Təhvil verdim"}
+                      handlePress={() => {
+                        handleOrderStatus(s.store._id, "handOver");
+                      }}
+                      height={10}
+                      disabled={s.status !== "ready"}
+                    />
+                  </View>
+                )}
               </View>
             );
           })}

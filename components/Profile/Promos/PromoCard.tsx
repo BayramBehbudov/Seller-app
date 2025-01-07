@@ -4,12 +4,11 @@ import { IPromotionDB } from "@/types/interfaces";
 import { router } from "expo-router";
 import {
   getPromoIcon,
-  getPromoTypeColor,
   getSlicedID,
   translatePromoType,
 } from "@/helpers/functions";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import {  FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const PromoCard = ({ promo }: { promo: IPromotionDB }) => {
   const { user } = useGlobalContext();
@@ -17,9 +16,15 @@ const PromoCard = ({ promo }: { promo: IPromotionDB }) => {
   return (
     <TouchableOpacity
       onPress={() => router.push(`/promo/${promo._id}`)}
-      className={`w-full rounded-2xl overflow-hidden mb-4 ${getPromoTypeColor(
-        promo.type
-      )}`}
+      className={`w-full rounded-2xl overflow-hidden bg-${
+        promo.type === "percentage"
+          ? "green"
+          : promo.type === "buyXgetY"
+          ? "purple"
+          : promo.type === "countPercentage"
+          ? "blue"
+          : "sky"
+      }-500 mb-4 `}
       style={styles.cardShadow}
     >
       <View className="bg-white/10 p-2">

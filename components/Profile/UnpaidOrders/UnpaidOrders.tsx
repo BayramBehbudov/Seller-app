@@ -1,26 +1,22 @@
 import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { IOrderDb, IProductDB } from "@/types/interfaces";
+import { IOrderDb } from "@/types/interfaces";
 import EmptyComponent from "@/components/EmptyComponent";
 import UnpaidCard from "./UnpaidCard";
 import { Ionicons } from "@expo/vector-icons";
 import { useOrdersContext } from "@/context/OrdersProvider";
 
 const UnpaidOrders = () => {
-  const {  isLoading } = useGlobalContext();
+  const { isLoading } = useGlobalContext();
   const { orders, refetchOrders } = useOrdersContext();
   const [unpaidOrders, setUnpaidOrders] = useState<IOrderDb[]>([]);
-
-  const filterUnpaidOrders = () => {
+  
+  useEffect(() => {
     const unpaids = orders.filter((o: IOrderDb) =>
       o.stores.every((s) => s.payToStore === false)
     );
     setUnpaidOrders(unpaids);
-  };
-
-  useEffect(() => {
-    filterUnpaidOrders();
   }, [orders]);
 
   const calculateTotalBalance = useCallback(() => {
@@ -58,12 +54,12 @@ const UnpaidOrders = () => {
         </View>
       }
       data={unpaidOrders}
-      renderItem={({ item }) => <UnpaidCard order={item} />}
+      renderItem={({ item }) => <UnpaidCard order={item} setOrders={setUnpaidOrders} />}
       keyExtractor={(item) => item._id}
       refreshControl={
         <RefreshControl
           refreshing={isLoading}
-          onRefresh={filterUnpaidOrders}
+          onRefresh={refetchOrders}
           colors={["#FF9001"]}
         />
       }

@@ -77,14 +77,7 @@ const OrdersTable = ({
         setModalVisible={setModalVisible}
         value={
           <OrdersDetail
-            order={selectedOrder}
-            setOrders={(value: IOrderDb) => {
-              setOrders((prev) =>
-                prev.map((item: IOrderDb) =>
-                  item._id === value._id ? value : item
-                )
-              );
-            }}
+            orderId={selectedOrder._id}
             setModalVisible={setModalVisible}
           />
         }

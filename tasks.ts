@@ -6,5 +6,5 @@
 // ödənilməmiş sifarişlər səhifəsində stores status yoxlanılır burada storesdə olan bütün mağazaların statusuna baxır every ilə. əgər bir mağaza ödənilib digəri ödənilməyibsə həmin sifarişə baxılmayacaq. və ödənilməmiş sifariş ödənilməyəcək. hərçənd belə hal olmaya da bilər. yoxlamaq lazımdır
 
 
-// ordersdetail səhifəsində mağazalar üçün ayrı ayrılıqda summary section görünsün
 // notifyproviderdə projectid istifadə etmişəm açıq şəkildə
+// əgər ehtiyac olarsa aksiyalar üçün mağazanı çıxarmaq olar
