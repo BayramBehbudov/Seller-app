@@ -15,6 +15,7 @@ import { IHomeFilter } from "@/types/interfaces";
 import SearchInput from "./SearchInput";
 import CustomSelect from "../CustomSelect";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { usePromosContext } from "@/context/PromosProvider";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -31,6 +32,12 @@ const FilterModal: React.FC<FilterModalProps> = ({ setFilters, filters }) => {
     id: store._id,
     title: store.name,
   }));
+  const { promos } = usePromosContext();
+  const promosData = promos.map((promo) => ({
+    id: promo._id,
+    title: promo.name,
+  }));
+
   useEffect(() => {
     if (isVisible) {
       modalPosition.value = withTiming(0, {
@@ -78,14 +85,15 @@ const FilterModal: React.FC<FilterModalProps> = ({ setFilters, filters }) => {
               defaultValue={filters.search}
             />
 
-            <SearchInput
-              setFilters={setFilters}
-              type="id"
-              placeholder="ID üzrə axtarış"
-              inputStyle={{ width: 150 }}
-              defaultValue={filters.id}
-            />
-            <View className="flex-row justify-between">
+            <View className="flex-row flex-1 flex-wrap gap-2">
+              <SearchInput
+                setFilters={setFilters}
+                type="id"
+                placeholder="ID üzrə axtarış"
+                inputStyle={{ width: 150 }}
+                defaultValue={filters.id}
+              />
+
               <CustomSelect
                 modalTitle="Mağaza seçin"
                 data={[...stores, { id: "null", title: "Hamısı" }]}
@@ -103,6 +111,26 @@ const FilterModal: React.FC<FilterModalProps> = ({ setFilters, filters }) => {
                   setFilters((prev: any) => ({
                     ...prev,
                     storeId: e === "null" || !e ? null : e,
+                  }))
+                }
+              />
+              <CustomSelect
+                modalTitle="Aksiya seçin"
+                data={[...promosData, { id: "null", title: "Hamısı" }]}
+                defaultValue={
+                  filters.promoId !== null
+                    ? promosData.find((promo) => promo.id === filters.promoId)
+                    : {
+                        id: "",
+                        title: "",
+                      }
+                }
+                placeholder="Aksiya üzrə axtarış"
+                containerStyles="w-[150px]"
+                handleChange={(e) =>
+                  setFilters((prev: any) => ({
+                    ...prev,
+                    promoId: e === "" || !e ? null : e,
                   }))
                 }
               />
@@ -136,7 +164,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ setFilters, filters }) => {
             </View>
           </View>
           <View
-            className="flex-row w-full  justify-between"
+            className="flex-row w-full  justify-between bg-white"
             style={{ position: "absolute", bottom: 5, right: 20 }}
           >
             <TouchableOpacity
@@ -147,6 +175,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ setFilters, filters }) => {
                   search: null,
                   id: null,
                   storeId: null,
+                  promoId: null,
                 });
               }}
             >

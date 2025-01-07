@@ -2,7 +2,6 @@ import { Text, FlatList, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProductCard from "@/components/Home/ProductCard";
-// import HomeFilters from "@/components/Home/HomeFilters";
 import EmptyComponent from "@/components/EmptyComponent";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { IHomeFilter, IProductDB } from "@/types/interfaces";
@@ -13,15 +12,15 @@ import FilterModal from "@/components/Home/FilterModal";
 const HomePage = () => {
   const { user } = useGlobalContext();
   const [filteredProducts, setFilteredProducts] = useState<IProductDB[]>([]);
-  const [isVisible, setIsVisible] = useState(false);
 
   const [filters, setFilters] = useState<IHomeFilter>({
     isActive: null,
     search: null,
     id: null,
     storeId: null,
+    promoId: null,
   });
-  
+
   useEffect(() => {
     const products = user.stores?.flatMap((store) => store.products) || [];
     const filteredProd = products.filter((product: IProductDB) => {
@@ -46,7 +45,19 @@ const HomePage = () => {
         filters.storeId !== null
           ? product.store._id.toLowerCase() === filters.storeId.toLowerCase()
           : true;
-      return matchesSearch && matchesIsActive && matchesId && matchesStoreId;
+
+      const matchesPromoId =
+        filters.promoId !== null
+          ? product.promo?.toLowerCase() === filters.promoId.toLowerCase()
+          : true;
+
+      return (
+        matchesSearch &&
+        matchesIsActive &&
+        matchesId &&
+        matchesStoreId &&
+        matchesPromoId
+      );
     });
 
     filteredProd && setFilteredProducts(filteredProd);

@@ -193,6 +193,7 @@ export interface IHomeFilter {
   search: string | null;
   id: string | null;
   storeId: string | null;
+  promoId: string | null;
 }
 
 export interface IFilterSelectorProps {
