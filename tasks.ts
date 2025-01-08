@@ -2,4 +2,3 @@
 
 
 // notifyproviderdə projectid istifadə etmişəm açıq şəkildə
-// əgər ehtiyac olarsa aksiyalar üçün mağazanı çıxarmaq olar

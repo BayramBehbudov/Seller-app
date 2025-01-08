@@ -275,4 +275,3 @@ export interface IPromotionDB extends IPromotion {
 // buyXgetY və together discountValue məbləğ endirimidir, countPercentage və percentage faiz endirimi
 // isactive satıcıdan soruşulsun
 // creator mağazadır
-//
