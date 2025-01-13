@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -13,20 +13,14 @@ import { getOrderStatus, getSlicedID } from "@/helpers/functions";
 import { IOrderDb } from "@/types/interfaces";
 import { hoursSince } from "@/helpers/dateHelpers";
 
-const OrdersTable = ({
-  orders,
-  setOrders,
-}: {
-  orders: IOrderDb[];
-  setOrders: Dispatch<SetStateAction<IOrderDb[]>>;
-}) => {
+const OrdersTable = ({ orders }: { orders: IOrderDb[] }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<IOrderDb>({} as IOrderDb);
 
   const renderOrderItem = (order: IOrderDb, index: number) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
-    React.useEffect(() => {
+    useEffect(() => {
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 500,
@@ -57,7 +51,7 @@ const OrdersTable = ({
             <Text
               style={[
                 styles.orderStatus,
-                styles[order.status as "pending" | "ready" | "handOver"],
+                styles[order.status as "pending" | "ready" | "takeOver"],
               ]}
             >
               {getOrderStatus(order.status)}
@@ -138,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#d1fae5",
     color: "#059669",
   },
-  handOver: {
+  takeOver: {
     backgroundColor: "#dbeafe",
     color: "#3b82f6",
   },

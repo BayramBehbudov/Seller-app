@@ -65,7 +65,7 @@ export interface IUserDB extends IUser {
   address: IUserAddress[];
   cards: IBankCard[];
   stores: IStoreDB[];
-  role: "user" | "seller";
+  role: "user" | "seller" | "courier-collector" | "courier-delivery";
   _id: string;
   createdAt: string;
   updatedAt: string;
@@ -233,7 +233,7 @@ export interface IOrderProductDb {
 export interface IOrderDb {
   stores: {
     store: IStoreDB;
-    status: "pending" | "ready" | "handOver";
+    status: "pending" | "ready" | "takeOver";
     amount: IOrderTotal;
     products: IOrderProductDb[];
     payToStore: boolean;

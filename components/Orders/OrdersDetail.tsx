@@ -23,15 +23,10 @@ const OrdersDetail = ({
   const order =
     orders.find((o: IOrderDb) => o._id === orderId) || ({} as IOrderDb);
 
-  const handleOrderStatus = async (
-    storeId: string,
-    status: "ready" | "handOver"
-  ) => {
+  const handleOrderStatus = async (storeId: string) => {
     Alert.alert(
       "Bağlamanın statusunu dəyişmək istədiyinizdən əminsinizmi?",
-      `Status "${
-        status === "ready" ? "Hazır" : "Təhvil verdim"
-      }" olaraq qeyd ediləcək`,
+      `Status "Hazır" olaraq qeyd ediləcək`,
       [
         { text: "Xeyr" },
         {
@@ -44,15 +39,15 @@ const OrdersDetail = ({
                 {
                   orderId: order._id,
                   storeId,
-                  status,
+                  status: "ready",
                 }
               );
-              const newOrders = orders.map((o: IOrderDb) =>
+              const newOrders: IOrderDb[] = orders.map((o: IOrderDb) =>
                 o._id === orderId
                   ? {
                       ...o,
                       stores: o.stores.map((s) =>
-                        s.store._id === storeId ? { ...s, status } : s
+                        s.store._id === storeId ? { ...s, status: "ready" } : s
                       ),
                     }
                   : o
@@ -144,7 +139,6 @@ const OrdersDetail = ({
             const store = user.stores.find(
               (store) => store._id === s.store._id
             );
-
             return (
               <View
                 className="w-full flex-col p-3 gap-1  border rounded-lg border-gray-200 "
@@ -165,27 +159,17 @@ const OrdersDetail = ({
                   );
                 })}
                 {action && (
-                  <View className="flex-row gap-2 mt-5">
-                    <CustomButton
-                      containerStyles="w-1/2"
-                      title={"Hazır"}
-                      handlePress={() =>
-                        handleOrderStatus(s.store._id, "ready")
-                      }
-                      disabled={s.status !== "pending"}
-                      height={12}
-                    />
-
-                    <CustomButton
-                      containerStyles="w-1/2"
-                      title={"Təhvil verdim"}
-                      handlePress={() => {
-                        handleOrderStatus(s.store._id, "handOver");
-                      }}
-                      height={10}
-                      disabled={s.status !== "ready"}
-                    />
-                  </View>
+                  <CustomButton
+                    containerStyles="w-full mt-5"
+                    title={
+                      s.status === "pending"
+                        ? "Hazırdır"
+                        : getOrderStatus(s.status)
+                    }
+                    handlePress={() => handleOrderStatus(s.store._id)}
+                    disabled={s.status !== "pending"}
+                    height={12}
+                  />
                 )}
               </View>
             );

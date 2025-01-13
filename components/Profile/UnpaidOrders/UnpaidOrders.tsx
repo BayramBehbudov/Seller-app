@@ -33,7 +33,7 @@ const UnpaidOrders = () => {
         if (
           hoursSince(order.updatedAt) / 24 > 7 &&
           order.status === "fullfilled" &&
-          s.status === "handOver" &&
+          s.status === "takeOver" &&
           s.products.every((p) => p.accepted)
         ) {
           balance.payable += s.amount.summary;

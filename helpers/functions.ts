@@ -7,9 +7,9 @@ export const getOrderStatus = (status: string) => {
     case "pending":
       return "Gözləyir";
     case "ready":
-      return "Hazırdır";
-    case "handOver":
-      return "Təhvil verdim";
+      return "Təhvil verilmək üçün hazırdır";
+    case "takeOver":
+      return "Kuryer təhvil götürdü";
     case "fullfilled":
       return "Tamamlanıb";
     case "cancelled":
@@ -22,6 +22,7 @@ export const getOrderStatus = (status: string) => {
       return status;
   }
 };
+
 export const getPromoInfo = (p: string) => {
   switch (p) {
     case "buyXgetY":
@@ -53,7 +54,6 @@ export const translatePromoType = (type: string) => {
   }
 };
 
-
 export const getPromoTypeColor = (type: string) => {
   switch (type) {
     case "percentage":
@@ -67,12 +67,9 @@ export const getPromoTypeColor = (type: string) => {
   }
 };
 
-
 export const getDiscountSymbol = (type: string) => {
   return type === "percentage" || type === "countPercentage" ? "%" : "";
 };
-
-
 
 export const getPromoIcon = (type: string) => {
   switch (type) {
