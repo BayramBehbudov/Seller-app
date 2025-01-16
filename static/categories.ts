@@ -12,10 +12,7 @@ export const categories: ICategories = {
    women,
    kids,
    electronics,
-
-
-
-   // homeAndGarden,
+   homeAndGarden,
    // healthAndBeauty,
    // sportsAndHobbies,
 }

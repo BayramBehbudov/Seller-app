@@ -2,7 +2,7 @@ import { matereal, power } from "@/static/feautures/electronics";
 import { ISubCategoryValue } from "@/types/interfaces";
 
 export const kitchen: ISubCategoryValue = {
-  title: "Mətbəx avadanlıqları",
+  title: "Mətbəx",
   filters: [],
   features: [
     {
